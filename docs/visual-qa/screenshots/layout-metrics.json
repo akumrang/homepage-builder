@@ -1,0 +1,42 @@
+[
+  {
+    "name": "public-desktop",
+    "innerWidth": 1440,
+    "clientWidth": 1425,
+    "documentScrollWidth": 1425,
+    "bodyScrollWidth": 1425,
+    "documentScrollHeight": 7935,
+    "title": "묵산 홈페이지 MVP",
+    "offenders": []
+  },
+  {
+    "name": "public-mobile",
+    "innerWidth": 390,
+    "clientWidth": 390,
+    "documentScrollWidth": 390,
+    "bodyScrollWidth": 390,
+    "documentScrollHeight": 10377,
+    "title": "묵산 홈페이지 MVP",
+    "offenders": []
+  },
+  {
+    "name": "internal-desktop",
+    "innerWidth": 1440,
+    "clientWidth": 1440,
+    "documentScrollWidth": 1440,
+    "bodyScrollWidth": 1440,
+    "documentScrollHeight": 2200,
+    "title": "묵산 홈페이지 MVP",
+    "offenders": []
+  },
+  {
+    "name": "internal-mobile",
+    "innerWidth": 390,
+    "clientWidth": 390,
+    "documentScrollWidth": 390,
+    "bodyScrollWidth": 390,
+    "documentScrollHeight": 2600,
+    "title": "묵산 홈페이지 MVP",
+    "offenders": []
+  }
+]

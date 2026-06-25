@@ -30,6 +30,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -37,6 +38,7 @@ body {
   min-width: 320px;
   background: var(--paper);
   color: var(--ink);
+  overflow-x: hidden;
 }
 
 a {
@@ -53,6 +55,8 @@ textarea {
 
 .site-shell {
   min-height: 100vh;
+  max-width: 100%;
+  overflow-x: hidden;
   background: var(--paper);
 }
 
@@ -74,6 +78,7 @@ textarea {
 }
 
 .brand {
+  min-width: 0;
   font-size: 18px;
   font-weight: 800;
   letter-spacing: 0;
@@ -97,10 +102,12 @@ textarea {
 }
 
 .header-cta {
+  flex: 0 0 auto;
   border: 1px solid rgba(255, 255, 255, 0.5);
   padding: 0 16px;
   border-radius: 8px;
   font-weight: 700;
+  white-space: nowrap;
 }
 
 .hero {
@@ -125,6 +132,7 @@ textarea {
 .hero-content {
   position: relative;
   width: min(720px, 100%);
+  min-width: 0;
 }
 
 .hero-kicker,
@@ -146,6 +154,7 @@ textarea {
   font-size: clamp(42px, 7vw, 78px);
   line-height: 1.04;
   letter-spacing: 0;
+  overflow-wrap: break-word;
 }
 
 .hero-tagline {
@@ -154,6 +163,7 @@ textarea {
   font-size: clamp(22px, 3vw, 34px);
   line-height: 1.35;
   font-weight: 800;
+  overflow-wrap: break-word;
 }
 
 .hero-summary {
@@ -162,6 +172,7 @@ textarea {
   color: rgba(255, 255, 255, 0.86);
   font-size: 18px;
   line-height: 1.7;
+  overflow-wrap: break-word;
 }
 
 .hero-actions,
@@ -230,12 +241,15 @@ textarea {
 .hero-facts span {
   display: inline-flex;
   align-items: center;
+  max-width: 100%;
   min-height: 36px;
   border: 1px solid rgba(255, 255, 255, 0.22);
   border-radius: 8px;
   padding: 0 12px;
   background: rgba(255, 255, 255, 0.1);
   color: rgba(255, 255, 255, 0.88);
+  line-height: 1.45;
+  white-space: normal;
 }
 
 .quick-band {
@@ -274,6 +288,7 @@ textarea {
 
 .section-heading {
   max-width: 760px;
+  min-width: 0;
   margin-bottom: 34px;
 }
 
@@ -287,6 +302,7 @@ textarea {
   font-size: clamp(30px, 4vw, 48px);
   line-height: 1.18;
   letter-spacing: 0;
+  overflow-wrap: break-word;
 }
 
 .section-heading p:not(.eyebrow),
@@ -712,7 +728,9 @@ dd {
 
 .internal-page {
   min-height: 100vh;
+  max-width: 100%;
   padding: 48px clamp(18px, 5vw, 72px);
+  overflow-x: hidden;
   background: var(--soft);
 }
 
@@ -730,6 +748,8 @@ dd {
 
 .internal-tabs {
   display: grid;
+  width: 100%;
+  min-width: 0;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 1px;
   overflow: hidden;
@@ -739,6 +759,7 @@ dd {
 }
 
 .internal-tab {
+  min-width: 0;
   min-height: 72px;
   display: flex;
   align-items: center;
@@ -800,6 +821,7 @@ dd {
 
 .admin-card,
 .inquiry-card {
+  min-width: 0;
   padding: 22px;
 }
 
@@ -1199,21 +1221,26 @@ dd {
 
 @media (max-width: 680px) {
   .site-header {
-    padding: 14px 18px;
+    gap: 12px;
+    padding: 12px 14px;
   }
 
   .brand {
-    font-size: 16px;
+    max-width: calc(100vw - 126px);
+    overflow: hidden;
+    font-size: 14px;
+    text-overflow: ellipsis;
   }
 
   .header-cta {
     min-height: 38px;
-    padding: 0 12px;
+    padding: 0 10px;
+    font-size: 14px;
   }
 
   .hero {
     min-height: 82vh;
-    padding: 96px 20px 42px;
+    padding: 92px 16px 42px;
     background-position: center;
   }
 
@@ -1222,15 +1249,21 @@ dd {
   }
 
   .hero h1 {
-    font-size: 42px;
+    font-size: 36px;
+    line-height: 1.12;
   }
 
   .hero-tagline {
-    font-size: 24px;
+    font-size: 21px;
   }
 
   .hero-summary {
     font-size: 16px;
+  }
+
+  .hero-facts span {
+    min-height: 34px;
+    padding: 7px 10px;
   }
 
   .hero-actions .button,
@@ -1246,6 +1279,12 @@ dd {
 
   .internal-tab {
     min-height: 58px;
+    padding: 0 16px;
+  }
+
+  .internal-tab strong {
+    white-space: normal;
+    text-align: right;
   }
 
   .quick-band div {
@@ -1253,7 +1292,7 @@ dd {
   }
 
   .content-section {
-    padding: 64px 20px;
+    padding: 58px 16px;
   }
 
   .section-heading h2,
@@ -1261,11 +1300,33 @@ dd {
   .entry-band h2,
   .internal-header h1,
   .plain-state h1 {
-    font-size: 31px;
+    font-size: 28px;
+    line-height: 1.24;
+  }
+
+  .internal-page {
+    padding: 32px 16px;
+  }
+
+  .internal-header p,
+  .section-heading p:not(.eyebrow),
+  .consultation-section p,
+  .entry-band p {
+    font-size: 16px;
   }
 
   .teacher-card {
     grid-template-columns: 1fr;
+  }
+
+  .admin-card dl div,
+  .content-review-summary dl div {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  .status-select {
+    width: 100%;
   }
 
   .field-grid {
