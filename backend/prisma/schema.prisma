@@ -1,0 +1,49 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:../data/homepage-dev.db"
+}
+
+model Inquiry {
+  id              String   @id
+  academySlug     String
+  parentName      String
+  phone           String
+  studentGrade    String
+  subject         String
+  message         String
+  privacyAccepted Boolean  @default(true)
+  status          String   @default("NEW")
+  createdAt       DateTime @default(now())
+
+  @@index([academySlug])
+  @@index([createdAt])
+}
+
+model Notice {
+  id          String   @id
+  academySlug String
+  title       String
+  date        String
+  body        String
+  pinned      Boolean  @default(false)
+  visible     Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([academySlug])
+  @@index([date])
+}
+
+model HomepageSiteState {
+  slug             String   @id
+  homepageId       String
+  academyId        String
+  templateId       String
+  productionStatus String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}

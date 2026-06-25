@@ -1,0 +1,31 @@
+{
+  "name": "@muksan-homepage/backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "npm --prefix ../shared run build && prisma generate --schema prisma/schema.prisma && tsx watch src/server.ts",
+    "build": "npm --prefix ../shared run build && npm run content:validate && prisma generate --schema prisma/schema.prisma && tsc -p tsconfig.json",
+    "typecheck": "npm --prefix ../shared run build && npm run content:validate && prisma generate --schema prisma/schema.prisma && tsc -p tsconfig.json --noEmit",
+    "content:validate": "tsx src/validateContent.ts",
+    "api:smoke": "npm --prefix ../shared run build && npm run content:validate && prisma generate --schema prisma/schema.prisma && tsx src/smokeTest.ts",
+    "db:generate": "prisma generate --schema prisma/schema.prisma",
+    "db:init": "prisma generate --schema prisma/schema.prisma && tsx src/initDatabase.ts",
+    "db:studio": "prisma studio --schema prisma/schema.prisma",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@muksan-homepage/shared": "file:../shared",
+    "@prisma/client": "^6.19.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.14.10",
+    "prisma": "^6.19.3",
+    "tsx": "^4.16.2",
+    "typescript": "^5.5.3"
+  }
+}

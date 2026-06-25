@@ -1,0 +1,147 @@
+# MVP 구현 상태 점검
+
+Status: Draft  
+Project: homepage  
+Last Updated: 2026-06-25
+
+---
+
+## 1. 점검 기준
+
+이 문서는 `planning/10_FIRST_IMPLEMENTATION_CHECKLIST.md`를 기준으로 현재 MVP 구현 상태를 점검한 기록이다.
+
+점검 범위는 샘플 학원 `sample-korean-academy`, 공개 홈페이지 `/h/sample-korean-academy`, 내부 제작 화면 `/internal`, 상담 문의 API, 공통 검증 규칙, 로컬 검증 명령이다.
+
+---
+
+## 2. 전체 판단
+
+현재 구현은 첫 구현 완료 판단 기준의 핵심 항목을 충족한다.
+
+- 공개 홈페이지 1종이 `trust-basic-v1` 템플릿으로 렌더링된다.
+- 상담 문의는 frontend 검증 후 backend API로 접수되고 Prisma SQLite 저장소에 저장된다.
+- 내부 제작 화면에서 샘플 학원 상태, 콘텐츠 점검, 공지, 문의 상태를 확인할 수 있다.
+- academy와 exam_system2 DB를 직접 연결하지 않는다.
+- README만 보고 설치, 실행, 검증 명령을 찾을 수 있다.
+
+단, 운영 출시 기준의 인증, 권한, 배포, 커스텀 도메인, 실제 academy/exam_system2 연동, 실제 결제/알림 연동은 의도적으로 제외되어 있다.
+
+---
+
+## 3. 체크리스트별 상태
+
+| 영역 | 상태 | 근거 |
+|---|---|---|
+| 실행 체크 | 완료 | root workspace에 `dev:frontend`, `dev:backend`, `verify`가 있고 frontend 5175, backend 4200 포트가 README에 기록되어 있다. |
+| 공개 홈페이지 체크 | 완료 | `frontend/src/App.tsx`가 `/h/sample-korean-academy`를 공개 페이지로 연결하고 `TrustBasicTemplate`이 소개, 강사진, 커리큘럼, 공지, 오시는 길, 상담 CTA를 렌더링한다. |
+| 모바일 품질 체크 | 부분 확인 | 반응형 CSS와 모바일 breakpoint가 구현되어 있다. 자동 build는 통과 대상이며, 별도 브라우저 스크린샷 회귀 테스트는 아직 없다. |
+| 상담 문의 체크 | 완료 | `InquiryForm`이 보호자 이름, 연락처, 학년, 과목, 문의 내용, 개인정보 동의를 받고 `POST /api/inquiries`로 전송한다. |
+| 내부 제작 화면 체크 | 완료 | `/internal`에서 샘플 학원 상태, 콘텐츠 점검, 공지 CRUD, 문의 목록/상태 변경을 확인한다. 고객용 자유 편집기 기능은 없다. |
+| 데이터 경계 체크 | 완료 | 샘플 JSON과 로컬 SQLite 개발 DB만 사용한다. academy/exam_system2 직접 DB 공유나 실제 개인정보/결제 정보는 없다. |
+| 품질 철학 체크 | 완료 | 샘플 문구는 국어학원 공개 홈페이지에 맞춘 안내성 콘텐츠이며 허위 실적, 후기, 강사 경력을 넣지 않았다. |
+| 코드 품질 체크 | 완료 | `shared` workspace로 문의 검증 규칙을 공유하고, backend 콘텐츠 검증, API smoke, typecheck, build를 `verify`에 묶었다. |
+| Git 체크 | 부분 확인 | `.gitignore`는 개발 DB, dist, env, tsbuildinfo를 제외한다. 아직 첫 MVP 변경 파일이 커밋되지 않았으므로 `git status`는 clean이 아니다. |
+
+---
+
+## 4. 주요 구현 근거
+
+| 기능 | 파일 |
+|---|---|
+| 공개 페이지 라우팅 | `frontend/src/App.tsx` |
+| `trust-basic-v1` 템플릿 | `frontend/src/components/TrustBasicTemplate.tsx` |
+| 상담 문의 폼 | `frontend/src/components/InquiryForm.tsx` |
+| 내부 제작 화면 | `frontend/src/components/InternalDashboard.tsx` |
+| frontend API client | `frontend/src/api.ts` |
+| Express API | `backend/src/server.ts` |
+| 상담 문의 저장소 | `backend/src/inquiryStore.ts` |
+| 공지 저장소 | `backend/src/noticeStore.ts` |
+| 홈페이지 제작 상태 저장소 | `backend/src/homepageStateStore.ts` |
+| 샘플 학원 seed | `backend/content/sample-academies.json` |
+| 콘텐츠 검증 | `backend/src/contentValidation.ts` |
+| 공통 문의 검증 | `shared/src/index.ts` |
+| API smoke test | `backend/src/smokeTest.ts` |
+
+---
+
+## 5. 검증 명령 상태
+
+현재 README 기준 최종 검증 명령은 다음이다.
+
+```powershell
+npm.cmd run verify
+```
+
+2026-06-25 실행 결과: 통과.
+
+`verify`는 다음 순서로 실행된다.
+
+1. `shared:smoke`
+2. `content:validate`
+3. `api:smoke`
+4. `typecheck`
+5. `build`
+
+개별 검증 범위는 다음과 같다.
+
+- `shared:smoke`: frontend/backend 공통 상담 문의 검증 규칙 확인
+- `content:validate`: 샘플 학원 seed 구조와 공개 콘텐츠 필수 항목 확인
+- `api:smoke`: health, 콘텐츠 점검, 제작 상태 변경, 공지 CRUD, 문의 접수, 문의 상태 변경, 개인정보 미동의 차단 확인
+- `typecheck`: shared/backend/frontend TypeScript 검사
+- `build`: shared/backend/frontend production build
+
+---
+
+## 6. 보류 또는 의도적 제외 항목
+
+이번 MVP에서 의도적으로 제외한 항목:
+
+- academy 실제 연동
+- exam_system2 실제 연동
+- 실제 결제 또는 PG 연동
+- 문자, 알림톡, 실시간 채팅
+- OpenAI API 실제 연결
+- 고객용 자유형 빌더
+- 커스텀 도메인
+- 로그인과 권한 전체 구현
+- 다중 템플릿 전체 구현
+
+추가로 남아 있는 품질 보강 항목:
+
+- 모바일/데스크톱 브라우저 스크린샷 기반 회귀 테스트
+- 내부 화면 접근 제어 설계
+- Prisma migration 기반 DB 변경 관리
+- 운영 배포 환경 변수와 health check 정책
+- 첫 MVP 변경 파일 커밋 정리
+
+---
+
+## 7. Git 커밋 준비 점검
+
+2026-06-25 점검 기준 `git status --ignored --short`에서 다음 생성물은 ignore 처리되어 있다.
+
+- `.tmp/`
+- `node_modules/`
+- `frontend/dist/`
+- `backend/dist/`
+- `shared/dist/`
+- `backend/data/homepage-dev.db`
+- `backend/data/inquiries.jsonl`
+
+첫 MVP 커밋에 포함할 대상으로 판단한 파일 범위는 다음이다.
+
+- root workspace 설정: `.gitignore`, `package.json`, `package-lock.json`
+- README 실행/검증 문서: `README.md`
+- MVP 상태 점검 문서: `docs/MVP_IMPLEMENTATION_STATUS.md`
+- 누락되어 있던 구현 범위 문서: `planning/08_MVP_IMPLEMENTATION_SCOPE.md`
+- frontend 앱 소스와 설정: `frontend/`
+- backend 앱 소스와 설정: `backend/`
+- 공통 검증 workspace: `shared/`
+
+현재 `.env` 또는 secret 파일은 커밋 대상으로 보이지 않는다.
+
+---
+
+## 8. 다음 판단
+
+다음 작업은 staged 변경분을 최종 확인한 뒤 첫 MVP 구현 커밋을 만드는 것이다.
