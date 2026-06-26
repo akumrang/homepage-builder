@@ -157,6 +157,7 @@ npm.cmd run db:init
 
 운영 배포 전 상세 점검 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 정리되어 있습니다.
 SQLite 백업/복구 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있습니다.
+운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
 
 ```powershell
 $env:NODE_ENV="production"
@@ -175,7 +176,8 @@ npm.cmd --workspace backend run start
 
 - `DATABASE_URL`은 운영에서 반드시 명시합니다.
 - `HOMEPAGE_INTERNAL_ACCESS_TOKEN`은 운영에서 반드시 별도 비밀값으로 설정합니다.
-- frontend와 backend를 다른 origin으로 배포하면 `HOMEPAGE_CORS_ORIGINS`에 허용할 frontend origin을 쉼표로 구분해 명시합니다.
+- frontend와 backend를 같은 origin으로 배포하면 frontend는 기본적으로 같은 origin의 `/api`를 호출합니다.
+- frontend와 backend를 다른 origin으로 배포하면 frontend build 전에 `VITE_API_BASE_URL`을 지정하고, backend `HOMEPAGE_CORS_ORIGINS`에 허용할 frontend origin을 쉼표로 구분해 명시합니다.
 - `npm.cmd run build`는 Prisma Client 생성과 TypeScript build만 수행하며 DB migration을 적용하지 않습니다.
 - `npm.cmd run db:backup`은 SQLite DB 파일과 manifest를 백업합니다.
 - `npm.cmd run db:deploy`가 `backend/prisma/migrations`의 migration을 적용합니다.
