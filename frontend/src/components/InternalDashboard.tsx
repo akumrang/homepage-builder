@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
+  clearInternalAccessToken,
   createNotice,
   deleteNotice,
   fetchAcademy,
@@ -7,6 +8,8 @@ import {
   fetchContentChecks,
   fetchInquiries,
   fetchNotices,
+  getInternalAccessToken,
+  setInternalAccessToken,
   updateAcademyProductionStatus,
   updateInquiryStatus,
   updateNotice
@@ -70,10 +73,22 @@ export default function InternalDashboard() {
   const [noticeVisibilityFilter, setNoticeVisibilityFilter] = useState<NoticeVisibilityFilter>("ALL");
   const [noticePinFilter, setNoticePinFilter] = useState<NoticePinFilter>("ALL");
   const [noticeSearch, setNoticeSearch] = useState("");
+  const [accessToken, setAccessTokenValue] = useState(() => getInternalAccessToken());
+  const [accessTokenInput, setAccessTokenInput] = useState(accessToken);
   const [error, setError] = useState<string | null>(null);
   const [savingAcademySlug, setSavingAcademySlug] = useState<string | null>(null);
   const [savingInquiryId, setSavingInquiryId] = useState<string | null>(null);
   const [isSavingNotice, setIsSavingNotice] = useState(false);
+
+  function resetInternalData() {
+    setAcademies([]);
+    setActiveAcademy(null);
+    setContentChecks([]);
+    setInquiries([]);
+    setNotices([]);
+    setEditingNoticeId(null);
+    setNoticeForm(createEmptyNoticeForm());
+  }
 
   async function load() {
     try {
@@ -95,8 +110,32 @@ export default function InternalDashboard() {
   }
 
   useEffect(() => {
-    void load();
-  }, []);
+    if (accessToken.trim().length > 0) {
+      void load();
+    }
+  }, [accessToken]);
+
+  function handleAccessSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+
+    const nextToken = accessTokenInput.trim();
+    if (!nextToken) {
+      setError("내부 접근 키를 입력해 주세요.");
+      return;
+    }
+
+    setInternalAccessToken(nextToken);
+    setAccessTokenValue(nextToken);
+    setError(null);
+  }
+
+  function handleAccessReset() {
+    clearInternalAccessToken();
+    setAccessTokenValue("");
+    setAccessTokenInput("");
+    setError(null);
+    resetInternalData();
+  }
 
   async function handleStatusChange(inquiry: Inquiry) {
     const nextStatus = inquiry.status === "NEW" ? "CHECKED" : "NEW";
@@ -273,6 +312,49 @@ export default function InternalDashboard() {
     }
   }
 
+  if (!accessToken.trim()) {
+    return (
+      <main className="internal-page">
+        <header className="internal-header">
+          <div>
+            <p className="eyebrow">Muksan Internal</p>
+            <h1>내부 접근 확인</h1>
+            <p>묵산 내부 제작 화면은 상담 문의와 제작 상태를 다루므로 접근 키가 필요합니다.</p>
+          </div>
+          <div className="internal-actions">
+            <a className="button button-secondary" href="/h/sample-korean-academy">
+              샘플 홈페이지
+            </a>
+          </div>
+        </header>
+
+        <section className="internal-access-card" aria-labelledby="internal-access-title">
+          <p className="eyebrow">Internal Access</p>
+          <h2 id="internal-access-title">내부 접근 키 입력</h2>
+          <p>
+            이 장치는 운영용 로그인 시스템이 아니라 MVP 단계의 내부 접근 경계입니다. 공개 홈페이지와 상담 문의
+            제출은 계속 외부에 열려 있습니다.
+          </p>
+          <form className="internal-access-form" onSubmit={handleAccessSubmit}>
+            <label htmlFor="internal-access-token">접근 키</label>
+            <input
+              id="internal-access-token"
+              type="password"
+              value={accessTokenInput}
+              onChange={(event) => setAccessTokenInput(event.target.value)}
+              autoComplete="off"
+              placeholder="README에 기록된 로컬 내부 접근 키"
+            />
+            <button className="button button-primary" type="submit">
+              내부 화면 열기
+            </button>
+          </form>
+          {error ? <p className="form-message error">{error}</p> : null}
+        </section>
+      </main>
+    );
+  }
+
   return (
     <main className="internal-page">
       <header className="internal-header">
@@ -285,6 +367,9 @@ export default function InternalDashboard() {
           <a className="button button-secondary" href="/h/sample-korean-academy">
             샘플 홈페이지
           </a>
+          <button className="button button-secondary" type="button" onClick={handleAccessReset}>
+            접근 키 초기화
+          </button>
           <button className="button button-primary" type="button" onClick={() => void load()}>
             새로고침
           </button>

@@ -93,6 +93,23 @@ npm.cmd run dev:frontend
 - 내부 제작 화면: http://127.0.0.1:5175/internal
 - backend health: http://localhost:4200/api/health
 
+로컬 내부 제작 화면 접근 키:
+
+```text
+muksan-local-dev
+```
+
+backend의 내부 API는 `Authorization: Bearer <token>` 헤더를 요구합니다. 로컬 개발에서는 `HOMEPAGE_INTERNAL_ACCESS_TOKEN`이 없으면 위 기본 키를 사용하고, `NODE_ENV=production`에서는 기본 키를 쓰지 않습니다.
+
+PowerShell에서 내부 접근 키를 바꾸려면 backend 실행 전에 다음처럼 설정합니다.
+
+```powershell
+$env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="원하는-로컬-내부-접근-키"
+npm.cmd run dev:backend
+```
+
+이 접근 키는 MVP 단계의 내부 접근 경계이며, 운영용 로그인·권한 시스템이 아닙니다.
+
 ## 검증 명령
 
 ```powershell
@@ -115,7 +132,7 @@ npm.cmd run build
 
 `content:validate`는 `backend/content/sample-academies.json`의 필수 구조와 공개 콘텐츠 필수 항목을 확인합니다. `typecheck`와 `build`는 backend 검증 단계에서 이 명령을 먼저 실행하므로 seed 콘텐츠가 깨지면 TypeScript 컴파일 전에 실패합니다.
 
-`api:smoke`는 backend 앱을 임시 포트로 실행해 `health`, 콘텐츠 점검 API, 홈페이지 제작 상태 변경, 잘못된 제작 상태 차단, 공지사항 생성·수정·삭제, 공지 공개/비공개 노출, 상담 문의 정상 접수, 문의 상태 변경, 잘못된 문의 상태 차단, 개인정보 미동의 차단을 실제 HTTP 요청으로 검증합니다. 테스트 중 변경한 홈페이지 상태는 원래 값으로 되돌리고, 생성한 공지사항과 상담 문의는 검증 종료 시 삭제합니다.
+`api:smoke`는 backend 앱을 임시 포트로 실행해 `health`, 내부 API 접근 보호, 콘텐츠 점검 API, 홈페이지 제작 상태 변경, 잘못된 제작 상태 차단, 공지사항 생성·수정·삭제, 공지 공개/비공개 노출, 상담 문의 정상 접수, 문의 상태 변경, 잘못된 문의 상태 차단, 개인정보 미동의 차단을 실제 HTTP 요청으로 검증합니다. 테스트 중 변경한 홈페이지 상태는 원래 값으로 되돌리고, 생성한 공지사항과 상담 문의는 검증 종료 시 삭제합니다.
 
 Prisma SQLite DB만 수동으로 준비하려면 다음 명령을 사용합니다.
 
@@ -126,15 +143,18 @@ npm.cmd --workspace backend run db:init
 ## API
 
 ```text
+공개 API
 GET  /api/health
-GET  /api/academies
 GET  /api/academies/:slug
+POST /api/inquiries
+
+내부 API: Authorization: Bearer <internal token> 필요
+GET  /api/academies
 PATCH /api/academies/:slug/status
 GET  /api/academies/:slug/content-checks
 GET  /api/academies/:slug/notices
 POST /api/academies/:slug/notices
 GET  /api/inquiries
-POST /api/inquiries
 PATCH /api/inquiries/:id/status
 PATCH /api/notices/:id
 DELETE /api/notices/:id
@@ -155,7 +175,7 @@ DELETE /api/notices/:id
 
 상담 문의 검증 규칙은 `shared` workspace에서 관리하며, frontend와 backend가 같은 모듈을 사용합니다.
 
-내부 제작 화면에서는 상담 문의를 `NEW`와 `CHECKED` 상태로 표시하고, 확인 처리 또는 되돌리기를 할 수 있습니다. 문의 목록은 상태, 학년, 과목, 검색어로 필터링할 수 있습니다.
+내부 제작 화면에서는 접근 키 입력 후 상담 문의를 `NEW`와 `CHECKED` 상태로 표시하고, 확인 처리 또는 되돌리기를 할 수 있습니다. 문의 목록은 상태, 학년, 과목, 검색어로 필터링할 수 있습니다.
 
 공지사항은 내부 제작 화면에서 제목, 날짜, 내용, 중요 여부, 공개 여부를 관리합니다. 공지 목록은 공개 상태, 중요 여부, 검색어로 필터링할 수 있습니다. 공개 홈페이지에는 공개 상태의 공지만 표시됩니다.
 

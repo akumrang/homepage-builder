@@ -11,6 +11,30 @@ import type {
 } from "./types";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:4200";
+const internalAccessTokenStorageKey = "muksan-homepage-internal-access-token";
+
+export function getInternalAccessToken(): string {
+  return window.sessionStorage.getItem(internalAccessTokenStorageKey) ?? "";
+}
+
+export function setInternalAccessToken(token: string): void {
+  window.sessionStorage.setItem(internalAccessTokenStorageKey, token);
+}
+
+export function clearInternalAccessToken(): void {
+  window.sessionStorage.removeItem(internalAccessTokenStorageKey);
+}
+
+function internalHeaders(hasBody = false): HeadersInit {
+  const headers: Record<string, string> = hasBody ? { "Content-Type": "application/json" } : {};
+  const token = getInternalAccessToken().trim();
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  return headers;
+}
 
 async function readJson<T>(response: Response): Promise<T> {
   const body = (await response.json()) as T & { message?: string };
@@ -29,13 +53,17 @@ export async function fetchAcademy(slug: string): Promise<AcademySite> {
 }
 
 export async function fetchAcademies(): Promise<AcademySummary[]> {
-  const response = await fetch(`${apiBaseUrl}/api/academies`);
+  const response = await fetch(`${apiBaseUrl}/api/academies`, {
+    headers: internalHeaders()
+  });
   const data = await readJson<{ academies: AcademySummary[] }>(response);
   return data.academies;
 }
 
 export async function fetchInquiries(): Promise<Inquiry[]> {
-  const response = await fetch(`${apiBaseUrl}/api/inquiries`);
+  const response = await fetch(`${apiBaseUrl}/api/inquiries`, {
+    headers: internalHeaders()
+  });
   const data = await readJson<{ inquiries: Inquiry[] }>(response);
   return data.inquiries;
 }
@@ -58,9 +86,7 @@ export async function updateInquiryStatus(
 ): Promise<{ inquiry: Inquiry }> {
   const response = await fetch(`${apiBaseUrl}/api/inquiries/${id}/status`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: internalHeaders(true),
     body: JSON.stringify(input)
   });
 
@@ -68,13 +94,17 @@ export async function updateInquiryStatus(
 }
 
 export async function fetchNotices(academySlug: string): Promise<NoticeItem[]> {
-  const response = await fetch(`${apiBaseUrl}/api/academies/${academySlug}/notices`);
+  const response = await fetch(`${apiBaseUrl}/api/academies/${academySlug}/notices`, {
+    headers: internalHeaders()
+  });
   const data = await readJson<{ notices: NoticeItem[] }>(response);
   return data.notices;
 }
 
 export async function fetchContentChecks(academySlug: string): Promise<ContentCheck[]> {
-  const response = await fetch(`${apiBaseUrl}/api/academies/${academySlug}/content-checks`);
+  const response = await fetch(`${apiBaseUrl}/api/academies/${academySlug}/content-checks`, {
+    headers: internalHeaders()
+  });
   const data = await readJson<{ checks: ContentCheck[] }>(response);
   return data.checks;
 }
@@ -82,9 +112,7 @@ export async function fetchContentChecks(academySlug: string): Promise<ContentCh
 export async function createNotice(academySlug: string, input: NoticeInput): Promise<{ notice: NoticeItem }> {
   const response = await fetch(`${apiBaseUrl}/api/academies/${academySlug}/notices`, {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: internalHeaders(true),
     body: JSON.stringify(input)
   });
 
@@ -94,9 +122,7 @@ export async function createNotice(academySlug: string, input: NoticeInput): Pro
 export async function updateNotice(id: string, input: NoticeInput): Promise<{ notice: NoticeItem }> {
   const response = await fetch(`${apiBaseUrl}/api/notices/${id}`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: internalHeaders(true),
     body: JSON.stringify(input)
   });
 
@@ -105,7 +131,8 @@ export async function updateNotice(id: string, input: NoticeInput): Promise<{ no
 
 export async function deleteNotice(id: string): Promise<void> {
   const response = await fetch(`${apiBaseUrl}/api/notices/${id}`, {
-    method: "DELETE"
+    method: "DELETE",
+    headers: internalHeaders()
   });
 
   if (!response.ok) {
@@ -119,9 +146,7 @@ export async function updateAcademyProductionStatus(
 ): Promise<{ academy: AcademySummary }> {
   const response = await fetch(`${apiBaseUrl}/api/academies/${slug}/status`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: internalHeaders(true),
     body: JSON.stringify(input)
   });
 

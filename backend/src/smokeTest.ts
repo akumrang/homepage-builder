@@ -4,10 +4,12 @@ import { app, initializeStores } from "./server.js";
 import { prisma } from "./prismaClient.js";
 
 const academySlug = "sample-korean-academy";
+const internalAccessToken = process.env.HOMEPAGE_INTERNAL_ACCESS_TOKEN?.trim() || "muksan-local-dev";
 
 interface JsonRequestOptions {
   body?: unknown;
   expectedStatus: number;
+  headers?: Record<string, string>;
   label: string;
   method?: "DELETE" | "GET" | "PATCH" | "POST";
 }
@@ -47,9 +49,13 @@ async function stopSmokeServer(server: Server): Promise<void> {
 }
 
 async function requestJson(baseUrl: string, path: string, options: JsonRequestOptions): Promise<unknown> {
+  const headers = {
+    ...(options.body ? { "Content-Type": "application/json" } : {}),
+    ...options.headers
+  };
   const response = await fetch(`${baseUrl}${path}`, {
     method: options.method ?? "GET",
-    headers: options.body ? { "Content-Type": "application/json" } : undefined,
+    headers: Object.keys(headers).length > 0 ? headers : undefined,
     body: options.body ? JSON.stringify(options.body) : undefined
   });
   const text = await response.text();
@@ -62,6 +68,12 @@ async function requestJson(baseUrl: string, path: string, options: JsonRequestOp
   }
 
   return data;
+}
+
+function internalHeaders() {
+  return {
+    Authorization: `Bearer ${internalAccessToken}`
+  };
 }
 
 async function main() {
@@ -81,8 +93,50 @@ async function main() {
     assert(typeof health === "object" && health !== null && "ok" in health, "health response must include ok.");
     assert(health.ok === true, "health response must be ok.");
 
+    const protectedAcademyListRejected = await requestJson(started.baseUrl, "/api/academies", {
+      expectedStatus: 401,
+      label: "protected academy list without internal token"
+    });
+    assert(
+      JSON.stringify(protectedAcademyListRejected).includes("내부 접근"),
+      "protected academy list must reject requests without an internal token."
+    );
+
+    const academyList = await requestJson(started.baseUrl, "/api/academies", {
+      expectedStatus: 200,
+      headers: internalHeaders(),
+      label: "protected academy list with internal token"
+    });
+    assert(
+      typeof academyList === "object" &&
+        academyList !== null &&
+        "academies" in academyList &&
+        Array.isArray(academyList.academies),
+      "protected academy list response must include academies."
+    );
+    assert(academyList.academies.length > 0, "protected academy list must include at least one academy.");
+    const academySummary = academyList.academies.find((academy: { slug?: string }) => academy.slug === academySlug);
+    assert(
+      typeof academySummary === "object" &&
+        academySummary !== null &&
+        "productionStatus" in academySummary &&
+        typeof academySummary.productionStatus === "string",
+      "protected academy summary must include productionStatus."
+    );
+    originalProductionStatus = academySummary.productionStatus;
+
+    const protectedContentChecksRejected = await requestJson(started.baseUrl, `/api/academies/${academySlug}/content-checks`, {
+      expectedStatus: 401,
+      label: "protected content checks without internal token"
+    });
+    assert(
+      JSON.stringify(protectedContentChecksRejected).includes("내부 접근"),
+      "protected content checks must reject requests without an internal token."
+    );
+
     const contentChecks = await requestJson(started.baseUrl, `/api/academies/${academySlug}/content-checks`, {
       expectedStatus: 200,
+      headers: internalHeaders(),
       label: "content checks"
     });
     assert(
@@ -108,17 +162,16 @@ async function main() {
     assert(
       typeof academyDetail.academy === "object" &&
         academyDetail.academy !== null &&
-        "productionStatus" in academyDetail.academy &&
-        typeof academyDetail.academy.productionStatus === "string",
-      "academy detail response must include productionStatus."
+        !("productionStatus" in academyDetail.academy),
+      "public academy detail response must not expose productionStatus."
     );
-    originalProductionStatus = academyDetail.academy.productionStatus;
 
     const targetProductionStatus =
       originalProductionStatus === "INTERNAL_REVIEW" ? "CUSTOMER_REVIEW" : "INTERNAL_REVIEW";
     const updatedAcademyStatus = await requestJson(started.baseUrl, `/api/academies/${academySlug}/status`, {
       body: { productionStatus: targetProductionStatus },
       expectedStatus: 200,
+      headers: internalHeaders(),
       label: "academy production status update",
       method: "PATCH"
     });
@@ -137,6 +190,7 @@ async function main() {
     const invalidAcademyStatus = await requestJson(started.baseUrl, `/api/academies/${academySlug}/status`, {
       body: { productionStatus: "ARCHIVED" },
       expectedStatus: 400,
+      headers: internalHeaders(),
       label: "invalid academy production status",
       method: "PATCH"
     });
@@ -156,6 +210,7 @@ async function main() {
     const createdNotice = await requestJson(started.baseUrl, `/api/academies/${academySlug}/notices`, {
       body: noticePayload,
       expectedStatus: 201,
+      headers: internalHeaders(),
       label: "notice create",
       method: "POST"
     });
@@ -174,6 +229,7 @@ async function main() {
 
     const internalNoticesAfterCreate = await requestJson(started.baseUrl, `/api/academies/${academySlug}/notices`, {
       expectedStatus: 200,
+      headers: internalHeaders(),
       label: "internal notices after create"
     });
     assert(
@@ -210,6 +266,7 @@ async function main() {
     const hiddenNotice = await requestJson(started.baseUrl, `/api/notices/${createdNoticeId}`, {
       body: { ...noticePayload, title: "스모크 테스트 비공개 공지", visible: false },
       expectedStatus: 200,
+      headers: internalHeaders(),
       label: "notice update hidden",
       method: "PATCH"
     });
@@ -226,6 +283,7 @@ async function main() {
 
     const internalNoticesAfterHide = await requestJson(started.baseUrl, `/api/academies/${academySlug}/notices`, {
       expectedStatus: 200,
+      headers: internalHeaders(),
       label: "internal notices after hide"
     });
     assert(
@@ -261,6 +319,7 @@ async function main() {
 
     await requestJson(started.baseUrl, `/api/notices/${createdNoticeId}`, {
       expectedStatus: 204,
+      headers: internalHeaders(),
       label: "notice delete",
       method: "DELETE"
     });
@@ -269,6 +328,7 @@ async function main() {
 
     const internalNoticesAfterDelete = await requestJson(started.baseUrl, `/api/academies/${academySlug}/notices`, {
       expectedStatus: 200,
+      headers: internalHeaders(),
       label: "internal notices after delete"
     });
     assert(
@@ -314,6 +374,7 @@ async function main() {
 
     const inquiryList = await requestJson(started.baseUrl, "/api/inquiries", {
       expectedStatus: 200,
+      headers: internalHeaders(),
       label: "inquiry list"
     });
     assert(
@@ -329,6 +390,7 @@ async function main() {
     const checkedInquiry = await requestJson(started.baseUrl, `/api/inquiries/${createdInquiryId}/status`, {
       body: { status: "CHECKED" },
       expectedStatus: 200,
+      headers: internalHeaders(),
       label: "inquiry status update",
       method: "PATCH"
     });
@@ -347,6 +409,7 @@ async function main() {
     const invalidStatusResponse = await requestJson(started.baseUrl, `/api/inquiries/${createdInquiryId}/status`, {
       body: { status: "ARCHIVED" },
       expectedStatus: 400,
+      headers: internalHeaders(),
       label: "invalid inquiry status",
       method: "PATCH"
     });
@@ -389,7 +452,7 @@ async function main() {
     );
 
     console.log(
-      "[api:smoke] passed: health, content checks, academy status PATCH, notice CRUD, inquiry POST, inquiry validation, inquiry status PATCH, privacy rejection."
+      "[api:smoke] passed: health, internal access protection, content checks, academy status PATCH, notice CRUD, inquiry POST, inquiry validation, inquiry status PATCH, privacy rejection."
     );
   } finally {
     if (originalProductionStatus) {

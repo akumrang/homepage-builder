@@ -3,14 +3,13 @@ import express from "express";
 import type { Server } from "node:http";
 import { pathToFileURL } from "node:url";
 import { getAcademyContentChecks } from "./contentValidation.js";
+import { requireInternalAccess } from "./internalAccess.js";
 import { academySites, findAcademyBySlug } from "./sampleAcademies.js";
 import {
   ensureHomepageStateStore,
-  getHomepageState,
   listAcademySummaries,
   updateHomepageProductionStatus,
   validateProductionStatusInput,
-  withProductionState
 } from "./homepageStateStore.js";
 import {
   createNotice,
@@ -46,7 +45,7 @@ app.get("/api/health", (_req, res) => {
   res.json({ ok: true, service: "muksan-homepage-backend" });
 });
 
-app.get("/api/academies", async (_req, res, next) => {
+app.get("/api/academies", requireInternalAccess, async (_req, res, next) => {
   try {
     res.json({ academies: await listAcademySummaries() });
   } catch (error) {
@@ -63,12 +62,11 @@ app.get("/api/academies/:slug", async (req, res, next) => {
       return;
     }
 
-    const state = await getHomepageState(academy.slug);
-    const academyWithState = withProductionState(academy, state);
+    const { productionStatus: _productionStatus, ...publicAcademy } = academy;
 
     res.json({
       academy: {
-        ...academyWithState,
+        ...publicAcademy,
         notices: await listPublicNotices(academy.slug)
       }
     });
@@ -77,7 +75,7 @@ app.get("/api/academies/:slug", async (req, res, next) => {
   }
 });
 
-app.patch("/api/academies/:slug/status", async (req, res, next) => {
+app.patch("/api/academies/:slug/status", requireInternalAccess, async (req, res, next) => {
   try {
     const academy = findAcademyBySlug(req.params.slug);
 
@@ -114,7 +112,7 @@ app.patch("/api/academies/:slug/status", async (req, res, next) => {
   }
 });
 
-app.get("/api/academies/:slug/content-checks", async (req, res, next) => {
+app.get("/api/academies/:slug/content-checks", requireInternalAccess, async (req, res, next) => {
   try {
     const academy = findAcademyBySlug(req.params.slug);
 
@@ -130,7 +128,7 @@ app.get("/api/academies/:slug/content-checks", async (req, res, next) => {
   }
 });
 
-app.get("/api/academies/:slug/notices", async (req, res, next) => {
+app.get("/api/academies/:slug/notices", requireInternalAccess, async (req, res, next) => {
   try {
     const academy = findAcademyBySlug(req.params.slug);
 
@@ -145,7 +143,7 @@ app.get("/api/academies/:slug/notices", async (req, res, next) => {
   }
 });
 
-app.post("/api/academies/:slug/notices", async (req, res, next) => {
+app.post("/api/academies/:slug/notices", requireInternalAccess, async (req, res, next) => {
   try {
     const academy = findAcademyBySlug(req.params.slug);
 
@@ -169,7 +167,7 @@ app.post("/api/academies/:slug/notices", async (req, res, next) => {
   }
 });
 
-app.patch("/api/notices/:id", async (req, res, next) => {
+app.patch("/api/notices/:id", requireInternalAccess, async (req, res, next) => {
   try {
     const input = req.body as Partial<NoticeInput>;
     const errors = validateNoticeInput(input);
@@ -192,7 +190,7 @@ app.patch("/api/notices/:id", async (req, res, next) => {
   }
 });
 
-app.delete("/api/notices/:id", async (req, res, next) => {
+app.delete("/api/notices/:id", requireInternalAccess, async (req, res, next) => {
   try {
     const deleted = await deleteNotice(req.params.id);
 
@@ -207,7 +205,7 @@ app.delete("/api/notices/:id", async (req, res, next) => {
   }
 });
 
-app.get("/api/inquiries", async (_req, res, next) => {
+app.get("/api/inquiries", requireInternalAccess, async (_req, res, next) => {
   try {
     res.json({ inquiries: await listInquiries() });
   } catch (error) {
@@ -241,7 +239,7 @@ app.post("/api/inquiries", async (req, res, next) => {
   }
 });
 
-app.patch("/api/inquiries/:id/status", async (req, res, next) => {
+app.patch("/api/inquiries/:id/status", requireInternalAccess, async (req, res, next) => {
   try {
     const input = req.body as Partial<InquiryStatusInput>;
     const errors = validateInquiryStatusInput(input);

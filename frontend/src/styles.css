@@ -746,6 +746,47 @@ dd {
   justify-content: flex-end;
 }
 
+.internal-access-card {
+  max-width: 680px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 28px;
+  background: var(--white);
+}
+
+.internal-access-card h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 30px;
+  line-height: 1.2;
+}
+
+.internal-access-card p:not(.eyebrow) {
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.internal-access-form {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.internal-access-form label {
+  color: var(--green);
+  font-weight: 900;
+}
+
+.internal-access-form input {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 0 14px;
+  background: #fffefa;
+  color: var(--ink);
+}
+
 .internal-tabs {
   display: grid;
   width: 100%;
