@@ -160,6 +160,7 @@ npm.cmd run db:init
 ```powershell
 $env:NODE_ENV="production"
 $env:DATABASE_URL="file:C:/absolute/path/homepage-prod.db"
+$env:HOMEPAGE_CORS_ORIGINS="https://example-academy.muksan.app"
 $env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="운영-내부-접근-토큰"
 
 npm.cmd install
@@ -172,6 +173,7 @@ npm.cmd --workspace backend run start
 
 - `DATABASE_URL`은 운영에서 반드시 명시합니다.
 - `HOMEPAGE_INTERNAL_ACCESS_TOKEN`은 운영에서 반드시 별도 비밀값으로 설정합니다.
+- frontend와 backend를 다른 origin으로 배포하면 `HOMEPAGE_CORS_ORIGINS`에 허용할 frontend origin을 쉼표로 구분해 명시합니다.
 - `npm.cmd run build`는 Prisma Client 생성과 TypeScript build만 수행하며 DB migration을 적용하지 않습니다.
 - `npm.cmd run db:deploy`가 `backend/prisma/migrations`의 migration을 적용합니다.
 - SQLite `file:` DB를 새로 쓰는 경우 `db:deploy`는 빈 DB 파일을 먼저 보장한 뒤 migration을 적용합니다.

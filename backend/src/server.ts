@@ -33,6 +33,7 @@ import type { InquiryInput, InquiryStatusInput, NoticeInput, ProductionStatusInp
 
 export const app = express();
 const port = Number(process.env.PORT ?? 4200);
+const defaultLocalCorsOrigins = ["http://localhost:5175", "http://127.0.0.1:5175"];
 
 interface ReadinessCheck {
   name: string;
@@ -103,9 +104,65 @@ async function getReadinessReport() {
   };
 }
 
+function normalizeCorsOrigin(origin: string): string {
+  const trimmedOrigin = origin.trim();
+
+  if (!trimmedOrigin) {
+    return "";
+  }
+
+  try {
+    const parsedOrigin = new URL(trimmedOrigin);
+
+    if (parsedOrigin.protocol !== "http:" && parsedOrigin.protocol !== "https:") {
+      throw new Error("CORS origin must use http or https.");
+    }
+
+    if (parsedOrigin.pathname !== "/" || parsedOrigin.search || parsedOrigin.hash) {
+      throw new Error("CORS origin must not include a path, query, or hash.");
+    }
+
+    return parsedOrigin.origin;
+  } catch {
+    throw new Error(`Invalid HOMEPAGE_CORS_ORIGINS entry: ${origin}`);
+  }
+}
+
+function getAllowedCorsOrigins(): string[] {
+  const configuredOrigins = process.env.HOMEPAGE_CORS_ORIGINS?.trim();
+
+  if (!configuredOrigins) {
+    return process.env.NODE_ENV === "production" ? [] : defaultLocalCorsOrigins;
+  }
+
+  const parsedOrigins = Array.from(
+    new Set(
+      configuredOrigins
+        .split(",")
+        .map(normalizeCorsOrigin)
+        .filter(Boolean)
+    )
+  );
+
+  if (process.env.NODE_ENV === "production") {
+    return parsedOrigins;
+  }
+
+  return Array.from(new Set([...defaultLocalCorsOrigins, ...parsedOrigins]));
+}
+
+const allowedCorsOrigins = getAllowedCorsOrigins();
+
 app.use(
   cors({
-    origin: ["http://localhost:5175", "http://127.0.0.1:5175"],
+    origin: (origin, callback) => {
+      if (!origin) {
+        callback(null, true);
+        return;
+      }
+
+      callback(null, allowedCorsOrigins.includes(origin));
+    },
     credentials: false
   })
 );

@@ -93,6 +93,24 @@ async function main() {
     assert(typeof health === "object" && health !== null && "ok" in health, "health response must include ok.");
     assert(health.ok === true, "health response must be ok.");
 
+    const allowedCorsHealth = await fetch(`${started.baseUrl}/api/health`, {
+      headers: { Origin: "http://localhost:5175" }
+    });
+    assert(allowedCorsHealth.status === 200, "allowed CORS health request must succeed.");
+    assert(
+      allowedCorsHealth.headers.get("access-control-allow-origin") === "http://localhost:5175",
+      "allowed CORS origin must be reflected in the response header."
+    );
+
+    const blockedCorsHealth = await fetch(`${started.baseUrl}/api/health`, {
+      headers: { Origin: "https://blocked.example" }
+    });
+    assert(blockedCorsHealth.status === 200, "blocked CORS health request still reaches the API.");
+    assert(
+      blockedCorsHealth.headers.get("access-control-allow-origin") === null,
+      "blocked CORS origin must not receive an allow-origin response header."
+    );
+
     const readiness = await requestJson(started.baseUrl, "/api/ready", {
       expectedStatus: 200,
       label: "readiness"
@@ -493,7 +511,7 @@ async function main() {
     );
 
     console.log(
-      "[api:smoke] passed: health, readiness, internal access protection, content checks, academy status PATCH, notice CRUD, inquiry POST, inquiry validation, inquiry status PATCH, privacy rejection."
+      "[api:smoke] passed: health, CORS origin guard, readiness, internal access protection, content checks, academy status PATCH, notice CRUD, inquiry POST, inquiry validation, inquiry status PATCH, privacy rejection."
     );
   } finally {
     if (originalProductionStatus) {
