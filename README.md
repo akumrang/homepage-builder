@@ -162,6 +162,7 @@ SQLite 백업/복구 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정
 운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
 운영 호스팅과 reverse proxy 구성안은 `docs/04_HOSTING_REVERSE_PROXY_PLAN.md`에 정리되어 있습니다.
 backend process 시작, 중지, 재시작 기준은 `docs/05_BACKEND_PROCESS_RUNBOOK.md`에 정리되어 있습니다.
+운영 로그 rotation과 장애 기록 양식은 `docs/06_OPERATION_LOG_AND_INCIDENT_RUNBOOK.md`에 정리되어 있습니다.
 
 로컬에서 운영 배포 흐름을 시뮬레이션하려면 다음 명령을 사용합니다.
 

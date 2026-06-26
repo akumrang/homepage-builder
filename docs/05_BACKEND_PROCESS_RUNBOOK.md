@@ -2,7 +2,7 @@
 
 Status: Draft
 Project: homepage
-Last Updated: 2026-06-26
+Last Updated: 2026-06-27
 
 ---
 
@@ -100,6 +100,8 @@ reverse-proxy-error.log
 
 로그에는 운영 내부 접근 토큰, 실제 `.env`, 상담 문의 원문을 의도적으로 출력하지 않는다.
 
+로그 rotation, 보관 기간, 장애 기록 양식은 `docs/06_OPERATION_LOG_AND_INCIDENT_RUNBOOK.md`를 따른다.
+
 ---
 
 ## 5. 배포 시 프로세스 순서
@@ -179,6 +181,7 @@ process manager 등록 전에는 다음 수동 리허설도 수행한다.
 8. 같은 명령으로 다시 시작한다.
 9. `/api/ready`가 다시 통과하는지 확인한다.
 10. stdout/stderr 로그가 운영 log directory에 남는지 확인한다.
+11. log rotation 또는 보관 기간 정책이 정해져 있는지 확인한다.
 
 이 수동 리허설이 실패하면 process manager 등록 전 단계에서 `NO-GO`로 판단한다.
 
@@ -198,6 +201,8 @@ backend가 응답하지 않을 때:
 
 즉시 재시작만 반복하지 않는다. 같은 오류로 재시작 루프가 발생하면 traffic 전환을 막고 로그와 readiness 응답을 보존한다.
 
+P1 또는 P2 장애는 `docs/06_OPERATION_LOG_AND_INCIDENT_RUNBOOK.md`의 incident record 양식으로 남긴다.
+
 ---
 
 ## 9. 아직 구현이 아닌 항목
@@ -206,7 +211,7 @@ backend가 응답하지 않을 때:
 
 - process manager 설정 파일 생성
 - Windows Service 또는 systemd unit 등록
-- 로그 rotation 설정
+- process manager별 log rotation 설정 파일 생성
 - 외부 uptime monitoring
 - 장애 알림 발송
 - 무중단 배포
