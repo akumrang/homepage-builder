@@ -110,7 +110,9 @@ npm.cmd run dev:frontend
 muksan-local-dev
 ```
 
-backend의 내부 API는 `Authorization: Bearer <token>` 헤더를 요구합니다. 로컬 개발에서는 `HOMEPAGE_INTERNAL_ACCESS_TOKEN`이 없으면 위 기본 키를 사용하고, `NODE_ENV=production`에서는 기본 키를 쓰지 않습니다.
+backend의 내부 API는 `Authorization: Bearer <token>` 헤더를 요구합니다. 로컬 개발에서는 `HOMEPAGE_INTERNAL_ACCESS_TOKEN`이 없으면 위 기본 키를 사용합니다.
+
+`NODE_ENV=production`에서는 내부 접근 키가 반드시 필요하며, 개발 기본 키 `muksan-local-dev`, 공백 키, 32자 미만 키는 거부됩니다.
 
 PowerShell에서 내부 접근 키를 바꾸려면 backend 실행 전에 다음처럼 설정합니다.
 
@@ -143,7 +145,7 @@ npm.cmd run build
 
 `content:validate`는 `backend/content/sample-academies.json`의 필수 구조와 공개 콘텐츠 필수 항목을 확인합니다. `typecheck`와 `build`는 backend 검증 단계에서 이 명령을 먼저 실행하므로 seed 콘텐츠가 깨지면 TypeScript 컴파일 전에 실패합니다.
 
-`api:smoke`는 backend 앱을 임시 포트로 실행해 `health`, `readiness`, 내부 API 접근 보호, 콘텐츠 점검 API, 홈페이지 제작 상태 변경, 잘못된 제작 상태 차단, 공지사항 생성·수정·삭제, 공지 공개/비공개 노출, 상담 문의 정상 접수, 문의 상태 변경, 잘못된 문의 상태 차단, 개인정보 미동의 차단을 실제 HTTP 요청으로 검증합니다. 테스트 중 변경한 홈페이지 상태는 원래 값으로 되돌리고, 생성한 공지사항과 상담 문의는 검증 종료 시 삭제합니다.
+`api:smoke`는 backend 앱을 임시 포트로 실행해 `health`, `readiness`, 내부 접근 토큰 설정 방어, 내부 API 접근 보호, 콘텐츠 점검 API, 홈페이지 제작 상태 변경, 잘못된 제작 상태 차단, 공지사항 생성·수정·삭제, 공지 공개/비공개 노출, 상담 문의 정상 접수, 문의 상태 변경, 잘못된 문의 상태 차단, 개인정보 미동의 차단을 실제 HTTP 요청으로 검증합니다. 테스트 중 변경한 홈페이지 상태는 원래 값으로 되돌리고, 생성한 공지사항과 상담 문의는 검증 종료 시 삭제합니다.
 
 Prisma SQLite 개발 DB만 수동으로 준비하려면 다음 명령을 사용합니다.
 
@@ -170,7 +172,7 @@ npm.cmd run rehearse:local-production
 $env:NODE_ENV="production"
 $env:DATABASE_URL="file:C:/absolute/path/homepage-prod.db"
 $env:HOMEPAGE_CORS_ORIGINS="https://example-academy.muksan.app"
-$env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="운영-내부-접근-토큰"
+$env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="replace-with-at-least-32-random-characters"
 $env:HOST="127.0.0.1"
 
 npm.cmd install
@@ -183,7 +185,7 @@ npm.cmd --workspace backend run start
 배포 순서 원칙:
 
 - `DATABASE_URL`은 운영에서 반드시 명시합니다.
-- `HOMEPAGE_INTERNAL_ACCESS_TOKEN`은 운영에서 반드시 별도 비밀값으로 설정합니다.
+- `HOMEPAGE_INTERNAL_ACCESS_TOKEN`은 운영에서 반드시 32자 이상의 별도 비밀값으로 설정합니다.
 - backend는 기본적으로 `127.0.0.1`에만 bind합니다. reverse proxy 뒤 운영에서는 이 기본값을 유지합니다.
 - frontend와 backend를 같은 origin으로 배포하면 frontend는 기본적으로 같은 origin의 `/api`를 호출합니다.
 - frontend와 backend를 다른 origin으로 배포하면 frontend build 전에 `VITE_API_BASE_URL`을 지정하고, backend `HOMEPAGE_CORS_ORIGINS`에 허용할 frontend origin을 쉼표로 구분해 명시합니다.

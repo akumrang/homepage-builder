@@ -86,7 +86,7 @@ npm.cmd run verify
 
 - `shared:smoke`: frontend/backend 공통 상담 문의 검증 규칙 확인
 - `content:validate`: 샘플 학원 seed 구조와 공개 콘텐츠 필수 항목 확인
-- `api:smoke`: health, CORS origin guard, readiness, 콘텐츠 점검, 제작 상태 변경, 공지 CRUD, 문의 접수, 문의 상태 변경, 개인정보 미동의 차단 확인
+- `api:smoke`: health, CORS origin guard, readiness, 내부 접근 토큰 설정 방어, 콘텐츠 점검, 제작 상태 변경, 공지 CRUD, 문의 접수, 문의 상태 변경, 개인정보 미동의 차단 확인
 - `typecheck`: shared/backend/frontend TypeScript 검사
 - `build`: shared/backend/frontend production build
 

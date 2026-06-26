@@ -84,7 +84,7 @@ same-origin reverse proxy 기준 예:
 $env:NODE_ENV="production"
 $env:DATABASE_URL="file:C:/muksan-homepage/data/homepage-prod.db"
 $env:HOMEPAGE_DB_BACKUP_DIR="C:/muksan-homepage/backups"
-$env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="운영-내부-접근-토큰"
+$env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="replace-with-at-least-32-random-characters"
 $env:HOST="127.0.0.1"
 $env:PORT="4200"
 ```
@@ -101,6 +101,7 @@ $env:VITE_API_BASE_URL="https://api-homepage.example.com"
 주의:
 
 - `HOMEPAGE_CORS_ORIGINS`에는 origin만 넣는다. 경로, query, hash, `*`는 쓰지 않는다.
+- `HOMEPAGE_INTERNAL_ACCESS_TOKEN`은 운영에서 32자 이상이어야 하며, 개발 기본 키는 사용할 수 없다.
 - 운영 backend port는 public internet에 직접 열지 않는다. reverse proxy 또는 firewall 뒤에 둔다.
 - 현재 backend는 `HOST`와 `PORT` 기준으로 listen한다. reverse proxy 운영에서는 `HOST=127.0.0.1`을 유지한다.
 - 컨테이너나 별도 네트워크 경계가 필요한 경우에만 `HOST=0.0.0.0`을 검토한다.

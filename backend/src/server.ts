@@ -3,7 +3,7 @@ import express from "express";
 import type { Server } from "node:http";
 import { pathToFileURL } from "node:url";
 import { getAcademyContentReview } from "./contentValidation.js";
-import { requireInternalAccess } from "./internalAccess.js";
+import { getInternalAccessConfigurationStatus, requireInternalAccess } from "./internalAccess.js";
 import { academySites, findAcademyBySlug } from "./sampleAcademies.js";
 import {
   ensureHomepageStateStore,
@@ -46,12 +46,18 @@ interface ReadinessCheck {
 async function getReadinessReport() {
   const checks: ReadinessCheck[] = [];
   const academySeedCount = academySites.length;
+  const internalAccessConfigurationStatus = getInternalAccessConfigurationStatus();
 
   checks.push({
     name: "academy-seed",
     ok: academySeedCount > 0,
     value: academySeedCount,
     message: academySeedCount > 0 ? undefined : "No academy seed data is loaded."
+  });
+  checks.push({
+    name: "internal-access-token",
+    ok: internalAccessConfigurationStatus.ok,
+    message: internalAccessConfigurationStatus.message
   });
 
   let databaseAvailable = false;

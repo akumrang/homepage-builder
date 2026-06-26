@@ -42,7 +42,7 @@ build
 $env:NODE_ENV="production"
 $env:DATABASE_URL="file:C:/absolute/path/homepage-rehearsal.db"
 $env:HOMEPAGE_DB_BACKUP_DIR="C:/absolute/path/homepage-rehearsal-backups"
-$env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="rehearsal-private-token"
+$env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="rehearsal-private-token-32-chars-min"
 $env:HOMEPAGE_CORS_ORIGINS="https://rehearsal-homepage.example.com"
 $env:HOST="127.0.0.1"
 $env:VITE_API_BASE_URL="https://rehearsal-api.example.com"
@@ -233,6 +233,7 @@ Invoke-RestMethod http://localhost:4200/api/ready
 
 ```text
 academy-seed
+internal-access-token
 database
 homepage-state-store
 inquiry-store

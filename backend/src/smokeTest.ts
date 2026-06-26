@@ -1,6 +1,10 @@
 import type { Server } from "node:http";
 import type { AddressInfo } from "node:net";
 import { app, initializeStores } from "./server.js";
+import {
+  getInternalAccessConfigurationStatus,
+  minimumProductionInternalAccessTokenLength
+} from "./internalAccess.js";
 import { prisma } from "./prismaClient.js";
 
 const academySlug = "sample-korean-academy";
@@ -76,6 +80,65 @@ function internalHeaders() {
   };
 }
 
+function setOptionalEnvValue(name: string, value: string | undefined): void {
+  if (typeof value === "undefined") {
+    delete process.env[name];
+    return;
+  }
+
+  process.env[name] = value;
+}
+
+function assertInternalAccessConfigurationRules(): void {
+  const originalNodeEnv = process.env.NODE_ENV;
+  const originalInternalAccessToken = process.env.HOMEPAGE_INTERNAL_ACCESS_TOKEN;
+
+  try {
+    process.env.NODE_ENV = "production";
+    delete process.env.HOMEPAGE_INTERNAL_ACCESS_TOKEN;
+    assert(
+      getInternalAccessConfigurationStatus().ok === false,
+      "production internal access config must reject missing token."
+    );
+
+    process.env.HOMEPAGE_INTERNAL_ACCESS_TOKEN = "   ";
+    assert(
+      getInternalAccessConfigurationStatus().ok === false,
+      "production internal access config must reject blank tokens."
+    );
+
+    process.env.HOMEPAGE_INTERNAL_ACCESS_TOKEN = "muksan-local-dev";
+    assert(
+      getInternalAccessConfigurationStatus().ok === false,
+      "production internal access config must reject the local development token."
+    );
+
+    process.env.HOMEPAGE_INTERNAL_ACCESS_TOKEN = "short-token";
+    assert(
+      getInternalAccessConfigurationStatus().ok === false,
+      "production internal access config must reject short tokens."
+    );
+
+    process.env.HOMEPAGE_INTERNAL_ACCESS_TOKEN = "a".repeat(minimumProductionInternalAccessTokenLength);
+    assert(
+      getInternalAccessConfigurationStatus().ok === true,
+      "production internal access config must accept a strong token."
+    );
+
+    process.env.NODE_ENV = "development";
+    delete process.env.HOMEPAGE_INTERNAL_ACCESS_TOKEN;
+    const localFallbackStatus = getInternalAccessConfigurationStatus();
+    assert(localFallbackStatus.ok === true, "local internal access config must allow default fallback token.");
+    assert(
+      localFallbackStatus.usingDefaultLocalToken === true,
+      "local internal access config must report default fallback token usage."
+    );
+  } finally {
+    setOptionalEnvValue("NODE_ENV", originalNodeEnv);
+    setOptionalEnvValue("HOMEPAGE_INTERNAL_ACCESS_TOKEN", originalInternalAccessToken);
+  }
+}
+
 async function main() {
   let server: Server | null = null;
   let createdInquiryId: string | null = null;
@@ -83,6 +146,8 @@ async function main() {
   let originalProductionStatus: string | null = null;
 
   try {
+    assertInternalAccessConfigurationRules();
+
     const started = await startSmokeServer();
     server = started.server;
 
@@ -127,6 +192,7 @@ async function main() {
     const readinessCheckNames = readiness.checks.map((check: { name?: string }) => check.name);
     for (const expectedCheckName of [
       "academy-seed",
+      "internal-access-token",
       "database",
       "homepage-state-store",
       "inquiry-store",
@@ -511,7 +577,7 @@ async function main() {
     );
 
     console.log(
-      "[api:smoke] passed: health, CORS origin guard, readiness, internal access protection, content checks, academy status PATCH, notice CRUD, inquiry POST, inquiry validation, inquiry status PATCH, privacy rejection."
+      "[api:smoke] passed: health, CORS origin guard, readiness, internal access config guard, internal access protection, content checks, academy status PATCH, notice CRUD, inquiry POST, inquiry validation, inquiry status PATCH, privacy rejection."
     );
   } finally {
     if (originalProductionStatus) {

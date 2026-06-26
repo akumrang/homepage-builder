@@ -33,7 +33,7 @@ npm.cmd run build
 ```powershell
 $env:NODE_ENV="production"
 $env:DATABASE_URL="file:C:/absolute/path/homepage-prod.db"
-$env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="운영-내부-접근-토큰"
+$env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="replace-with-at-least-32-random-characters"
 
 npm.cmd run db:deploy
 npm.cmd --workspace backend run start
@@ -56,7 +56,7 @@ npm.cmd --workspace backend run start
 |---|---:|---|
 | `NODE_ENV` | 예 | `production` |
 | `DATABASE_URL` | 예 | 현재 MVP는 SQLite `file:` URL. 절대 경로 권장 |
-| `HOMEPAGE_INTERNAL_ACCESS_TOKEN` | 예 | 운영 전용 비밀값. 저장소, 문서, 채팅에 노출 금지 |
+| `HOMEPAGE_INTERNAL_ACCESS_TOKEN` | 예 | 운영 전용 32자 이상 비밀값. 저장소, 문서, 채팅에 노출 금지 |
 | `HOMEPAGE_CORS_ORIGINS` | 배포 방식에 따라 필요 | frontend와 backend가 다른 origin이면 허용할 frontend origin을 쉼표로 구분 |
 | `HOMEPAGE_DB_BACKUP_DIR` | 권장 | 운영 SQLite 백업 파일 저장 위치 |
 | `HOST` | 권장 | backend bind host. reverse proxy 운영 기본값은 `127.0.0.1` |
@@ -67,6 +67,7 @@ npm.cmd --workspace backend run start
 
 - `HOMEPAGE_INTERNAL_ACCESS_TOKEN` 없이 `NODE_ENV=production`으로 운영
 - 개발 기본 내부 키 `muksan-local-dev` 사용
+- 운영 내부 접근 키를 32자 미만으로 설정
 - `.env` 또는 실제 secret 파일 커밋
 - 운영 DB 파일을 배포 산출물 삭제 대상 디렉터리에 저장
 - 공개 도메인 배포에서 `HOMEPAGE_CORS_ORIGINS`에 `*` 또는 경로 포함 URL 사용
@@ -141,6 +142,7 @@ GET /api/ready
 현재 readiness 확인 범위:
 
 - academy seed 로드 여부
+- 내부 접근 토큰 설정 안전성
 - DB 기본 쿼리 가능 여부
 - 홈페이지 상태 store row 수
 - 상담 문의 store 접근 가능 여부
