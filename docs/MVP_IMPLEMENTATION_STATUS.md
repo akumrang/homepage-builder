@@ -2,7 +2,7 @@
 
 Status: Draft  
 Project: homepage  
-Last Updated: 2026-06-25
+Last Updated: 2026-06-26
 
 ---
 
@@ -40,7 +40,7 @@ Last Updated: 2026-06-25
 | 데이터 경계 체크 | 완료 | 샘플 JSON과 로컬 SQLite 개발 DB만 사용한다. academy/exam_system2 직접 DB 공유나 실제 개인정보/결제 정보는 없다. |
 | 품질 철학 체크 | 완료 | 샘플 문구는 국어학원 공개 홈페이지에 맞춘 안내성 콘텐츠이며 허위 실적, 후기, 강사 경력을 넣지 않았다. |
 | 코드 품질 체크 | 완료 | `shared` workspace로 문의 검증 규칙을 공유하고, backend 콘텐츠 검증, API smoke, typecheck, build를 `verify`에 묶었다. |
-| Git 체크 | 부분 확인 | `.gitignore`는 개발 DB, dist, env, tsbuildinfo를 제외한다. 아직 첫 MVP 변경 파일이 커밋되지 않았으므로 `git status`는 clean이 아니다. |
+| Git 체크 | 완료 | `.gitignore`는 개발 DB, dist, env, tsbuildinfo를 제외하고, MVP 구현 변경분은 커밋 단위로 관리되고 있다. |
 
 ---
 
@@ -72,7 +72,7 @@ Last Updated: 2026-06-25
 npm.cmd run verify
 ```
 
-2026-06-25 실행 결과: 통과.
+2026-06-26 실행 결과: 통과.
 
 `verify`는 다음 순서로 실행된다.
 
@@ -111,14 +111,15 @@ npm.cmd run verify
 - 모바일/데스크톱 브라우저 스크린샷 기반 회귀 테스트
 - 내부 화면 접근 제어 설계
 - 실제 운영 호스팅, HTTPS, reverse proxy 구성
-- 운영 DB 백업과 장애 대응 정책
-- 첫 MVP 변경 파일 커밋 정리
+- 운영 DB 백업 자동화와 복구 테스트
+
+운영 배포 전 점검표, health check, 환경 변수, DB 백업 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 별도 문서화되어 있다.
 
 ---
 
-## 7. Git 커밋 준비 점검
+## 7. Git 산출물 관리 점검
 
-2026-06-25 점검 기준 `git status --ignored --short`에서 다음 생성물은 ignore 처리되어 있다.
+현재 `.gitignore` 기준 다음 생성물은 저장소에 포함하지 않는다.
 
 - `.tmp/`
 - `node_modules/`
@@ -128,20 +129,20 @@ npm.cmd run verify
 - `backend/data/homepage-dev.db`
 - `backend/data/inquiries.jsonl`
 
-첫 MVP 커밋에 포함할 대상으로 판단한 파일 범위는 다음이다.
+커밋 포함 기준:
 
 - root workspace 설정: `.gitignore`, `package.json`, `package-lock.json`
-- README 실행/검증 문서: `README.md`
-- MVP 상태 점검 문서: `docs/MVP_IMPLEMENTATION_STATUS.md`
-- 누락되어 있던 구현 범위 문서: `planning/08_MVP_IMPLEMENTATION_SCOPE.md`
+- README 실행/검증/배포 문서: `README.md`
+- 프로젝트 정책과 운영 점검 문서: `docs/`
+- 구현 범위와 제작 정책 문서: `planning/`
 - frontend 앱 소스와 설정: `frontend/`
 - backend 앱 소스와 설정: `backend/`
 - 공통 검증 workspace: `shared/`
 
-현재 `.env` 또는 secret 파일은 커밋 대상으로 보이지 않는다.
+운영 secret, 실제 `.env`, 개발 DB, 빌드 산출물은 커밋하지 않는다.
 
 ---
 
 ## 8. 다음 판단
 
-다음 작업은 staged 변경분을 최종 확인한 뒤 첫 MVP 구현 커밋을 만드는 것이다.
+다음 작업은 문서화된 운영 배포 기준을 실제 인프라 작업 단위로 쪼개는 것이다.

@@ -154,6 +154,8 @@ npm.cmd run db:init
 
 운영 또는 배포 환경에서는 migration을 명시적으로 적용합니다.
 
+운영 배포 전 상세 점검 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 정리되어 있습니다.
+
 ```powershell
 $env:NODE_ENV="production"
 $env:DATABASE_URL="file:C:/absolute/path/homepage-prod.db"
