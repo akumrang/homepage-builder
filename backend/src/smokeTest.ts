@@ -145,6 +145,20 @@ async function main() {
     );
     assert(Array.isArray(contentChecks.checks), "content checks must be an array.");
     assert(contentChecks.checks.length > 0, "content checks must include at least one check.");
+    assert(
+      "readiness" in contentChecks &&
+        typeof contentChecks.readiness === "object" &&
+        contentChecks.readiness !== null &&
+        "status" in contentChecks.readiness &&
+        contentChecks.readiness.status === "READY",
+      "content checks response must include READY readiness."
+    );
+    assert(
+      "score" in contentChecks.readiness &&
+        typeof contentChecks.readiness.score === "number" &&
+        contentChecks.readiness.score === 100,
+      "sample academy content readiness score must be 100."
+    );
 
     const requiredFailures = contentChecks.checks.filter(
       (check: { ok?: boolean; severity?: string }) => check.severity === "required" && check.ok !== true

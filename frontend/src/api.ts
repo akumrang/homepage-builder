@@ -7,7 +7,7 @@ import type {
   NoticeInput,
   NoticeItem,
   ProductionStatusInput,
-  ContentCheck
+  ContentReviewResult
 } from "./types";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:4200";
@@ -108,12 +108,11 @@ export async function fetchNotices(academySlug: string): Promise<NoticeItem[]> {
   return data.notices;
 }
 
-export async function fetchContentChecks(academySlug: string): Promise<ContentCheck[]> {
+export async function fetchContentReview(academySlug: string): Promise<ContentReviewResult> {
   const response = await fetch(`${apiBaseUrl}/api/academies/${academySlug}/content-checks`, {
     headers: internalHeaders()
   });
-  const data = await readJson<{ checks: ContentCheck[] }>(response);
-  return data.checks;
+  return readJson<ContentReviewResult>(response);
 }
 
 export async function createNotice(academySlug: string, input: NoticeInput): Promise<{ notice: NoticeItem }> {

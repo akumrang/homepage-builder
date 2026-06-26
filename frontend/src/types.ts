@@ -139,3 +139,28 @@ export interface ContentCheck {
   severity: "required" | "recommended";
   message: string;
 }
+
+export type ContentReadinessStatus = "READY" | "NEEDS_RECOMMENDED" | "NEEDS_REQUIRED";
+
+export interface ContentReadiness {
+  status: ContentReadinessStatus;
+  label: string;
+  summary: string;
+  score: number;
+  required: {
+    total: number;
+    passed: number;
+    missing: string[];
+  };
+  recommended: {
+    total: number;
+    passed: number;
+    missing: string[];
+  };
+  nextAction: string;
+}
+
+export interface ContentReviewResult {
+  checks: ContentCheck[];
+  readiness: ContentReadiness;
+}

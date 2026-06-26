@@ -6,7 +6,7 @@ import {
   deleteNotice,
   fetchAcademy,
   fetchAcademies,
-  fetchContentChecks,
+  fetchContentReview,
   fetchInquiries,
   fetchNotices,
   getInternalAccessToken,
@@ -15,7 +15,16 @@ import {
   updateInquiryStatus,
   updateNotice
 } from "../api";
-import type { AcademySite, AcademySummary, ContentCheck, Inquiry, NoticeInput, NoticeItem, ProductionStatus } from "../types";
+import type {
+  AcademySite,
+  AcademySummary,
+  ContentCheck,
+  ContentReadiness,
+  Inquiry,
+  NoticeInput,
+  NoticeItem,
+  ProductionStatus
+} from "../types";
 
 type InternalTab = "status" | "content" | "notices" | "inquiries";
 type InquiryStatusFilter = "ALL" | Inquiry["status"];
@@ -62,6 +71,7 @@ export default function InternalDashboard() {
   const [academies, setAcademies] = useState<AcademySummary[]>([]);
   const [activeAcademy, setActiveAcademy] = useState<AcademySite | null>(null);
   const [contentChecks, setContentChecks] = useState<ContentCheck[]>([]);
+  const [contentReadiness, setContentReadiness] = useState<ContentReadiness | null>(null);
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [notices, setNotices] = useState<NoticeItem[]>([]);
   const [noticeForm, setNoticeForm] = useState<NoticeInput>(createEmptyNoticeForm);
@@ -85,6 +95,7 @@ export default function InternalDashboard() {
     setAcademies([]);
     setActiveAcademy(null);
     setContentChecks([]);
+    setContentReadiness(null);
     setInquiries([]);
     setNotices([]);
     setEditingNoticeId(null);
@@ -108,13 +119,14 @@ export default function InternalDashboard() {
     try {
       const [academyData, inquiryData] = await Promise.all([fetchAcademies(), fetchInquiries()]);
       const firstAcademySlug = academyData[0]?.slug;
-      const [noticeData, activeAcademyData, contentCheckData] = firstAcademySlug
-        ? await Promise.all([fetchNotices(firstAcademySlug), fetchAcademy(firstAcademySlug), fetchContentChecks(firstAcademySlug)])
-        : [[], null, []];
+      const [noticeData, activeAcademyData, contentReviewData] = firstAcademySlug
+        ? await Promise.all([fetchNotices(firstAcademySlug), fetchAcademy(firstAcademySlug), fetchContentReview(firstAcademySlug)])
+        : [[], null, null];
 
       setAcademies(academyData);
       setActiveAcademy(activeAcademyData);
-      setContentChecks(contentCheckData);
+      setContentChecks(contentReviewData?.checks ?? []);
+      setContentReadiness(contentReviewData?.readiness ?? null);
       setInquiries(inquiryData);
       setNotices(noticeData);
       setError(null);
@@ -248,12 +260,15 @@ export default function InternalDashboard() {
   const hasNoticeFilters =
     noticeVisibilityFilter !== "ALL" || noticePinFilter !== "ALL" || noticeSearch.trim().length > 0;
   const passedContentCheckCount = contentChecks.filter((item) => item.ok).length;
+  const readinessCount = contentReadiness ? `${contentReadiness.score}%` : "대기";
+  const requiredMissingCount = contentReadiness?.required.missing.length ?? 0;
+  const recommendedMissingCount = contentReadiness?.recommended.missing.length ?? 0;
   const tabItems: Array<{ id: InternalTab; label: string; count: string }> = [
     { id: "status", label: "상태", count: `${academies.length}개` },
     {
       id: "content",
       label: "콘텐츠",
-      count: activeAcademy ? `${passedContentCheckCount}/${contentChecks.length} 확인` : "대기"
+      count: activeAcademy ? readinessCount : "대기"
     },
     { id: "notices", label: "공지", count: `${visibleNoticeCount}건 공개` },
     { id: "inquiries", label: "문의", count: `${newInquiryCount}건 미확인` }
@@ -479,6 +494,53 @@ export default function InternalDashboard() {
             {activeAcademy ? `${passedContentCheckCount}/${contentChecks.length} 확인` : "대기"}
           </strong>
         </div>
+        {contentReadiness ? (
+          <section className={`readiness-panel ${contentReadiness.status.toLowerCase()}`}>
+            <div>
+              <p className="eyebrow">Material Readiness</p>
+              <h3>{contentReadiness.label}</h3>
+              <p>{contentReadiness.summary}</p>
+            </div>
+            <div className="readiness-score" aria-label={`제작 준비도 ${contentReadiness.score}%`}>
+              <strong>{contentReadiness.score}%</strong>
+              <span>제작 준비도</span>
+            </div>
+            <dl className="readiness-stats">
+              <div>
+                <dt>필수</dt>
+                <dd>
+                  {contentReadiness.required.passed}/{contentReadiness.required.total}
+                </dd>
+              </div>
+              <div>
+                <dt>권장</dt>
+                <dd>
+                  {contentReadiness.recommended.passed}/{contentReadiness.recommended.total}
+                </dd>
+              </div>
+            </dl>
+            <div className="readiness-next-action">
+              <strong>다음 조치</strong>
+              <p>{contentReadiness.nextAction}</p>
+            </div>
+            {requiredMissingCount > 0 || recommendedMissingCount > 0 ? (
+              <div className="missing-summary">
+                {requiredMissingCount > 0 ? (
+                  <div>
+                    <strong>필수 누락</strong>
+                    <p>{contentReadiness.required.missing.join(", ")}</p>
+                  </div>
+                ) : null}
+                {recommendedMissingCount > 0 ? (
+                  <div>
+                    <strong>권장 보강</strong>
+                    <p>{contentReadiness.recommended.missing.join(", ")}</p>
+                  </div>
+                ) : null}
+              </div>
+            ) : null}
+          </section>
+        ) : null}
         {!activeAcademy ? (
           <div className="empty-state">점검할 샘플 학원 콘텐츠가 없습니다.</div>
         ) : (

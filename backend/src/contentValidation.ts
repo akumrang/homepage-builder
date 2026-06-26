@@ -1,4 +1,4 @@
-import type { AcademySite, ContentCheck, ProductionStatus, TemplateId } from "./types.js";
+import type { AcademySite, ContentCheck, ContentReadiness, ContentReviewResult, ProductionStatus, TemplateId } from "./types.js";
 
 const allowedTemplateIds: TemplateId[] = ["trust-basic-v1"];
 const allowedProductionStatuses: ProductionStatus[] = [
@@ -105,6 +105,14 @@ export function getAcademyContentChecks(academy: AcademySite, options: AcademyCo
       message: "첫인상과 상담 전환에 직접 영향을 주는 문구입니다."
     },
     {
+      key: "summary",
+      label: "첫 화면 요약",
+      value: academy.summary,
+      ok: academy.summary.trim().length > 0,
+      severity: "required",
+      message: "학부모가 학원 성격을 빠르게 판단하는 공개 요약입니다."
+    },
+    {
       key: "targetGrades",
       label: "대상 학년",
       value: academy.targetGrades.join(", "),
@@ -119,6 +127,14 @@ export function getAcademyContentChecks(academy: AcademySite, options: AcademyCo
       ok: academy.subjects.length > 0,
       severity: "required",
       message: "검색 후 첫 판단에 필요한 핵심 정보입니다."
+    },
+    {
+      key: "strengths",
+      label: "강점 후보",
+      value: `${academy.strengths.length}개`,
+      ok: academy.strengths.length >= 3,
+      severity: "required",
+      message: "자료 수집 단계에서 고객이 강조하고 싶은 장점 3개 후보가 필요합니다."
     },
     {
       key: "phone",
@@ -137,6 +153,22 @@ export function getAcademyContentChecks(academy: AcademySite, options: AcademyCo
       message: "오시는 길 섹션에 표시되는 위치 정보입니다."
     },
     {
+      key: "hours",
+      label: "운영 시간",
+      value: academy.location.hours,
+      ok: academy.location.hours.trim().length > 0,
+      severity: "required",
+      message: "상담 가능 여부를 판단하기 위한 기본 운영 정보입니다."
+    },
+    {
+      key: "consultation",
+      label: "상담 안내",
+      value: academy.consultation.description,
+      ok: academy.consultation.description.trim().length > 0 && academy.consultation.availableTime.trim().length > 0,
+      severity: "required",
+      message: "상담 방식과 가능 시간을 공개 홈페이지에 안내해야 합니다."
+    },
+    {
       key: "teachers",
       label: "강사진",
       value: `${academy.teachers.length}명`,
@@ -153,6 +185,14 @@ export function getAcademyContentChecks(academy: AcademySite, options: AcademyCo
       message: "대상 학년별 수업 흐름을 확인하는 영역입니다."
     },
     {
+      key: "heroImage",
+      label: "대표 이미지",
+      value: academy.heroImage,
+      ok: academy.heroImage.trim().length > 0,
+      severity: "recommended",
+      message: "사진이 없으면 기본 이미지로 시작할 수 있지만 실제 학원 신뢰도는 낮아질 수 있습니다."
+    },
+    {
       key: "schedules",
       label: "수업 안내",
       value: `${academy.schedules.length}개`,
@@ -167,8 +207,96 @@ export function getAcademyContentChecks(academy: AcademySite, options: AcademyCo
       ok: visibleNoticeCount > 0,
       severity: "recommended",
       message: "학원이 실제 운영 중이라는 신뢰감을 주는 영역입니다."
+    },
+    {
+      key: "transit",
+      label: "교통 안내",
+      value: academy.location.transit,
+      ok: academy.location.transit.trim().length > 0,
+      severity: "recommended",
+      message: "방문 상담 전환을 돕는 오시는 길 보강 정보입니다."
+    },
+    {
+      key: "parking",
+      label: "주차 안내",
+      value: academy.location.parking,
+      ok: academy.location.parking.trim().length > 0,
+      severity: "recommended",
+      message: "방문 상담이 있는 학원은 주차 가능 여부를 안내하는 편이 좋습니다."
     }
   ];
+}
+
+function summarizeChecks(checks: ContentCheck[], severity: ContentCheck["severity"]) {
+  const scopedChecks = checks.filter((check) => check.severity === severity);
+  const missing = scopedChecks.filter((check) => !check.ok).map((check) => check.label);
+
+  return {
+    total: scopedChecks.length,
+    passed: scopedChecks.length - missing.length,
+    missing
+  };
+}
+
+function formatMissingItems(items: string[]) {
+  if (items.length === 0) {
+    return "";
+  }
+
+  const preview = items.slice(0, 3).join(", ");
+  return items.length > 3 ? `${preview} 외 ${items.length - 3}개` : preview;
+}
+
+export function getContentReadiness(checks: ContentCheck[]): ContentReadiness {
+  const required = summarizeChecks(checks, "required");
+  const recommended = summarizeChecks(checks, "recommended");
+  const passedCount = checks.filter((check) => check.ok).length;
+  const score = checks.length === 0 ? 0 : Math.round((passedCount / checks.length) * 100);
+
+  if (required.missing.length > 0) {
+    return {
+      status: "NEEDS_REQUIRED",
+      label: "필수 자료 부족",
+      summary: `MATERIALS_READY 전환 전 필수 자료 ${required.missing.length}개를 보강해야 합니다.`,
+      score,
+      required,
+      recommended,
+      nextAction: `고객에게 ${formatMissingItems(required.missing)} 자료를 먼저 요청합니다.`
+    };
+  }
+
+  if (recommended.missing.length > 0) {
+    return {
+      status: "NEEDS_RECOMMENDED",
+      label: "제작 가능 · 권장 보강",
+      summary: `필수 자료는 준비됐고 권장 자료 ${recommended.missing.length}개를 보강하면 품질이 좋아집니다.`,
+      score,
+      required,
+      recommended,
+      nextAction: `초안 제작은 가능하며, ${formatMissingItems(recommended.missing)} 보강을 권장합니다.`
+    };
+  }
+
+  return {
+    status: "READY",
+    label: "제작 준비 완료",
+    summary: "필수 자료와 권장 자료가 모두 준비되어 초안 제작과 내부 검수로 진행할 수 있습니다.",
+    score,
+    required,
+    recommended,
+    nextAction: "MATERIALS_READY 이후 초안 제작과 내부 검수로 진행합니다."
+  };
+}
+
+export function getAcademyContentReview(
+  academy: AcademySite,
+  options: AcademyContentCheckOptions = {}
+): ContentReviewResult {
+  const checks = getAcademyContentChecks(academy, options);
+  return {
+    checks,
+    readiness: getContentReadiness(checks)
+  };
 }
 
 function collectAcademySeedErrors(value: unknown, path: string): string[] {

@@ -2,7 +2,7 @@ import cors from "cors";
 import express from "express";
 import type { Server } from "node:http";
 import { pathToFileURL } from "node:url";
-import { getAcademyContentChecks } from "./contentValidation.js";
+import { getAcademyContentReview } from "./contentValidation.js";
 import { requireInternalAccess } from "./internalAccess.js";
 import { academySites, findAcademyBySlug } from "./sampleAcademies.js";
 import {
@@ -122,7 +122,7 @@ app.get("/api/academies/:slug/content-checks", requireInternalAccess, async (req
     }
 
     const publicNotices = await listPublicNotices(academy.slug);
-    res.json({ checks: getAcademyContentChecks(academy, { visibleNoticeCount: publicNotices.length }) });
+    res.json(getAcademyContentReview(academy, { visibleNoticeCount: publicNotices.length }));
   } catch (error) {
     next(error);
   }
