@@ -44,6 +44,7 @@ $env:DATABASE_URL="file:C:/absolute/path/homepage-rehearsal.db"
 $env:HOMEPAGE_DB_BACKUP_DIR="C:/absolute/path/homepage-rehearsal-backups"
 $env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="rehearsal-private-token"
 $env:HOMEPAGE_CORS_ORIGINS="https://rehearsal-homepage.example.com"
+$env:HOST="127.0.0.1"
 $env:VITE_API_BASE_URL="https://rehearsal-api.example.com"
 ```
 
@@ -199,7 +200,7 @@ npm.cmd --workspace backend run start
 판정 기준:
 
 - backend process가 종료되지 않는다.
-- 설정된 `PORT` 또는 기본 `4200`에서 응답한다.
+- 설정된 `HOST`와 `PORT` 또는 기본 `127.0.0.1:4200`에서 응답한다.
 - 로그에 초기화 실패가 없다.
 
 확인 명령:

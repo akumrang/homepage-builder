@@ -113,7 +113,7 @@ npm.cmd run verify
 - 실제 운영 서버 provision, HTTPS 인증서 발급, process manager 등록
 - 운영 DB 백업 스케줄링과 정기 복구 리허설
 
-운영 배포 전 점검표, health check, 환경 변수, DB 백업 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 별도 문서화되어 있다. SQLite 백업/복구 실행 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있다. 운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있으며, 로컬 production 시뮬레이션 명령은 `npm.cmd run rehearse:local-production`이다. 호스팅과 reverse proxy 구성 기준은 `docs/04_HOSTING_REVERSE_PROXY_PLAN.md`에 정리되어 있다.
+운영 배포 전 점검표, health check, 환경 변수, DB 백업 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 별도 문서화되어 있다. SQLite 백업/복구 실행 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있다. 운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있으며, 로컬 production 시뮬레이션 명령은 `npm.cmd run rehearse:local-production`이다. 호스팅, reverse proxy, backend `HOST` bind 기준은 `docs/04_HOSTING_REVERSE_PROXY_PLAN.md`에 정리되어 있다.
 
 ---
 

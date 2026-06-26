@@ -33,6 +33,7 @@ import type { InquiryInput, InquiryStatusInput, NoticeInput, ProductionStatusInp
 
 export const app = express();
 const port = Number(process.env.PORT ?? 4200);
+const host = process.env.HOST?.trim() || "127.0.0.1";
 const defaultLocalCorsOrigins = ["http://localhost:5175", "http://127.0.0.1:5175"];
 
 interface ReadinessCheck {
@@ -405,11 +406,11 @@ export async function initializeStores(): Promise<void> {
   await ensureNoticeStore();
 }
 
-export async function startServer(listenPort = port): Promise<Server> {
+export async function startServer(listenPort = port, listenHost = host): Promise<Server> {
   await initializeStores();
 
-  return app.listen(listenPort, () => {
-    console.log(`Muksan homepage backend is running on http://localhost:${listenPort}`);
+  return app.listen(listenPort, listenHost, () => {
+    console.log(`Muksan homepage backend is running on http://${listenHost}:${listenPort}`);
   });
 }
 

@@ -171,6 +171,7 @@ $env:NODE_ENV="production"
 $env:DATABASE_URL="file:C:/absolute/path/homepage-prod.db"
 $env:HOMEPAGE_CORS_ORIGINS="https://example-academy.muksan.app"
 $env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="운영-내부-접근-토큰"
+$env:HOST="127.0.0.1"
 
 npm.cmd install
 npm.cmd run build
@@ -183,6 +184,7 @@ npm.cmd --workspace backend run start
 
 - `DATABASE_URL`은 운영에서 반드시 명시합니다.
 - `HOMEPAGE_INTERNAL_ACCESS_TOKEN`은 운영에서 반드시 별도 비밀값으로 설정합니다.
+- backend는 기본적으로 `127.0.0.1`에만 bind합니다. reverse proxy 뒤 운영에서는 이 기본값을 유지합니다.
 - frontend와 backend를 같은 origin으로 배포하면 frontend는 기본적으로 같은 origin의 `/api`를 호출합니다.
 - frontend와 backend를 다른 origin으로 배포하면 frontend build 전에 `VITE_API_BASE_URL`을 지정하고, backend `HOMEPAGE_CORS_ORIGINS`에 허용할 frontend origin을 쉼표로 구분해 명시합니다.
 - `npm.cmd run build`는 Prisma Client 생성과 TypeScript build만 수행하며 DB migration을 적용하지 않습니다.

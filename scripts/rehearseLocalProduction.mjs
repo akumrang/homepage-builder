@@ -296,6 +296,7 @@ async function main() {
     HOMEPAGE_DB_BACKUP_DIR: backupDirectory,
     HOMEPAGE_INTERNAL_ACCESS_TOKEN: "local-production-rehearsal-token",
     HOMEPAGE_CORS_ORIGINS: `http://127.0.0.1:${frontendPort}`,
+    HOST: "127.0.0.1",
     PORT: String(backendPort),
     VITE_API_BASE_URL: ""
   };
