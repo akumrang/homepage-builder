@@ -102,6 +102,7 @@ npm.cmd run dev:frontend
 - 공개 홈페이지: http://127.0.0.1:5175/h/sample-korean-academy
 - 내부 제작 화면: http://127.0.0.1:5175/internal
 - backend health: http://localhost:4200/api/health
+- backend readiness: http://localhost:4200/api/ready
 
 로컬 내부 제작 화면 접근 키:
 
@@ -142,7 +143,7 @@ npm.cmd run build
 
 `content:validate`는 `backend/content/sample-academies.json`의 필수 구조와 공개 콘텐츠 필수 항목을 확인합니다. `typecheck`와 `build`는 backend 검증 단계에서 이 명령을 먼저 실행하므로 seed 콘텐츠가 깨지면 TypeScript 컴파일 전에 실패합니다.
 
-`api:smoke`는 backend 앱을 임시 포트로 실행해 `health`, 내부 API 접근 보호, 콘텐츠 점검 API, 홈페이지 제작 상태 변경, 잘못된 제작 상태 차단, 공지사항 생성·수정·삭제, 공지 공개/비공개 노출, 상담 문의 정상 접수, 문의 상태 변경, 잘못된 문의 상태 차단, 개인정보 미동의 차단을 실제 HTTP 요청으로 검증합니다. 테스트 중 변경한 홈페이지 상태는 원래 값으로 되돌리고, 생성한 공지사항과 상담 문의는 검증 종료 시 삭제합니다.
+`api:smoke`는 backend 앱을 임시 포트로 실행해 `health`, `readiness`, 내부 API 접근 보호, 콘텐츠 점검 API, 홈페이지 제작 상태 변경, 잘못된 제작 상태 차단, 공지사항 생성·수정·삭제, 공지 공개/비공개 노출, 상담 문의 정상 접수, 문의 상태 변경, 잘못된 문의 상태 차단, 개인정보 미동의 차단을 실제 HTTP 요청으로 검증합니다. 테스트 중 변경한 홈페이지 상태는 원래 값으로 되돌리고, 생성한 공지사항과 상담 문의는 검증 종료 시 삭제합니다.
 
 Prisma SQLite 개발 DB만 수동으로 준비하려면 다음 명령을 사용합니다.
 
@@ -181,6 +182,7 @@ npm.cmd --workspace backend run start
 ```text
 공개 API
 GET  /api/health
+GET  /api/ready
 GET  /api/academies/:slug
 POST /api/inquiries
 

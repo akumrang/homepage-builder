@@ -93,6 +93,33 @@ async function main() {
     assert(typeof health === "object" && health !== null && "ok" in health, "health response must include ok.");
     assert(health.ok === true, "health response must be ok.");
 
+    const readiness = await requestJson(started.baseUrl, "/api/ready", {
+      expectedStatus: 200,
+      label: "readiness"
+    });
+    assert(
+      typeof readiness === "object" && readiness !== null && "ok" in readiness,
+      "readiness response must include ok."
+    );
+    assert(readiness.ok === true, "readiness response must be ok.");
+    assert(
+      "checks" in readiness && Array.isArray(readiness.checks),
+      "readiness response must include checks."
+    );
+    const readinessCheckNames = readiness.checks.map((check: { name?: string }) => check.name);
+    for (const expectedCheckName of [
+      "academy-seed",
+      "database",
+      "homepage-state-store",
+      "inquiry-store",
+      "notice-store"
+    ]) {
+      assert(
+        readinessCheckNames.includes(expectedCheckName),
+        `readiness checks must include ${expectedCheckName}.`
+      );
+    }
+
     const protectedAcademyListRejected = await requestJson(started.baseUrl, "/api/academies", {
       expectedStatus: 401,
       label: "protected academy list without internal token"
@@ -466,7 +493,7 @@ async function main() {
     );
 
     console.log(
-      "[api:smoke] passed: health, internal access protection, content checks, academy status PATCH, notice CRUD, inquiry POST, inquiry validation, inquiry status PATCH, privacy rejection."
+      "[api:smoke] passed: health, readiness, internal access protection, content checks, academy status PATCH, notice CRUD, inquiry POST, inquiry validation, inquiry status PATCH, privacy rejection."
     );
   } finally {
     if (originalProductionStatus) {

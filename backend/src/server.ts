@@ -28,10 +28,80 @@ import {
   validateInquiryInput,
   validateInquiryStatusInput
 } from "./inquiryStore.js";
+import { prisma } from "./prismaClient.js";
 import type { InquiryInput, InquiryStatusInput, NoticeInput, ProductionStatusInput } from "./types.js";
 
 export const app = express();
 const port = Number(process.env.PORT ?? 4200);
+
+interface ReadinessCheck {
+  name: string;
+  ok: boolean;
+  message?: string;
+  value?: number;
+}
+
+async function getReadinessReport() {
+  const checks: ReadinessCheck[] = [];
+  const academySeedCount = academySites.length;
+
+  checks.push({
+    name: "academy-seed",
+    ok: academySeedCount > 0,
+    value: academySeedCount,
+    message: academySeedCount > 0 ? undefined : "No academy seed data is loaded."
+  });
+
+  let databaseAvailable = false;
+
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    databaseAvailable = true;
+    checks.push({ name: "database", ok: true });
+  } catch {
+    checks.push({
+      name: "database",
+      ok: false,
+      message: "Database readiness check failed."
+    });
+  }
+
+  if (databaseAvailable) {
+    try {
+      const [homepageStateCount, inquiryCount, noticeCount] = await Promise.all([
+        prisma.homepageSiteState.count(),
+        prisma.inquiry.count(),
+        prisma.notice.count()
+      ]);
+
+      checks.push({
+        name: "homepage-state-store",
+        ok: homepageStateCount >= academySeedCount,
+        value: homepageStateCount,
+        message:
+          homepageStateCount >= academySeedCount
+            ? undefined
+            : "Homepage state seed rows are missing."
+      });
+      checks.push({ name: "inquiry-store", ok: true, value: inquiryCount });
+      checks.push({ name: "notice-store", ok: true, value: noticeCount });
+    } catch {
+      checks.push({
+        name: "prisma-stores",
+        ok: false,
+        message: "Prisma store readiness check failed."
+      });
+    }
+  }
+
+  const ok = checks.every((check) => check.ok);
+
+  return {
+    ok,
+    service: "muksan-homepage-backend",
+    checks
+  };
+}
 
 app.use(
   cors({
@@ -43,6 +113,11 @@ app.use(express.json({ limit: "64kb" }));
 
 app.get("/api/health", (_req, res) => {
   res.json({ ok: true, service: "muksan-homepage-backend" });
+});
+
+app.get("/api/ready", async (_req, res) => {
+  const readiness = await getReadinessReport();
+  res.status(readiness.ok ? 200 : 503).json(readiness);
 });
 
 app.get("/api/academies", requireInternalAccess, async (_req, res, next) => {
