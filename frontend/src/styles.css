@@ -729,7 +729,7 @@ dd {
 .internal-page {
   min-height: 100vh;
   max-width: 100%;
-  padding: 48px clamp(18px, 5vw, 72px);
+  padding: 36px clamp(18px, 4.5vw, 64px);
   overflow-x: hidden;
   background: var(--soft);
 }
@@ -737,33 +737,50 @@ dd {
 .internal-header {
   display: flex;
   justify-content: space-between;
-  gap: 28px;
+  gap: 24px;
   align-items: flex-start;
-  margin-bottom: 36px;
+  margin-bottom: 24px;
+}
+
+.internal-header h1 {
+  font-size: clamp(30px, 3vw, 42px);
+}
+
+.internal-header p {
+  max-width: 620px;
+  font-size: 16px;
+  line-height: 1.55;
 }
 
 .internal-actions {
   justify-content: flex-end;
+  gap: 8px;
+}
+
+.internal-page .button {
+  min-height: 42px;
+  padding: 0 16px;
+  font-size: 15px;
 }
 
 .internal-access-card {
-  max-width: 680px;
+  max-width: 620px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 28px;
+  padding: 24px;
   background: var(--white);
 }
 
 .internal-access-card h2 {
   margin: 0;
   color: var(--ink);
-  font-size: 30px;
+  font-size: 28px;
   line-height: 1.2;
 }
 
 .internal-access-card p:not(.eyebrow) {
   color: var(--muted);
-  line-height: 1.7;
+  line-height: 1.6;
 }
 
 .internal-access-form {
@@ -801,13 +818,13 @@ dd {
 
 .internal-tab {
   min-width: 0;
-  min-height: 72px;
+  min-height: 62px;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   border: 0;
-  padding: 0 20px;
+  padding: 0 16px;
   background: var(--white);
   color: var(--muted);
   cursor: pointer;
@@ -816,7 +833,7 @@ dd {
 
 .internal-tab span {
   color: var(--ink);
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 900;
 }
 
@@ -838,7 +855,15 @@ dd {
 }
 
 .internal-section {
-  margin-top: 34px;
+  margin-top: 26px;
+}
+
+.internal-section .section-heading {
+  margin-bottom: 22px;
+}
+
+.internal-section .section-heading h2 {
+  font-size: clamp(28px, 2.6vw, 38px);
 }
 
 .split-heading {
@@ -850,7 +875,7 @@ dd {
 }
 
 .split-heading strong {
-  font-size: 28px;
+  font-size: 24px;
   color: var(--green);
 }
 
@@ -863,7 +888,7 @@ dd {
 .admin-card,
 .inquiry-card {
   min-width: 0;
-  padding: 22px;
+  padding: 18px;
 }
 
 .admin-card dl div {
@@ -885,12 +910,12 @@ dd {
 }
 
 .content-review-summary {
-  padding: 24px;
+  padding: 20px;
 }
 
 .content-review-summary h3 {
   margin: 0;
-  font-size: 24px;
+  font-size: 22px;
 }
 
 .content-review-summary p {
@@ -917,7 +942,7 @@ dd {
 }
 
 .content-check-card {
-  padding: 20px;
+  padding: 16px;
 }
 
 .content-check-card span {
@@ -945,8 +970,8 @@ dd {
 }
 
 .content-check-card h3 {
-  margin: 16px 0 8px;
-  font-size: 20px;
+  margin: 12px 0 8px;
+  font-size: 18px;
 }
 
 .content-check-card p {
@@ -984,7 +1009,7 @@ dd {
 .empty-state {
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 28px;
+  padding: 22px;
   background: var(--white);
   color: var(--muted);
 }
@@ -998,10 +1023,10 @@ dd {
 
 .notice-form {
   display: grid;
-  gap: 16px;
+  gap: 12px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 22px;
+  padding: 18px;
   background: var(--white);
 }
 
@@ -1017,7 +1042,7 @@ dd {
   width: 100%;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 12px 13px;
+  padding: 10px 12px;
   background: #fffefa;
   color: var(--ink);
 }
@@ -1037,7 +1062,7 @@ dd {
 }
 
 .notice-checks label {
-  min-height: 36px;
+  min-height: 32px;
   display: inline-flex;
   grid-template-columns: none;
   align-items: center;
@@ -1059,21 +1084,21 @@ dd {
 .notice-admin-card {
   display: flex;
   justify-content: space-between;
-  gap: 18px;
+  gap: 16px;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 22px;
+  padding: 18px;
   background: var(--white);
 }
 
 .notice-admin-card h3 {
   margin: 0;
-  font-size: 21px;
+  font-size: 19px;
 }
 
 .notice-admin-card p {
   color: var(--muted);
-  line-height: 1.65;
+  line-height: 1.55;
 }
 
 .notice-flags span {
@@ -1106,7 +1131,7 @@ dd {
   align-items: end;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 16px;
+  padding: 14px;
   background: var(--white);
 }
 
@@ -1122,7 +1147,7 @@ dd {
   align-items: end;
   border: 1px solid var(--line);
   border-radius: 8px;
-  padding: 16px;
+  padding: 14px;
   background: var(--white);
 }
 
@@ -1140,7 +1165,7 @@ dd {
 .filter-field input,
 .filter-field select {
   width: 100%;
-  min-height: 40px;
+  min-height: 36px;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 0 12px;
@@ -1152,7 +1177,7 @@ dd {
 .inquiry-card {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
 }
 
 .inquiry-card.is-new {
@@ -1170,7 +1195,7 @@ dd {
 }
 
 .inquiry-side {
-  min-width: 168px;
+  min-width: 156px;
   display: grid;
   align-content: start;
   justify-items: end;
@@ -1198,7 +1223,7 @@ dd {
 }
 
 .small-button {
-  min-height: 36px;
+  min-height: 34px;
   border: 1px solid var(--line);
   border-radius: 8px;
   padding: 0 12px;
@@ -1309,23 +1334,46 @@ dd {
 
   .hero-actions .button,
   .plain-actions .button,
-  .entry-actions .button,
-  .internal-actions .button {
+  .entry-actions .button {
     width: 100%;
   }
 
+  .internal-page .button {
+    min-height: 40px;
+    padding: 0 12px;
+    font-size: 14px;
+  }
+
+  .internal-actions-compact {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    width: 100%;
+    gap: 8px;
+  }
+
+  .internal-actions-compact .button {
+    width: auto;
+    min-width: 0;
+    padding: 0 10px;
+    line-height: 1.25;
+    white-space: normal;
+  }
+
   .internal-tabs {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .internal-tab {
     min-height: 58px;
-    padding: 0 16px;
+    display: grid;
+    align-content: center;
+    gap: 5px;
+    padding: 10px 12px;
   }
 
   .internal-tab strong {
     white-space: normal;
-    text-align: right;
+    text-align: left;
   }
 
   .quick-band div {
@@ -1339,21 +1387,67 @@ dd {
   .section-heading h2,
   .consultation-section h2,
   .entry-band h2,
-  .internal-header h1,
   .plain-state h1 {
     font-size: 28px;
     line-height: 1.24;
   }
 
-  .internal-page {
-    padding: 32px 16px;
+  .internal-header h1 {
+    font-size: 26px;
+    line-height: 1.2;
   }
 
-  .internal-header p,
+  .internal-section .section-heading h2,
+  .internal-access-card h2 {
+    font-size: 24px;
+    line-height: 1.24;
+  }
+
+  .internal-page {
+    padding: 24px 14px;
+  }
+
   .section-heading p:not(.eyebrow),
   .consultation-section p,
   .entry-band p {
     font-size: 16px;
+  }
+
+  .internal-header {
+    gap: 18px;
+    margin-bottom: 20px;
+  }
+
+  .internal-header p {
+    margin-top: 10px;
+    font-size: 15px;
+    line-height: 1.55;
+  }
+
+  .internal-access-card,
+  .admin-card,
+  .inquiry-card,
+  .notice-form,
+  .notice-admin-card,
+  .content-review-summary,
+  .content-check-card {
+    padding: 16px;
+  }
+
+  .internal-access-form {
+    margin-top: 18px;
+  }
+
+  .internal-section {
+    margin-top: 22px;
+  }
+
+  .split-heading {
+    align-items: start;
+  }
+
+  .split-heading strong {
+    font-size: 20px;
   }
 
   .teacher-card {

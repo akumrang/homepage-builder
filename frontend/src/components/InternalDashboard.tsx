@@ -346,8 +346,7 @@ export default function InternalDashboard() {
           <p className="eyebrow">Internal Access</p>
           <h2 id="internal-access-title">내부 접근 키 입력</h2>
           <p>
-            이 장치는 운영용 로그인 시스템이 아니라 MVP 단계의 내부 접근 경계입니다. 공개 홈페이지와 상담 문의
-            제출은 계속 외부에 열려 있습니다.
+            공개 홈페이지와 상담 문의 제출은 외부에 열려 있고, 내부 현황 확인은 접근 키가 필요합니다.
           </p>
           <form className="internal-access-form" onSubmit={handleAccessSubmit}>
             <label htmlFor="internal-access-token">접근 키</label>
@@ -375,9 +374,9 @@ export default function InternalDashboard() {
         <div>
           <p className="eyebrow">Muksan Internal</p>
           <h1>홈페이지 내부 제작 화면</h1>
-          <p>묵산 내부 제작자가 샘플 홈페이지와 상담 접수 상태를 확인하는 최소 화면입니다.</p>
+          <p>샘플 홈페이지와 상담 접수 상태를 확인합니다.</p>
         </div>
-        <div className="internal-actions">
+        <div className="internal-actions internal-actions-compact">
           <a className="button button-secondary" href="/h/sample-korean-academy">
             샘플 홈페이지
           </a>
