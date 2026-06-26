@@ -110,8 +110,8 @@ npm.cmd run verify
 
 - 모바일/데스크톱 브라우저 스크린샷 기반 회귀 테스트
 - 내부 화면 접근 제어 설계
-- Prisma migration 기반 DB 변경 관리
-- 운영 배포 환경 변수와 health check 정책
+- 실제 운영 호스팅, HTTPS, reverse proxy 구성
+- 운영 DB 백업과 장애 대응 정책
 - 첫 MVP 변경 파일 커밋 정리
 
 ---

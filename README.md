@@ -76,6 +76,14 @@ npm.cmd run dev:backend
 
 `dev:backend`는 Prisma Client를 생성하고, 서버 시작 시 SQLite 개발 DB의 홈페이지 상태, 공지사항, 상담 문의 테이블을 보장합니다.
 
+로컬 개발에서 `DATABASE_URL`을 지정하지 않으면 backend는 다음 SQLite DB를 기본값으로 사용합니다.
+
+```text
+file:../data/homepage-dev.db
+```
+
+backend 환경 변수 예시는 `backend/.env.example`에 있습니다.
+
 frontend 실행:
 
 ```powershell
@@ -136,11 +144,35 @@ npm.cmd run build
 
 `api:smoke`는 backend 앱을 임시 포트로 실행해 `health`, 내부 API 접근 보호, 콘텐츠 점검 API, 홈페이지 제작 상태 변경, 잘못된 제작 상태 차단, 공지사항 생성·수정·삭제, 공지 공개/비공개 노출, 상담 문의 정상 접수, 문의 상태 변경, 잘못된 문의 상태 차단, 개인정보 미동의 차단을 실제 HTTP 요청으로 검증합니다. 테스트 중 변경한 홈페이지 상태는 원래 값으로 되돌리고, 생성한 공지사항과 상담 문의는 검증 종료 시 삭제합니다.
 
-Prisma SQLite DB만 수동으로 준비하려면 다음 명령을 사용합니다.
+Prisma SQLite 개발 DB만 수동으로 준비하려면 다음 명령을 사용합니다.
 
 ```powershell
-npm.cmd --workspace backend run db:init
+npm.cmd run db:init
 ```
+
+`db:init`은 로컬 개발용 명령입니다. Prisma Client를 생성하고 `prisma db push`로 개발 DB 구조를 맞춘 뒤 샘플 홈페이지 상태와 공지 seed를 보장합니다.
+
+운영 또는 배포 환경에서는 migration을 명시적으로 적용합니다.
+
+```powershell
+$env:NODE_ENV="production"
+$env:DATABASE_URL="file:C:/absolute/path/homepage-prod.db"
+$env:HOMEPAGE_INTERNAL_ACCESS_TOKEN="운영-내부-접근-토큰"
+
+npm.cmd install
+npm.cmd run build
+npm.cmd run db:deploy
+npm.cmd --workspace backend run start
+```
+
+배포 순서 원칙:
+
+- `DATABASE_URL`은 운영에서 반드시 명시합니다.
+- `HOMEPAGE_INTERNAL_ACCESS_TOKEN`은 운영에서 반드시 별도 비밀값으로 설정합니다.
+- `npm.cmd run build`는 Prisma Client 생성과 TypeScript build만 수행하며 DB migration을 적용하지 않습니다.
+- `npm.cmd run db:deploy`가 `backend/prisma/migrations`의 migration을 적용합니다.
+- SQLite `file:` DB를 새로 쓰는 경우 `db:deploy`는 빈 DB 파일을 먼저 보장한 뒤 migration을 적용합니다.
+- frontend는 `frontend/dist` 정적 파일을 별도 정적 호스팅 또는 reverse proxy로 제공해야 합니다.
 
 ## API
 

@@ -16,21 +16,23 @@ function toNoticeItem(record: PrismaNotice): NoticeItem {
 }
 
 export async function ensureNoticeStore(): Promise<void> {
-  await prisma.$executeRawUnsafe(`
-    CREATE TABLE IF NOT EXISTS "Notice" (
-      "id" TEXT NOT NULL PRIMARY KEY,
-      "academySlug" TEXT NOT NULL,
-      "title" TEXT NOT NULL,
-      "date" TEXT NOT NULL,
-      "body" TEXT NOT NULL,
-      "pinned" BOOLEAN NOT NULL DEFAULT false,
-      "visible" BOOLEAN NOT NULL DEFAULT true,
-      "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
-  await prisma.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Notice_academySlug_idx" ON "Notice"("academySlug")`);
-  await prisma.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Notice_date_idx" ON "Notice"("date")`);
+  if (process.env.NODE_ENV !== "production") {
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "Notice" (
+        "id" TEXT NOT NULL PRIMARY KEY,
+        "academySlug" TEXT NOT NULL,
+        "title" TEXT NOT NULL,
+        "date" TEXT NOT NULL,
+        "body" TEXT NOT NULL,
+        "pinned" BOOLEAN NOT NULL DEFAULT false,
+        "visible" BOOLEAN NOT NULL DEFAULT true,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    await prisma.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Notice_academySlug_idx" ON "Notice"("academySlug")`);
+    await prisma.$executeRawUnsafe(`CREATE INDEX IF NOT EXISTS "Notice_date_idx" ON "Notice"("date")`);
+  }
 
   await seedSampleNotices();
 }

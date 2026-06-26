@@ -4,6 +4,11 @@ import { prisma } from "./prismaClient.js";
 import type { Inquiry, InquiryInput, InquiryStatusInput } from "./types.js";
 
 export async function ensureInquiryStore(): Promise<void> {
+  if (process.env.NODE_ENV === "production") {
+    await prisma.inquiry.count();
+    return;
+  }
+
   await prisma.$executeRawUnsafe(`
     CREATE TABLE IF NOT EXISTS "Inquiry" (
       "id" TEXT NOT NULL PRIMARY KEY,

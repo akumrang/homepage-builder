@@ -15,17 +15,19 @@ export const productionStatuses: ProductionStatus[] = [
 ];
 
 export async function ensureHomepageStateStore(): Promise<void> {
-  await prisma.$executeRawUnsafe(`
-    CREATE TABLE IF NOT EXISTS "HomepageSiteState" (
-      "slug" TEXT NOT NULL PRIMARY KEY,
-      "homepageId" TEXT NOT NULL,
-      "academyId" TEXT NOT NULL,
-      "templateId" TEXT NOT NULL,
-      "productionStatus" TEXT NOT NULL,
-      "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
-    )
-  `);
+  if (process.env.NODE_ENV !== "production") {
+    await prisma.$executeRawUnsafe(`
+      CREATE TABLE IF NOT EXISTS "HomepageSiteState" (
+        "slug" TEXT NOT NULL PRIMARY KEY,
+        "homepageId" TEXT NOT NULL,
+        "academyId" TEXT NOT NULL,
+        "templateId" TEXT NOT NULL,
+        "productionStatus" TEXT NOT NULL,
+        "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        "updatedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+  }
 
   await seedHomepageStates();
 }
