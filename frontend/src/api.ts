@@ -13,6 +13,13 @@ import type {
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:4200";
 const internalAccessTokenStorageKey = "muksan-homepage-internal-access-token";
 
+export class ApiRequestError extends Error {
+  constructor(message: string, readonly status: number) {
+    super(message);
+    this.name = "ApiRequestError";
+  }
+}
+
 export function getInternalAccessToken(): string {
   return window.sessionStorage.getItem(internalAccessTokenStorageKey) ?? "";
 }
@@ -40,7 +47,7 @@ async function readJson<T>(response: Response): Promise<T> {
   const body = (await response.json()) as T & { message?: string };
 
   if (!response.ok) {
-    throw new Error(body.message ?? "요청을 처리하지 못했습니다.");
+    throw new ApiRequestError(body.message ?? "요청을 처리하지 못했습니다.", response.status);
   }
 
   return body;

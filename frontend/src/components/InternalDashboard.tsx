@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import {
+  ApiRequestError,
   clearInternalAccessToken,
   createNotice,
   deleteNotice,
@@ -90,6 +91,19 @@ export default function InternalDashboard() {
     setNoticeForm(createEmptyNoticeForm());
   }
 
+  function handleRequestError(requestError: unknown, fallbackMessage: string) {
+    const message = requestError instanceof Error ? requestError.message : fallbackMessage;
+
+    if (requestError instanceof ApiRequestError && (requestError.status === 401 || requestError.status === 503)) {
+      clearInternalAccessToken();
+      setAccessTokenValue("");
+      setAccessTokenInput("");
+      resetInternalData();
+    }
+
+    setError(message);
+  }
+
   async function load() {
     try {
       const [academyData, inquiryData] = await Promise.all([fetchAcademies(), fetchInquiries()]);
@@ -105,7 +119,7 @@ export default function InternalDashboard() {
       setNotices(noticeData);
       setError(null);
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : "내부 데이터를 불러오지 못했습니다.");
+      handleRequestError(requestError, "내부 데이터를 불러오지 못했습니다.");
     }
   }
 
@@ -146,7 +160,7 @@ export default function InternalDashboard() {
       const result = await updateInquiryStatus(inquiry.id, { status: nextStatus });
       setInquiries((current) => current.map((item) => (item.id === inquiry.id ? result.inquiry : item)));
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : "상담 문의 상태를 변경하지 못했습니다.");
+      handleRequestError(requestError, "상담 문의 상태를 변경하지 못했습니다.");
     } finally {
       setSavingInquiryId(null);
     }
@@ -160,7 +174,7 @@ export default function InternalDashboard() {
       const result = await updateAcademyProductionStatus(academy.slug, { productionStatus });
       setAcademies((current) => current.map((item) => (item.slug === academy.slug ? result.academy : item)));
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : "홈페이지 제작 상태를 변경하지 못했습니다.");
+      handleRequestError(requestError, "홈페이지 제작 상태를 변경하지 못했습니다.");
     } finally {
       setSavingAcademySlug(null);
     }
@@ -271,7 +285,7 @@ export default function InternalDashboard() {
       setNoticeForm(createEmptyNoticeForm());
       setEditingNoticeId(null);
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : "공지사항을 저장하지 못했습니다.");
+      handleRequestError(requestError, "공지사항을 저장하지 못했습니다.");
     } finally {
       setIsSavingNotice(false);
     }
@@ -306,7 +320,7 @@ export default function InternalDashboard() {
         setNoticeForm(createEmptyNoticeForm());
       }
     } catch (requestError) {
-      setError(requestError instanceof Error ? requestError.message : "공지사항을 삭제하지 못했습니다.");
+      handleRequestError(requestError, "공지사항을 삭제하지 못했습니다.");
     } finally {
       setIsSavingNotice(false);
     }
