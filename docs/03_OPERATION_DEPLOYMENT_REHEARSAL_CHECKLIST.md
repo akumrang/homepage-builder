@@ -51,7 +51,32 @@ same-origin reverse proxy로 production build를 리허설하면 `VITE_API_BASE_
 
 ---
 
-## 3. 리허설 기록 양식
+## 3. 로컬 production 시뮬레이션
+
+실제 서버에 올리기 전에 로컬에서 리허설 흐름을 자동으로 확인할 수 있다.
+
+```powershell
+npm.cmd run rehearse:local-production
+```
+
+이 명령은 다음을 수행한다.
+
+1. `.tmp/local-production-rehearsal` 아래 리허설 전용 SQLite DB와 backup directory를 만든다.
+2. baseline migration을 적용해 백업 가능한 DB 상태를 만든다.
+3. `npm.cmd run build`를 실행한다.
+4. `frontend/dist/index.html`과 asset bundle을 확인한다.
+5. production frontend bundle에 `http://localhost:4200` 개발 API base가 남아 있지 않은지 확인한다.
+6. `npm.cmd run db:backup`을 실행하고 backup과 manifest를 확인한다.
+7. `npm.cmd run db:deploy`를 다시 실행한다.
+8. production build 산출물로 backend를 시작한다.
+9. `/api/health`, `/api/ready`, `/api/academies/sample-korean-academy`를 확인한다.
+10. `frontend/dist`를 로컬 정적 서버로 열고 `/h/sample-korean-academy`와 같은 origin `/api/ready` 프록시를 확인한다.
+
+이 시뮬레이션은 실제 운영 도메인, HTTPS, reverse proxy, 정적 파일 업로드를 대신하지 않는다.
+
+---
+
+## 4. 리허설 기록 양식
 
 리허설마다 다음 값을 남긴다.
 
@@ -78,7 +103,7 @@ git status --short
 
 ---
 
-## 4. Step 1: Build
+## 5. Step 1: Build
 
 명령:
 
@@ -111,7 +136,7 @@ Test-Path frontend/dist/assets
 
 ---
 
-## 5. Step 2: DB Backup
+## 6. Step 2: DB Backup
 
 명령:
 
@@ -138,7 +163,7 @@ npm.cmd run db:backup -- --label homepage-rehearsal
 
 ---
 
-## 6. Step 3: DB Migration
+## 7. Step 3: DB Migration
 
 명령:
 
@@ -161,7 +186,7 @@ npm.cmd run db:deploy
 
 ---
 
-## 7. Step 4: Backend Start
+## 8. Step 4: Backend Start
 
 명령:
 
@@ -191,7 +216,7 @@ Invoke-RestMethod http://localhost:4200/api/health
 
 ---
 
-## 8. Step 5: Readiness 확인
+## 9. Step 5: Readiness 확인
 
 명령:
 
@@ -222,7 +247,7 @@ notice-store
 
 ---
 
-## 9. Step 6: Frontend Dist 배포 확인
+## 10. Step 6: Frontend Dist 배포 확인
 
 확인 대상:
 
@@ -264,7 +289,7 @@ same-origin reverse proxy 배포 확인:
 
 ---
 
-## 10. 상담 문의 Smoke 확인
+## 11. 상담 문의 Smoke 확인
 
 리허설 환경에서 개인정보가 아닌 테스트 데이터로 상담 문의를 1건 접수한다.
 
@@ -290,7 +315,7 @@ same-origin reverse proxy 배포 확인:
 
 ---
 
-## 11. GO / NO-GO 판정
+## 12. GO / NO-GO 판정
 
 GO 조건:
 
@@ -318,7 +343,7 @@ NO-GO 시에는 운영 반영을 중단하고, 실패 단계와 로그를 기록
 
 ---
 
-## 12. Rollback 기준
+## 13. Rollback 기준
 
 리허설 중 migration 이후 문제가 발견되면 다음 순서로 복구한다.
 
@@ -338,7 +363,7 @@ npm.cmd run db:restore -- --backup C:/absolute/path/homepage-rehearsal-backups/h
 
 ---
 
-## 13. 현재 한계
+## 14. 현재 한계
 
 이 체크리스트는 운영 리허설 절차를 고정하지만, 다음을 자동화하지는 않는다.
 

@@ -159,6 +159,12 @@ npm.cmd run db:init
 SQLite 백업/복구 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있습니다.
 운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
 
+로컬에서 운영 배포 흐름을 시뮬레이션하려면 다음 명령을 사용합니다.
+
+```powershell
+npm.cmd run rehearse:local-production
+```
+
 ```powershell
 $env:NODE_ENV="production"
 $env:DATABASE_URL="file:C:/absolute/path/homepage-prod.db"
