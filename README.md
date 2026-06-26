@@ -158,6 +158,7 @@ npm.cmd run db:init
 운영 배포 전 상세 점검 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 정리되어 있습니다.
 SQLite 백업/복구 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있습니다.
 운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
+운영 호스팅과 reverse proxy 구성안은 `docs/04_HOSTING_REVERSE_PROXY_PLAN.md`에 정리되어 있습니다.
 
 로컬에서 운영 배포 흐름을 시뮬레이션하려면 다음 명령을 사용합니다.
 

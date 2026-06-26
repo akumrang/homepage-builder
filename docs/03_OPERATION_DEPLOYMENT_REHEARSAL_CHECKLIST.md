@@ -72,7 +72,7 @@ npm.cmd run rehearse:local-production
 9. `/api/health`, `/api/ready`, `/api/academies/sample-korean-academy`를 확인한다.
 10. `frontend/dist`를 로컬 정적 서버로 열고 `/h/sample-korean-academy`와 같은 origin `/api/ready` 프록시를 확인한다.
 
-이 시뮬레이션은 실제 운영 도메인, HTTPS, reverse proxy, 정적 파일 업로드를 대신하지 않는다.
+이 시뮬레이션은 실제 운영 도메인, HTTPS, reverse proxy, 정적 파일 업로드를 대신하지 않는다. 실제 호스팅과 reverse proxy 구성 기준은 `docs/04_HOSTING_REVERSE_PROXY_PLAN.md`를 따른다.
 
 ---
 
