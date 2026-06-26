@@ -161,6 +161,7 @@ npm.cmd run db:init
 SQLite 백업/복구 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있습니다.
 운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
 운영 호스팅과 reverse proxy 구성안은 `docs/04_HOSTING_REVERSE_PROXY_PLAN.md`에 정리되어 있습니다.
+backend process 시작, 중지, 재시작 기준은 `docs/05_BACKEND_PROCESS_RUNBOOK.md`에 정리되어 있습니다.
 
 로컬에서 운영 배포 흐름을 시뮬레이션하려면 다음 명령을 사용합니다.
 
@@ -194,6 +195,7 @@ npm.cmd --workspace backend run start
 - `npm.cmd run db:deploy`가 `backend/prisma/migrations`의 migration을 적용합니다.
 - SQLite `file:` DB를 새로 쓰는 경우 `db:deploy`는 빈 DB 파일을 먼저 보장한 뒤 migration을 적용합니다.
 - frontend는 `frontend/dist` 정적 파일을 별도 정적 호스팅 또는 reverse proxy로 제공해야 합니다.
+- 운영 backend는 터미널에 직접 띄워 둔 일회성 프로세스가 아니라 process manager 기준으로 시작, 중지, 재시작합니다.
 
 ## API
 

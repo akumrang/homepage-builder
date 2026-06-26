@@ -53,6 +53,41 @@ function getFreePort() {
   });
 }
 
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function canConnectToPort(port) {
+  return new Promise((resolve) => {
+    const socket = net.createConnection({ host: "127.0.0.1", port });
+
+    function settle(isOpen) {
+      socket.removeAllListeners();
+      socket.destroy();
+      resolve(isOpen);
+    }
+
+    socket.setTimeout(500);
+    socket.once("connect", () => settle(true));
+    socket.once("timeout", () => settle(false));
+    socket.once("error", () => settle(false));
+  });
+}
+
+async function waitForPortClosed(port, label, timeoutMs = 5000) {
+  const startedAt = Date.now();
+
+  while (Date.now() - startedAt < timeoutMs) {
+    if (!(await canConnectToPort(port))) {
+      return;
+    }
+
+    await delay(100);
+  }
+
+  throw new Error(`${label} port ${port} remained open after shutdown.`);
+}
+
 function quoteCommandArg(arg) {
   if (arg === "") {
     return '""';
@@ -99,7 +134,10 @@ function run(command, args, env, label) {
 
 function startBackend(env) {
   console.log("\n[rehearsal] Start backend from production build");
-  const child = spawnCommand(npmCommand, ["--workspace", "backend", "run", "start"], {
+  const backendEntry = path.resolve(workspaceRoot, "backend", "dist", "server.js");
+  console.log(`[rehearsal] $ node ${path.relative(workspaceRoot, backendEntry)}`);
+
+  const child = spawn(process.execPath, [backendEntry], {
     cwd: workspaceRoot,
     env,
     stdio: ["ignore", "pipe", "pipe"]
@@ -167,19 +205,42 @@ function startFrontendDistServer({ backendBaseUrl, distDirectory, port }) {
   });
 }
 
-function stopBackend(child) {
+function waitForChildExit(child, timeoutMs = 5000) {
+  if (child.exitCode !== null || child.signalCode !== null) {
+    return Promise.resolve(true);
+  }
+
+  return new Promise((resolve) => {
+    const timeout = setTimeout(() => resolve(false), timeoutMs);
+
+    child.once("exit", () => {
+      clearTimeout(timeout);
+      resolve(true);
+    });
+  });
+}
+
+async function stopBackend(child) {
   if (child.exitCode !== null || child.signalCode !== null) {
     return;
   }
 
   if (process.platform === "win32") {
-    spawnSync("taskkill", ["/pid", String(child.pid), "/T", "/F"], {
-      stdio: "ignore"
-    });
-    return;
+    child.kill();
+
+    if (!(await waitForChildExit(child, 3000))) {
+      spawnSync("taskkill", ["/pid", String(child.pid), "/T", "/F"], {
+        stdio: "ignore"
+      });
+    }
+  } else {
+    child.kill("SIGTERM");
   }
 
-  child.kill("SIGTERM");
+  if (!(await waitForChildExit(child))) {
+    throw new Error(`Backend process ${child.pid ?? ""} did not exit after shutdown signal.`);
+  }
+
 }
 
 function stopServer(server) {
@@ -376,17 +437,21 @@ async function main() {
   } finally {
     if (frontendServer) {
       await stopServer(frontendServer);
+      await waitForPortClosed(frontendPort, "frontend dist server");
     }
 
-    stopBackend(backend);
+    await stopBackend(backend);
+    await waitForPortClosed(backendPort, "backend");
   }
 
   console.log("\n[rehearsal] Local production rehearsal passed.");
   console.log(`[rehearsal] Artifacts remain in: ${rehearsalDirectory}`);
 }
 
-main().catch((error) => {
-  console.error("\n[rehearsal] Local production rehearsal failed.");
-  console.error(error instanceof Error ? error.stack ?? error.message : error);
-  process.exit(1);
-});
+main()
+  .then(() => {})
+  .catch((error) => {
+    console.error("\n[rehearsal] Local production rehearsal failed.");
+    console.error(error instanceof Error ? error.stack ?? error.message : error);
+    process.exit(1);
+  });

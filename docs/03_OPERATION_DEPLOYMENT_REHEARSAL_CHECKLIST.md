@@ -14,9 +14,10 @@ Last Updated: 2026-06-26
 
 ```text
 build
+→ running backend stop, 기존 운영 서버일 때
 → db:backup
 → db:deploy
-→ backend start
+→ backend start 또는 process manager start
 → /api/ready 확인
 → frontend dist 배포 확인
 ```
@@ -35,6 +36,7 @@ build
 - `HOMEPAGE_INTERNAL_ACCESS_TOKEN`은 리허설 전용 비밀값을 쓴다.
 - frontend와 backend가 다른 origin이면 `HOMEPAGE_CORS_ORIGINS`와 `VITE_API_BASE_URL`을 함께 맞춘다.
 - SQLite DB와 backup directory는 배포 산출물 삭제 대상 밖에 둔다.
+- process manager 기준은 `docs/05_BACKEND_PROCESS_RUNBOOK.md`를 따른다.
 
 권장 리허설 환경 변수 예:
 
@@ -72,6 +74,7 @@ npm.cmd run rehearse:local-production
 8. production build 산출물로 backend를 시작한다.
 9. `/api/health`, `/api/ready`, `/api/academies/sample-korean-academy`를 확인한다.
 10. `frontend/dist`를 로컬 정적 서버로 열고 `/h/sample-korean-academy`와 같은 origin `/api/ready` 프록시를 확인한다.
+11. 종료 시 backend process를 정리해 port가 남지 않도록 한다.
 
 이 시뮬레이션은 실제 운영 도메인, HTTPS, reverse proxy, 정적 파일 업로드를 대신하지 않는다. 실제 호스팅과 reverse proxy 구성 기준은 `docs/04_HOSTING_REVERSE_PROXY_PLAN.md`를 따른다.
 
@@ -90,6 +93,8 @@ npm.cmd run rehearse:local-production
 | backup directory |  |
 | frontend 배포 위치 |  |
 | backend 실행 포트 |  |
+| process manager 또는 실행 방식 |  |
+| backend log 위치 |  |
 | 결과 | GO / NO-GO |
 | 비고 |  |
 
@@ -187,7 +192,7 @@ npm.cmd run db:deploy
 
 ---
 
-## 8. Step 4: Backend Start
+## 8. Step 4: Backend Process Start
 
 명령:
 
@@ -202,6 +207,8 @@ npm.cmd --workspace backend run start
 - backend process가 종료되지 않는다.
 - 설정된 `HOST`와 `PORT` 또는 기본 `127.0.0.1:4200`에서 응답한다.
 - 로그에 초기화 실패가 없다.
+- process manager를 쓰는 환경에서는 상태가 running이다.
+- stdout/stderr 로그 위치가 확인된다.
 
 확인 명령:
 
@@ -213,6 +220,27 @@ Invoke-RestMethod http://localhost:4200/api/health
 
 - backend process 종료
 - `DATABASE_URL`, migration 적용 여부, 파일 권한 확인
+- 리허설 결과는 `NO-GO`
+
+---
+
+## 8-A. Step 4-A: Process Lifecycle 확인
+
+process manager 등록 전 또는 등록 직후에는 start만 확인하지 않고 stop/restart까지 확인한다.
+
+판정 기준:
+
+- stop 후 backend port가 응답하지 않는다.
+- restart 후 `/api/health`와 `/api/ready`가 다시 통과한다.
+- restart 과정에서 DB lock, migration 오류, seed 로드 오류가 없다.
+- 로그가 운영 log directory 또는 process manager log에 남는다.
+
+로컬 수동 절차는 `docs/05_BACKEND_PROCESS_RUNBOOK.md`의 로컬 process lifecycle 리허설을 따른다.
+
+실패 시:
+
+- traffic 전환 금지
+- process manager 설정, working directory, 환경 변수, 로그 권한 확인
 - 리허설 결과는 `NO-GO`
 
 ---

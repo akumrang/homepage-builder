@@ -110,15 +110,25 @@ $env:VITE_API_BASE_URL="https://api-homepage.example.com"
 
 ## 5. 배포 순서
 
-표준 순서:
+신규 배포 순서:
 
 ```powershell
 npm.cmd install
 npm.cmd run verify
 npm.cmd run build
+npm.cmd run db:deploy
+# process manager start
+```
+
+기존 운영 서버 재배포 순서:
+
+```powershell
+npm.cmd run verify
+npm.cmd run build
+# process manager stop
 npm.cmd run db:backup
 npm.cmd run db:deploy
-npm.cmd --workspace backend run start
+# process manager start
 ```
 
 확인:
@@ -127,6 +137,8 @@ npm.cmd --workspace backend run start
 Invoke-RestMethod http://localhost:4200/api/health
 Invoke-RestMethod http://localhost:4200/api/ready
 ```
+
+process manager 시작, 중지, 재시작 판정은 `docs/05_BACKEND_PROCESS_RUNBOOK.md`를 따른다.
 
 reverse proxy 반영 후:
 
@@ -267,6 +279,7 @@ GO 조건:
 - 상담 문의 접수 통과
 - DB backup 생성 확인
 - HTTPS 적용 확인
+- backend process manager start/restart 기준 확인
 
 NO-GO 조건:
 
@@ -286,7 +299,7 @@ NO-GO 조건:
 - 서버 provision
 - reverse proxy 설정 파일 자동 생성
 - HTTPS 인증서 자동 발급/갱신
-- process manager 등록
+- process manager 설정 파일 자동 생성
 - 배포 artifact 업로드
 - custom domain 자동 연결
 - 외부 모니터링과 알림
