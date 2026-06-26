@@ -81,6 +81,8 @@ ARCHIVED	사용 종료 또는 보관
 
 홈페이지 제작 전 다음 정보를 수집한다.
 
+상세 자료 수집 양식과 현재 `AcademySite` 구조로의 매핑은 `planning/13_CUSTOMER_HOMEPAGE_INTAKE_SCHEMA.md`를 기준으로 한다.
+
 기본 정보
 학원명
 대표자 또는 원장명
