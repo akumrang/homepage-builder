@@ -1,16 +1,19 @@
 import { spawn } from "node:child_process";
 import { closeSync, existsSync, mkdirSync, openSync } from "node:fs";
 import path from "node:path";
-
-const defaultLocalDatabaseUrl = "file:../data/homepage-dev.db";
+import {
+  getDatabaseUrl,
+  readSchemaPathFromArgs,
+  resolveSqliteFilePath
+} from "./sqliteDatabaseUtils.mjs";
 
 if (!process.env.DATABASE_URL) {
-  if (process.env.NODE_ENV === "production") {
-    console.error("DATABASE_URL must be set when NODE_ENV=production.");
+  try {
+    process.env.DATABASE_URL = getDatabaseUrl();
+  } catch (error) {
+    console.error(error instanceof Error ? error.message : error);
     process.exit(1);
   }
-
-  process.env.DATABASE_URL = defaultLocalDatabaseUrl;
 }
 
 const [command, ...args] = process.argv.slice(2);
@@ -20,48 +23,19 @@ if (!command) {
   process.exit(1);
 }
 
-const getSchemaPath = () => {
-  const inlineSchemaArg = args.find((arg) => arg.startsWith("--schema="));
-
-  if (inlineSchemaArg) {
-    return inlineSchemaArg.slice("--schema=".length);
-  }
-
-  const schemaArgIndex = args.indexOf("--schema");
-
-  if (schemaArgIndex >= 0 && args[schemaArgIndex + 1]) {
-    return args[schemaArgIndex + 1];
-  }
-
-  return "prisma/schema.prisma";
-};
-
-const resolveSqliteFilePath = (databaseUrl) => {
-  if (!databaseUrl.startsWith("file:")) {
-    return null;
-  }
-
-  const [rawFilePath] = databaseUrl.slice("file:".length).split("?");
-
-  if (!rawFilePath || rawFilePath === ":memory:") {
-    return null;
-  }
-
-  if (path.isAbsolute(rawFilePath)) {
-    return rawFilePath;
-  }
-
-  const schemaDirectory = path.dirname(path.resolve(getSchemaPath()));
-  return path.resolve(schemaDirectory, rawFilePath);
-};
-
 const shouldEnsureSqliteDatabase =
   command === "prisma" &&
   args[0] === "migrate" &&
   (args[1] === "deploy" || args[1] === "status");
 
 if (shouldEnsureSqliteDatabase) {
-  const sqliteFilePath = resolveSqliteFilePath(process.env.DATABASE_URL);
+  let sqliteFilePath = null;
+
+  try {
+    sqliteFilePath = resolveSqliteFilePath(process.env.DATABASE_URL, readSchemaPathFromArgs(args));
+  } catch {
+    sqliteFilePath = null;
+  }
 
   if (sqliteFilePath && !existsSync(sqliteFilePath)) {
     mkdirSync(path.dirname(sqliteFilePath), { recursive: true });

@@ -111,9 +111,9 @@ npm.cmd run verify
 - 모바일/데스크톱 브라우저 스크린샷 기반 회귀 테스트
 - 내부 화면 접근 제어 설계
 - 실제 운영 호스팅, HTTPS, reverse proxy 구성
-- 운영 DB 백업 자동화와 복구 테스트
+- 운영 DB 백업 스케줄링과 정기 복구 리허설
 
-운영 배포 전 점검표, health check, 환경 변수, DB 백업 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 별도 문서화되어 있다.
+운영 배포 전 점검표, health check, 환경 변수, DB 백업 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 별도 문서화되어 있다. SQLite 백업/복구 실행 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있다.
 
 ---
 
