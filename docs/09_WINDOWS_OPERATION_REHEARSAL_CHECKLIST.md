@@ -174,14 +174,13 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/d
 명령:
 
 ```powershell
-caddy validate --config C:/muksan-homepage/runtime/Caddyfile
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageCaddy.ps1 -Action validate
 ```
 
 선택 확인:
 
 ```powershell
-caddy fmt --overwrite C:/muksan-homepage/runtime/Caddyfile
-caddy validate --config C:/muksan-homepage/runtime/Caddyfile
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageCaddy.ps1 -Action fmt
 ```
 
 판정 기준:
@@ -366,13 +365,13 @@ service가 running인 상태에서 Caddy를 실행하거나 reload한다.
 수동 실행:
 
 ```powershell
-caddy run --config C:/muksan-homepage/runtime/Caddyfile
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageCaddy.ps1 -Action run
 ```
 
 이미 Caddy service가 있다면 reload:
 
 ```powershell
-caddy reload --config C:/muksan-homepage/runtime/Caddyfile
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageCaddy.ps1 -Action reload
 ```
 
 판정 기준:

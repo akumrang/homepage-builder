@@ -77,8 +77,8 @@ Copy-Item C:/muksan-homepage/app/deploy/windows/Caddyfile.template C:/muksan-hom
 검증:
 
 ```powershell
-caddy validate --config C:/muksan-homepage/runtime/Caddyfile
-caddy run --config C:/muksan-homepage/runtime/Caddyfile
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageCaddy.ps1 -Action validate
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageCaddy.ps1 -Action run
 ```
 
 reverse proxy 확인:
@@ -209,7 +209,27 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/windows/Invoke-Mu
 
 ---
 
-## 9. 보안 기준
+## 9. Caddy 조작 보조 스크립트
+
+Caddy 명령도 같은 방식으로 실행하기 위해 보조 스크립트를 둔다.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageCaddy.ps1 -Action version
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageCaddy.ps1 -Action validate
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageCaddy.ps1 -Action fmt
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageCaddy.ps1 -Action run
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageCaddy.ps1 -Action reload
+```
+
+로컬 또는 문서 검증 단계에서는 실제 Caddy를 실행하지 않도록 `-DryRun`을 사용한다.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/windows/Invoke-MuksanHomepageCaddy.ps1 -Action validate -DryRun -SkipPathChecks
+```
+
+---
+
+## 10. 보안 기준
 
 - 실제 `HOMEPAGE_INTERNAL_ACCESS_TOKEN`은 저장소에 커밋하지 않는다.
 - 운영 `.env`, runtime service XML, runtime Caddyfile은 서버 전용 파일로 관리한다.
@@ -219,7 +239,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/windows/Invoke-Mu
 
 ---
 
-## 10. 아직 구현이 아닌 항목
+## 11. 아직 구현이 아닌 항목
 
 이 문서는 템플릿 초안이다. 다음은 아직 자동화하지 않았다.
 
