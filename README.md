@@ -33,6 +33,7 @@
 
 체크리스트 기준 구현 상태는 `docs/MVP_IMPLEMENTATION_STATUS.md`에 정리되어 있습니다.
 공개 홈페이지 1차 시각 QA 결과는 `docs/11_PUBLIC_HOMEPAGE_VISUAL_QA_REPORT.md`에 정리되어 있습니다.
+샘플 화면과 실제 고객 게시 화면의 문구, asset, footer 분리 기준은 `docs/12_PUBLICATION_MODE_POLICY.md`에 정리되어 있습니다.
 
 첫 고객 파일럿을 위한 홈페이지 자료 수집 양식과 현재 seed 구조 매핑은 `planning/13_CUSTOMER_HOMEPAGE_INTAKE_SCHEMA.md`에 정리되어 있습니다.
 
