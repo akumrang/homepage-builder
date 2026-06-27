@@ -23,6 +23,7 @@ import type {
   Inquiry,
   NoticeInput,
   NoticeItem,
+  PublicationAssetSource,
   ProductionStatus
 } from "../types";
 
@@ -52,6 +53,100 @@ const productionStatusOptions: ProductionStatus[] = [
   "APPROVED",
   "PUBLISHED"
 ];
+
+type AssetReviewTone = "blocked" | "pending" | "ready";
+
+interface PublicationAssetReviewItem {
+  id: string;
+  title: string;
+  status: string;
+  tone: AssetReviewTone;
+  source: string;
+  assetId: string;
+  detail: string;
+}
+
+const publicationModeLabels = {
+  SAMPLE: "샘플",
+  CUSTOMER_PREVIEW: "고객 확인",
+  CUSTOMER_PUBLISHED: "고객 게시"
+};
+
+const assetSourceLabels: Record<PublicationAssetSource, string> = {
+  SAMPLE: "샘플",
+  CUSTOMER_PROVIDED: "고객 제공",
+  MUKSAN_CREATED: "묵산 제작",
+  MUKSAN_APPROVED_REPLACEMENT: "묵산 승인 대체"
+};
+
+function isNonSampleApprovedAsset(asset: {
+  assetId?: string;
+  source: PublicationAssetSource;
+  approvedForPublish: boolean;
+}) {
+  return Boolean(asset.assetId?.trim()) && asset.source !== "SAMPLE" && asset.approvedForPublish;
+}
+
+function getPublicationAssetReviewItems(academy: AcademySite): PublicationAssetReviewItem[] {
+  const { publication } = academy;
+  const { logo, hero } = publication.assets;
+  const logoHasAsset = Boolean(logo.assetId?.trim());
+  const logoReady = logoHasAsset
+    ? logo.source !== "SAMPLE" && logo.approvedForPublish
+    : logo.textFallbackApproved;
+  const heroReady = isNonSampleApprovedAsset(hero) && !academy.heroImage.toLowerCase().includes("sample");
+  const customerPublishedGateReady =
+    publication.mode === "CUSTOMER_PUBLISHED" &&
+    publication.customerApprovedForPublish &&
+    !publication.sampleDisclosureVisible &&
+    logoReady &&
+    heroReady;
+
+  const logoStatus = logoReady ? (logoHasAsset ? "게시 승인" : "텍스트 로고 승인") : "승인 필요";
+  const heroStatus = heroReady ? "게시 승인" : hero.source === "SAMPLE" ? "샘플 asset" : "승인 필요";
+  const gateStatus =
+    publication.mode === "CUSTOMER_PUBLISHED"
+      ? customerPublishedGateReady
+        ? "게시 가능"
+        : "게시 보류"
+      : "게시 전 검토";
+
+  return [
+    {
+      id: "logo",
+      title: "로고",
+      status: logoStatus,
+      tone: logoReady ? "ready" : logoHasAsset ? "pending" : "blocked",
+      source: assetSourceLabels[logo.source],
+      assetId: logo.assetId ?? "텍스트 로고 fallback",
+      detail: logoHasAsset
+        ? "로고 파일 출처와 사용 승인을 확인합니다."
+        : "로고 파일이 없으면 텍스트 로고 fallback 승인 여부를 확인합니다."
+    },
+    {
+      id: "hero",
+      title: "대표 이미지",
+      status: heroStatus,
+      tone: heroReady ? "ready" : hero.source === "SAMPLE" ? "pending" : "blocked",
+      source: assetSourceLabels[hero.source],
+      assetId: hero.assetId ?? "대표 이미지 미지정",
+      detail: "고객 제공 사진 또는 묵산 승인 대체 이미지만 실제 게시에 사용합니다."
+    },
+    {
+      id: "publication",
+      title: "게시 게이트",
+      status: gateStatus,
+      tone:
+        publication.mode === "CUSTOMER_PUBLISHED" ? (customerPublishedGateReady ? "ready" : "blocked") : "pending",
+      source: publicationModeLabels[publication.mode],
+      assetId: publication.customerApprovedForPublish ? "고객 게시 승인 완료" : "고객 게시 승인 대기",
+      detail:
+        publication.mode === "CUSTOMER_PUBLISHED"
+          ? "샘플 고지 제거, 고객 승인, 로고와 대표 이미지 승인이 모두 필요합니다."
+          : "샘플 또는 고객 확인 모드에서는 실제 고객 게시 전환 전에 다시 판정합니다."
+    }
+  ];
+}
 
 function getTodayDate() {
   return new Date().toISOString().slice(0, 10);
@@ -263,6 +358,7 @@ export default function InternalDashboard() {
   const readinessCount = contentReadiness ? `${contentReadiness.score}%` : "대기";
   const requiredMissingCount = contentReadiness?.required.missing.length ?? 0;
   const recommendedMissingCount = contentReadiness?.recommended.missing.length ?? 0;
+  const publicationAssetReviewItems = activeAcademy ? getPublicationAssetReviewItems(activeAcademy) : [];
   const tabItems: Array<{ id: InternalTab; label: string; count: string }> = [
     { id: "status", label: "상태", count: `${academies.length}개` },
     {
@@ -539,6 +635,38 @@ export default function InternalDashboard() {
                 ) : null}
               </div>
             ) : null}
+          </section>
+        ) : null}
+        {activeAcademy ? (
+          <section className="asset-readiness-panel" aria-label="고객 게시 asset 승인 준비도">
+            <div className="asset-readiness-header">
+              <div>
+                <p className="eyebrow">Publication Assets</p>
+                <h3>고객 게시 asset 준비도</h3>
+              </div>
+              <span className={`asset-mode-pill ${activeAcademy.publication.mode.toLowerCase()}`}>
+                {publicationModeLabels[activeAcademy.publication.mode]}
+              </span>
+            </div>
+            <div className="asset-readiness-grid">
+              {publicationAssetReviewItems.map((item) => (
+                <article className={`asset-readiness-card ${item.tone}`} key={item.id}>
+                  <span className="asset-status-badge">{item.status}</span>
+                  <h4>{item.title}</h4>
+                  <dl>
+                    <div>
+                      <dt>출처</dt>
+                      <dd>{item.source}</dd>
+                    </div>
+                    <div>
+                      <dt>자료</dt>
+                      <dd>{item.assetId}</dd>
+                    </div>
+                  </dl>
+                  <p>{item.detail}</p>
+                </article>
+              ))}
+            </div>
           </section>
         ) : null}
         {!activeAcademy ? (

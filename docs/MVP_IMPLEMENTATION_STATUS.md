@@ -37,7 +37,7 @@ Last Updated: 2026-06-27
 | 모바일 품질 체크 | 1차 확인 | 반응형 CSS와 모바일 breakpoint가 구현되어 있고, `docs/11_PUBLIC_HOMEPAGE_VISUAL_QA_REPORT.md`에서 데스크톱/태블릿/모바일 캡처 기준 1차 시각 QA를 기록했다. |
 | 게시 모드 체크 | 초안 구현 | `publication.mode`로 샘플, 고객 미리보기, 고객 게시 화면의 footer와 entry 문구를 분리하고, 고객 게시 모드의 샘플 문구 잔존 검증, logo/hero asset 승인 검증, 자료 수집 asset 입력에서 `publication.assets`로의 변환 smoke test를 포함했다. |
 | 상담 문의 체크 | 완료 | `InquiryForm`이 보호자 이름, 연락처, 학년, 과목, 문의 내용, 개인정보 동의를 받고 `POST /api/inquiries`로 전송한다. |
-| 내부 제작 화면 체크 | 완료 | `/internal`에서 샘플 학원 상태, 콘텐츠 점검과 제작 준비도, 공지 CRUD, 문의 목록/상태 변경을 확인한다. 고객용 자유 편집기 기능은 없다. |
+| 내부 제작 화면 체크 | 완료 | `/internal`에서 샘플 학원 상태, 콘텐츠 점검과 제작 준비도, logo/hero asset 승인 준비도, 공지 CRUD, 문의 목록/상태 변경을 확인한다. 고객용 자유 편집기 기능은 없다. |
 | 데이터 경계 체크 | 완료 | 샘플 JSON과 로컬 SQLite 개발 DB만 사용한다. academy/exam_system2 직접 DB 공유나 실제 개인정보/결제 정보는 없다. |
 | 품질 철학 체크 | 완료 | 샘플 문구는 국어학원 공개 홈페이지에 맞춘 안내성 콘텐츠이며 허위 실적, 후기, 강사 경력을 넣지 않았다. |
 | 코드 품질 체크 | 완료 | `shared` workspace로 문의 검증 규칙을 공유하고, backend 콘텐츠 검증, API smoke, typecheck, build를 `verify`에 묶었다. |
@@ -110,7 +110,7 @@ npm.cmd run verify
 추가로 남아 있는 품질 보강 항목:
 
 - 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트
-- 내부 화면에서 고객 자료와 asset 승인 준비도 표시
+- 고객 자료 수집 양식 전체 API와 내부 입력 화면 구현 여부 판단
 - 내부 화면 접근 제어 설계
 - 실제 운영 서버 provision, HTTPS 인증서 발급, process manager 실제 등록
 - 운영 DB 백업 스케줄링과 정기 복구 리허설

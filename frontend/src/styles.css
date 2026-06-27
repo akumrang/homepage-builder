@@ -1028,6 +1028,115 @@ dd {
   margin-top: 18px;
 }
 
+.asset-readiness-panel {
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 18px;
+  background: var(--white);
+}
+
+.asset-readiness-header {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.asset-readiness-header h3 {
+  margin: 0;
+  font-size: 22px;
+}
+
+.asset-mode-pill,
+.asset-status-badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  border-radius: 999px;
+  padding: 0 10px;
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.asset-mode-pill {
+  background: #e3ece7;
+  color: #255742;
+  white-space: nowrap;
+}
+
+.asset-mode-pill.sample {
+  background: #f8e7d7;
+  color: #87451f;
+}
+
+.asset-mode-pill.customer_preview {
+  background: #eef1ea;
+  color: var(--ink);
+}
+
+.asset-readiness-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.asset-readiness-card {
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-left: 5px solid #bd7443;
+  border-radius: 8px;
+  padding: 16px;
+  background: #fffefa;
+}
+
+.asset-readiness-card.ready {
+  border-left-color: var(--green);
+}
+
+.asset-readiness-card.blocked {
+  border-left-color: #a7432a;
+}
+
+.asset-readiness-card.ready .asset-status-badge {
+  background: #e3ece7;
+  color: #255742;
+}
+
+.asset-readiness-card.pending .asset-status-badge {
+  background: #f1e4d6;
+  color: #7c4b2c;
+}
+
+.asset-readiness-card.blocked .asset-status-badge {
+  background: #f8e7d7;
+  color: #87451f;
+}
+
+.asset-readiness-card h4 {
+  margin: 12px 0 10px;
+  font-size: 18px;
+}
+
+.asset-readiness-card dl {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+}
+
+.asset-readiness-card dl div {
+  display: grid;
+  grid-template-columns: 54px 1fr;
+  gap: 8px;
+}
+
+.asset-readiness-card p {
+  margin: 12px 0 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
 .content-review-summary,
 .content-check-card {
   border: 1px solid var(--line);
@@ -1381,6 +1490,7 @@ dd {
   .location-grid,
   .notice-admin-layout,
   .content-review-layout,
+  .asset-readiness-grid,
   .notice-filter-panel,
   .inquiry-filter-panel {
     grid-template-columns: 1fr;
@@ -1584,6 +1694,11 @@ dd {
 
   .split-heading {
     align-items: start;
+  }
+
+  .asset-readiness-header {
+    flex-direction: column;
+    gap: 10px;
   }
 
   .split-heading strong {
