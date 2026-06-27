@@ -160,6 +160,8 @@ npm.cmd run rehearse:local-production
 5. Caddy를 통해 `/api/ready`와 SPA route 새로고침을 확인한다.
 6. 로그 파일 생성과 rotation 기준을 확인한다.
 
+service install/start/stop/restart와 Caddy validation의 상세 수동 절차는 `docs/09_WINDOWS_OPERATION_REHEARSAL_CHECKLIST.md`를 따른다.
+
 ---
 
 ## 7. 보안 기준

@@ -26,6 +26,7 @@ MVP 1차 운영은 same-origin reverse proxy를 권장한다.
 
 MVP 1차 운영 환경 결정은 `docs/07_MVP_PRODUCTION_ENVIRONMENT_DECISION.md`를 따른다. 현재 1차 기준은 Windows 단일 서버, Caddy, Windows Service wrapper다.
 실제 Caddyfile 초안은 `deploy/windows/Caddyfile.template`에 둔다.
+Windows 운영 수동 리허설은 `docs/09_WINDOWS_OPERATION_REHEARSAL_CHECKLIST.md`를 따른다.
 
 ```text
 https://homepage.example.com

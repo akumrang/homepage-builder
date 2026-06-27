@@ -178,3 +178,4 @@ service install 또는 등록
 - 실제 도메인과 HTTPS 인증서 발급
 
 복제용 초안 템플릿은 `docs/08_WINDOWS_CADDY_SERVICE_TEMPLATES.md`와 `deploy/windows/`에 둔다.
+service install/start/stop/restart와 Caddy validation 수동 리허설은 `docs/09_WINDOWS_OPERATION_REHEARSAL_CHECKLIST.md`에 둔다.

@@ -165,6 +165,7 @@ backend process 시작, 중지, 재시작 기준은 `docs/05_BACKEND_PROCESS_RUN
 운영 로그 rotation과 장애 기록 양식은 `docs/06_OPERATION_LOG_AND_INCIDENT_RUNBOOK.md`에 정리되어 있습니다.
 MVP 1차 운영 환경 결정은 `docs/07_MVP_PRODUCTION_ENVIRONMENT_DECISION.md`에 정리되어 있습니다.
 Windows Caddy와 Service wrapper 설정 초안은 `docs/08_WINDOWS_CADDY_SERVICE_TEMPLATES.md`에 정리되어 있습니다.
+Windows 운영 수동 리허설 체크리스트는 `docs/09_WINDOWS_OPERATION_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
 
 로컬에서 운영 배포 흐름을 시뮬레이션하려면 다음 명령을 사용합니다.
 
