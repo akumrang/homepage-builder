@@ -36,6 +36,7 @@
 샘플 화면과 실제 고객 게시 화면의 문구, asset, footer 분리 기준은 `docs/12_PUBLICATION_MODE_POLICY.md`에 정리되어 있습니다.
 
 첫 고객 파일럿을 위한 홈페이지 자료 수집 양식과 현재 seed 구조 매핑은 `planning/13_CUSTOMER_HOMEPAGE_INTAKE_SCHEMA.md`에 정리되어 있습니다.
+자료 수집 전체 API와 내부 입력 화면 구현 여부 판단은 `docs/13_CUSTOMER_INTAKE_IMPLEMENTATION_DECISION.md`에 정리되어 있습니다.
 
 포함된 것:
 
