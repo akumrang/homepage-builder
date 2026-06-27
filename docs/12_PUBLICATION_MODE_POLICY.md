@@ -241,6 +241,7 @@ hero 사진 우선순위:
 - 고객 게시 모드에서는 entry band의 MVP 방어 문구를 고객 게시용 안내 문구로 전환한다.
 - `publication.assets.logo`와 `publication.assets.hero`로 로고/hero asset의 출처와 게시 승인 상태를 분리한다.
 - 고객 게시 모드에서는 샘플 출처 hero, 미승인 hero, 승인되지 않은 logo asset, 승인되지 않은 텍스트 로고 fallback을 `NO-GO`로 판정한다.
+- 자료 수집 양식의 logo/hero 입력은 `mapIntakeAssetsToPublicationAssets` helper를 통해 `publication.assets` metadata로 변환한다.
 - 실제 asset 파일 저장소나 asset 업로드 UI는 아직 없다. 현재는 게시 전 내부 검증용 metadata만 둔다.
 
 현재 초안:
@@ -284,9 +285,9 @@ interface AcademyPublicationPolicy {
 이 정책 이후의 구현 후보는 다음이다.
 
 ```text
-실제 고객 자료 수집 양식과 publication asset metadata 연결
-→ intake의 logo/hero 자료 상태를 publication.assets로 반영
-→ 고객 게시 전 누락 자료, 미승인 asset, text fallback 승인 여부를 내부 화면에서 명확히 표시
+내부 화면에서 고객 자료와 asset 승인 준비도 표시
+→ 고객 게시 전 누락 자료, 미승인 asset, text fallback 승인 여부를 운영자가 바로 확인
+→ 고객 입력 양식 전체 구현은 보류
 ```
 
 다만 실제 고객 파일럿 전에는 먼저 고객 자료 수집 양식과 실제 asset 준비 상태를 확인해야 한다.

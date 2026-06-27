@@ -7,6 +7,7 @@ import {
 } from "./internalAccess.js";
 import { academySites } from "./sampleAcademies.js";
 import { getAcademyContentChecks } from "./contentValidation.js";
+import { mapIntakeAssetsToPublicationAssets } from "./customerIntake.js";
 import { prisma } from "./prismaClient.js";
 import type { AcademySite, ContentCheck } from "./types.js";
 
@@ -162,19 +163,15 @@ function createCustomerPublishedFixture(source: AcademySite): AcademySite {
       mode: "CUSTOMER_PUBLISHED",
       sampleDisclosureVisible: false,
       customerApprovedForPublish: true,
-      assets: {
-        logo: {
-          assetId: "hanbit-text-logo",
-          source: "MUKSAN_CREATED",
-          approvedForPublish: true,
-          textFallbackApproved: true
-        },
-        hero: {
-          assetId: "customer-approved-hero",
-          source: "CUSTOMER_PROVIDED",
-          approvedForPublish: true
-        }
-      },
+      assets: mapIntakeAssetsToPublicationAssets({
+        logoAssetId: "hanbit-text-logo",
+        logoSource: "MUKSAN_CREATED",
+        logoUsageConfirmed: true,
+        logoTextFallbackApproved: true,
+        heroPhotoAssetId: "customer-approved-hero",
+        heroPhotoSource: "CUSTOMER_PROVIDED",
+        heroPhotoUsageConfirmed: true
+      }),
       footerNote: "서울시 묵산구 배움로 12, 3층"
     },
     name: "한빛국어학원",
@@ -191,6 +188,42 @@ function findContentCheck(checks: ContentCheck[], key: string): ContentCheck {
   const check = checks.find((item) => item.key === key);
   assert(check, `content checks must include ${key}.`);
   return check;
+}
+
+function assertCustomerIntakeAssetMappingRules(): void {
+  const approvedAssets = mapIntakeAssetsToPublicationAssets({
+    logoAssetId: "hanbit-logo",
+    logoSource: "CUSTOMER_PROVIDED",
+    logoUsageConfirmed: true,
+    logoTextFallbackApproved: false,
+    heroPhotoAssetId: "hanbit-hero",
+    heroPhotoSource: "CUSTOMER_PROVIDED",
+    heroPhotoUsageConfirmed: true
+  });
+  assert(approvedAssets.logo.assetId === "hanbit-logo", "intake logo asset id must map to publication logo asset.");
+  assert(approvedAssets.logo.approvedForPublish, "confirmed logo asset must be approved for publication.");
+  assert(approvedAssets.hero.assetId === "hanbit-hero", "intake hero asset id must map to publication hero asset.");
+  assert(approvedAssets.hero.approvedForPublish, "confirmed hero asset must be approved for publication.");
+
+  const textLogoFallbackAssets = mapIntakeAssetsToPublicationAssets({
+    logoUsageConfirmed: false,
+    logoTextFallbackApproved: true,
+    heroPhotoAssetId: "approved-hero",
+    heroPhotoUsageConfirmed: true
+  });
+  assert(!textLogoFallbackAssets.logo.assetId, "missing logo asset must keep logo asset id empty.");
+  assert(
+    textLogoFallbackAssets.logo.textFallbackApproved,
+    "approved text logo fallback must map to publication logo policy."
+  );
+
+  const pendingHeroAssets = mapIntakeAssetsToPublicationAssets({
+    logoUsageConfirmed: false,
+    logoTextFallbackApproved: true,
+    heroPhotoAssetId: "pending-hero",
+    heroPhotoUsageConfirmed: false
+  });
+  assert(!pendingHeroAssets.hero.approvedForPublish, "unconfirmed hero asset must stay blocked for publication.");
 }
 
 function assertCustomerPublishedContentValidationRules(): void {
@@ -261,6 +294,7 @@ async function main() {
 
   try {
     assertInternalAccessConfigurationRules();
+    assertCustomerIntakeAssetMappingRules();
     assertCustomerPublishedContentValidationRules();
 
     const started = await startSmokeServer();

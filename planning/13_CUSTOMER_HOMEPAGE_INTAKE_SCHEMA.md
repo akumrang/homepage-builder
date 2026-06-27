@@ -186,9 +186,13 @@ interface CustomerHomepageIntake {
   };
   assets: {
     logoAssetId?: string;
+    logoSource?: "CUSTOMER_PROVIDED" | "MUKSAN_CREATED" | "MUKSAN_APPROVED_REPLACEMENT";
+    logoUsageConfirmed: boolean;
+    logoTextFallbackApproved: boolean;
     heroPhotoAssetId?: string;
+    heroPhotoSource?: "CUSTOMER_PROVIDED" | "MUKSAN_CREATED" | "MUKSAN_APPROVED_REPLACEMENT";
+    heroPhotoUsageConfirmed: boolean;
     classroomPhotoAssetIds?: string[];
-    assetUsageConfirmed: boolean;
   };
   initialNotices?: Array<{
     title: string;
@@ -219,6 +223,8 @@ interface CustomerHomepageIntake {
 | `slug` | 내부 시스템 | 학원명 기반으로 생성하되 충돌 방지 |
 | `templateId` | 묵산 판단 | 고객 분위기 선호와 과목을 보고 선택 |
 | `productionStatus` | 내부 제작 상태 | 고객이 직접 입력하지 않음 |
+| `publication.assets.logo` | `assets.logoAssetId`, `assets.logoUsageConfirmed`, `assets.logoTextFallbackApproved` | 로고 파일이 있으면 출처와 사용 승인 상태를 반영하고, 없으면 승인된 텍스트 로고 fallback 여부를 반영 |
+| `publication.assets.hero` | `assets.heroPhotoAssetId`, `assets.heroPhotoUsageConfirmed` | 대표 사진 asset의 출처와 사용 승인 상태를 반영하고, 없으면 묵산 승인 대체 이미지 준비 전 상태로 남김 |
 | `name` | `identity.academyName` | 공개 학원명으로 사용 |
 | `tagline` | `positioning.taglineDraft` 또는 묵산 작성 | 고객 초안이 없으면 묵산이 작성 |
 | `summary` | 고객 수업 정보 + 묵산 작성 | 첫 화면 요약 문구로 정리 |
@@ -287,6 +293,8 @@ interface CustomerHomepageIntake {
 
 고객 자료 수집 양식은 이 점검 항목을 역방향으로 채우기 위한 상위 입력 양식이다.
 
+`assets` 입력은 backend의 `mapIntakeAssetsToPublicationAssets` 초안 helper를 통해 `publication.assets` metadata로 변환한다. 이 metadata는 고객 게시 모드에서 승인된 hero, 승인된 logo asset 또는 승인된 텍스트 로고 fallback이 있는지 판단하는 기준이 된다.
+
 다음 구현 단계에서는 고객 입력값 또는 내부 입력 초안이 위 점검 항목을 얼마나 충족하는지 `제작 준비도`로 표시할 수 있다.
 
 ---
@@ -333,12 +341,13 @@ interface CustomerHomepageIntake {
 이 문서 이후의 구현 후보는 다음이다.
 
 ```text
-자료 누락 체크와 제작 준비도 강화
+내부 화면에서 고객 자료와 asset 승인 준비도 표시
 ```
 
 구현 범위는 다음으로 제한한다.
 
 - 현재 `AcademySite` 기준 필수/권장 항목의 준비도 계산
 - `/internal` 콘텐츠 탭에서 부족 항목을 더 명확히 표시
+- logo/hero asset 승인 상태와 텍스트 로고 fallback 승인 여부를 내부 화면에서 읽기 쉽게 표시
 - 고객 입력 양식 전체 구현은 보류
 - 고객 계정, 고객 포털, 자유 편집기는 만들지 않음
