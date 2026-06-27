@@ -239,21 +239,38 @@ hero 사진 우선순위:
 - footer는 `publication` 필드 기준으로 샘플/고객 미리보기/고객 게시 문구를 분리해 렌더링한다.
 - `CUSTOMER_PUBLISHED` 검증 fixture로 샘플 고지, 샘플 asset 경로, MVP 방어 문구 잔존 여부를 자동 확인한다.
 - 고객 게시 모드에서는 entry band의 MVP 방어 문구를 고객 게시용 안내 문구로 전환한다.
-- logo 필드는 아직 없다.
-- `heroImage`는 샘플 asset 경로다.
-- 고객 게시용 실제 로고와 실제 사진 승인 상태는 아직 asset 관리 시스템으로 모델링하지 않았다.
+- `publication.assets.logo`와 `publication.assets.hero`로 로고/hero asset의 출처와 게시 승인 상태를 분리한다.
+- 고객 게시 모드에서는 샘플 출처 hero, 미승인 hero, 승인되지 않은 logo asset, 승인되지 않은 텍스트 로고 fallback을 `NO-GO`로 판정한다.
+- 실제 asset 파일 저장소나 asset 업로드 UI는 아직 없다. 현재는 게시 전 내부 검증용 metadata만 둔다.
 
 현재 초안:
 
 ```ts
 type PublicationMode = "SAMPLE" | "CUSTOMER_PREVIEW" | "CUSTOMER_PUBLISHED";
 
+type PublicationAssetSource =
+  | "SAMPLE"
+  | "CUSTOMER_PROVIDED"
+  | "MUKSAN_CREATED"
+  | "MUKSAN_APPROVED_REPLACEMENT";
+
 interface AcademyPublicationPolicy {
   mode: PublicationMode;
   sampleDisclosureVisible: boolean;
   customerApprovedForPublish: boolean;
-  logoAssetId?: string;
-  heroAssetApproved: boolean;
+  assets: {
+    logo: {
+      assetId?: string;
+      source: PublicationAssetSource;
+      approvedForPublish: boolean;
+      textFallbackApproved: boolean;
+    };
+    hero: {
+      assetId?: string;
+      source: PublicationAssetSource;
+      approvedForPublish: boolean;
+    };
+  };
   footerNote?: string;
 }
 ```
@@ -267,9 +284,9 @@ interface AcademyPublicationPolicy {
 이 정책 이후의 구현 후보는 다음이다.
 
 ```text
-고객 게시 전 asset 승인 필드 강화
-→ logo asset과 hero asset의 출처/승인 상태 분리
-→ 고객 게시 모드에서 미승인 asset을 NO-GO로 판정
+실제 고객 자료 수집 양식과 publication asset metadata 연결
+→ intake의 logo/hero 자료 상태를 publication.assets로 반영
+→ 고객 게시 전 누락 자료, 미승인 asset, text fallback 승인 여부를 내부 화면에서 명확히 표시
 ```
 
 다만 실제 고객 파일럿 전에는 먼저 고객 자료 수집 양식과 실제 asset 준비 상태를 확인해야 한다.

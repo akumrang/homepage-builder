@@ -3,6 +3,7 @@ import type {
   ContentCheck,
   ContentReadiness,
   ContentReviewResult,
+  PublicationAssetSource,
   ProductionStatus,
   PublicationMode,
   TemplateId
@@ -10,6 +11,12 @@ import type {
 
 const allowedTemplateIds: TemplateId[] = ["trust-basic-v1"];
 const allowedPublicationModes: PublicationMode[] = ["SAMPLE", "CUSTOMER_PREVIEW", "CUSTOMER_PUBLISHED"];
+const allowedPublicationAssetSources: PublicationAssetSource[] = [
+  "SAMPLE",
+  "CUSTOMER_PROVIDED",
+  "MUKSAN_CREATED",
+  "MUKSAN_APPROVED_REPLACEMENT"
+];
 const customerPublishedForbiddenTexts = [
   "샘플",
   "실제 개인정보",
@@ -194,9 +201,66 @@ function formatForbiddenTextHits(hits: string[]): string {
   return hits.length > 3 ? `${preview} 외 ${hits.length - 3}건` : preview;
 }
 
+function collectCustomerPublishedAssetApprovalIssues(academy: AcademySite): string[] {
+  if (academy.publication.mode !== "CUSTOMER_PUBLISHED") {
+    return [];
+  }
+
+  const issues: string[] = [];
+  const { hero, logo } = academy.publication.assets;
+
+  if (academy.publication.sampleDisclosureVisible) {
+    issues.push("publication.sampleDisclosureVisible");
+  }
+
+  if (!academy.publication.customerApprovedForPublish) {
+    issues.push("publication.customerApprovedForPublish");
+  }
+
+  if (!hero.assetId?.trim()) {
+    issues.push("publication.assets.hero.assetId");
+  }
+
+  if (hero.source === "SAMPLE") {
+    issues.push("publication.assets.hero.source");
+  }
+
+  if (!hero.approvedForPublish) {
+    issues.push("publication.assets.hero.approvedForPublish");
+  }
+
+  if (academy.heroImage.toLowerCase().includes("sample")) {
+    issues.push("heroImage");
+  }
+
+  if (logo.assetId?.trim()) {
+    if (logo.source === "SAMPLE") {
+      issues.push("publication.assets.logo.source");
+    }
+
+    if (!logo.approvedForPublish) {
+      issues.push("publication.assets.logo.approvedForPublish");
+    }
+  } else if (!logo.textFallbackApproved) {
+    issues.push("publication.assets.logo.textFallbackApproved");
+  }
+
+  return issues;
+}
+
+function formatAssetApprovalIssues(issues: string[]): string {
+  if (issues.length === 0) {
+    return "";
+  }
+
+  const preview = issues.slice(0, 4).join(", ");
+  return issues.length > 4 ? `${preview} 외 ${issues.length - 4}건` : preview;
+}
+
 export function getAcademyContentChecks(academy: AcademySite, options: AcademyContentCheckOptions = {}): ContentCheck[] {
   const visibleNoticeCount = options.visibleNoticeCount ?? academy.notices.filter((notice) => notice.visible).length;
   const customerPublishedForbiddenTextHits = collectCustomerPublishedForbiddenTextHits(academy);
+  const customerPublishedAssetApprovalIssues = collectCustomerPublishedAssetApprovalIssues(academy);
 
   return [
     {
@@ -226,6 +290,15 @@ export function getAcademyContentChecks(academy: AcademySite, options: AcademyCo
       ok: academy.publication.mode !== "CUSTOMER_PUBLISHED" || customerPublishedForbiddenTextHits.length === 0,
       severity: "required",
       message: "실제 고객 게시 화면에는 샘플 고지, 샘플 asset, MVP 방어 문구가 남으면 안 됩니다."
+    },
+    {
+      key: "customerPublishedAssetApproval",
+      label: "고객 게시 asset 승인",
+      value: formatAssetApprovalIssues(customerPublishedAssetApprovalIssues),
+      ok: academy.publication.mode !== "CUSTOMER_PUBLISHED" || customerPublishedAssetApprovalIssues.length === 0,
+      severity: "required",
+      message:
+        "CUSTOMER_PUBLISHED는 고객 승인, 샘플 고지 제거, 승인된 hero asset, 승인된 logo asset 또는 텍스트 로고 fallback 승인이 필요합니다."
     },
     {
       key: "name",
@@ -464,9 +537,57 @@ function collectAcademySeedErrors(value: unknown, path: string): string[] {
       errors.push(`${path}.publication.mode must be one of: ${allowedPublicationModes.join(", ")}.`);
     }
 
-    for (const field of ["sampleDisclosureVisible", "customerApprovedForPublish", "heroAssetApproved"]) {
+    for (const field of ["sampleDisclosureVisible", "customerApprovedForPublish"]) {
       if (!isBoolean(value.publication[field])) {
         errors.push(`${path}.publication.${field} must be a boolean.`);
+      }
+    }
+
+    if (!isObject(value.publication.assets)) {
+      errors.push(`${path}.publication.assets must be an object.`);
+    } else {
+      if (!isObject(value.publication.assets.logo)) {
+        errors.push(`${path}.publication.assets.logo must be an object.`);
+      } else {
+        if (!allowedPublicationAssetSources.includes(value.publication.assets.logo.source as PublicationAssetSource)) {
+          errors.push(
+            `${path}.publication.assets.logo.source must be one of: ${allowedPublicationAssetSources.join(", ")}.`
+          );
+        }
+
+        for (const field of ["approvedForPublish", "textFallbackApproved"]) {
+          if (!isBoolean(value.publication.assets.logo[field])) {
+            errors.push(`${path}.publication.assets.logo.${field} must be a boolean.`);
+          }
+        }
+
+        if (
+          value.publication.assets.logo.assetId !== undefined &&
+          !isNonEmptyString(value.publication.assets.logo.assetId)
+        ) {
+          errors.push(`${path}.publication.assets.logo.assetId must be a non-empty string when provided.`);
+        }
+      }
+
+      if (!isObject(value.publication.assets.hero)) {
+        errors.push(`${path}.publication.assets.hero must be an object.`);
+      } else {
+        if (!allowedPublicationAssetSources.includes(value.publication.assets.hero.source as PublicationAssetSource)) {
+          errors.push(
+            `${path}.publication.assets.hero.source must be one of: ${allowedPublicationAssetSources.join(", ")}.`
+          );
+        }
+
+        if (!isBoolean(value.publication.assets.hero.approvedForPublish)) {
+          errors.push(`${path}.publication.assets.hero.approvedForPublish must be a boolean.`);
+        }
+
+        if (
+          value.publication.assets.hero.assetId !== undefined &&
+          !isNonEmptyString(value.publication.assets.hero.assetId)
+        ) {
+          errors.push(`${path}.publication.assets.hero.assetId must be a non-empty string when provided.`);
+        }
       }
     }
 

@@ -12,11 +12,35 @@ export type ProductionStatus =
 
 export type PublicationMode = "SAMPLE" | "CUSTOMER_PREVIEW" | "CUSTOMER_PUBLISHED";
 
+export type PublicationAssetSource =
+  | "SAMPLE"
+  | "CUSTOMER_PROVIDED"
+  | "MUKSAN_CREATED"
+  | "MUKSAN_APPROVED_REPLACEMENT";
+
+export interface PublicationLogoAssetPolicy {
+  assetId?: string;
+  source: PublicationAssetSource;
+  approvedForPublish: boolean;
+  textFallbackApproved: boolean;
+}
+
+export interface PublicationHeroAssetPolicy {
+  assetId?: string;
+  source: PublicationAssetSource;
+  approvedForPublish: boolean;
+}
+
+export interface AcademyPublicationAssets {
+  logo: PublicationLogoAssetPolicy;
+  hero: PublicationHeroAssetPolicy;
+}
+
 export interface AcademyPublicationPolicy {
   mode: PublicationMode;
   sampleDisclosureVisible: boolean;
   customerApprovedForPublish: boolean;
-  heroAssetApproved: boolean;
+  assets: AcademyPublicationAssets;
   footerNote?: string;
 }
 

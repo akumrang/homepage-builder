@@ -9,7 +9,18 @@
       "mode": "SAMPLE",
       "sampleDisclosureVisible": true,
       "customerApprovedForPublish": false,
-      "heroAssetApproved": true,
+      "assets": {
+        "logo": {
+          "source": "SAMPLE",
+          "approvedForPublish": false,
+          "textFallbackApproved": true
+        },
+        "hero": {
+          "assetId": "sample-academy-hero",
+          "source": "SAMPLE",
+          "approvedForPublish": true
+        }
+      },
       "footerNote": "샘플 홈페이지 · 실제 개인정보 없음"
     },
     "name": "샘플 한빛국어학원",

@@ -162,7 +162,19 @@ function createCustomerPublishedFixture(source: AcademySite): AcademySite {
       mode: "CUSTOMER_PUBLISHED",
       sampleDisclosureVisible: false,
       customerApprovedForPublish: true,
-      heroAssetApproved: true,
+      assets: {
+        logo: {
+          assetId: "hanbit-text-logo",
+          source: "MUKSAN_CREATED",
+          approvedForPublish: true,
+          textFallbackApproved: true
+        },
+        hero: {
+          assetId: "customer-approved-hero",
+          source: "CUSTOMER_PROVIDED",
+          approvedForPublish: true
+        }
+      },
       footerNote: "서울시 묵산구 배움로 12, 3층"
     },
     name: "한빛국어학원",
@@ -191,6 +203,11 @@ function assertCustomerPublishedContentValidationRules(): void {
     "customerPublishedSampleResidue"
   );
   assert(validResidueCheck.ok, "customer published fixture without sample copy must pass residue validation.");
+  const validAssetApprovalCheck = findContentCheck(
+    getAcademyContentChecks(validPublishedAcademy),
+    "customerPublishedAssetApproval"
+  );
+  assert(validAssetApprovalCheck.ok, "customer published fixture with approved assets must pass asset validation.");
 
   const invalidPublishedAcademy = createCustomerPublishedFixture(sourceAcademy);
   invalidPublishedAcademy.publication.footerNote = "샘플 홈페이지 · 실제 개인정보 없음";
@@ -208,6 +225,31 @@ function assertCustomerPublishedContentValidationRules(): void {
     invalidResidueCheck.value.includes("publication.footerNote") ||
       invalidResidueCheck.value.includes("teachers[0].note"),
     "customer published residue validation must report the source field."
+  );
+
+  const invalidAssetAcademy = createCustomerPublishedFixture(sourceAcademy);
+  invalidAssetAcademy.publication.assets.hero = {
+    assetId: "sample-academy-hero",
+    source: "SAMPLE",
+    approvedForPublish: false
+  };
+  invalidAssetAcademy.publication.assets.logo = {
+    source: "SAMPLE",
+    approvedForPublish: false,
+    textFallbackApproved: false
+  };
+  invalidAssetAcademy.heroImage = "/assets/sample-academy-hero.png";
+
+  const invalidAssetApprovalCheck = findContentCheck(
+    getAcademyContentChecks(invalidAssetAcademy),
+    "customerPublishedAssetApproval"
+  );
+  assert(!invalidAssetApprovalCheck.ok, "customer published fixture with sample assets must fail asset validation.");
+  assert(
+    invalidAssetApprovalCheck.value.includes("publication.assets.hero.source") ||
+      invalidAssetApprovalCheck.value.includes("publication.assets.logo.textFallbackApproved") ||
+      invalidAssetApprovalCheck.value.includes("heroImage"),
+    "customer published asset validation must report the source field."
   );
 }
 
@@ -357,6 +399,12 @@ async function main() {
         (check: { key?: string; ok?: boolean }) => check.key === "customerPublishedSampleResidue" && check.ok
       ),
       "content checks must include a passing customerPublishedSampleResidue check."
+    );
+    assert(
+      contentChecks.checks.some(
+        (check: { key?: string; ok?: boolean }) => check.key === "customerPublishedAssetApproval" && check.ok
+      ),
+      "content checks must include a passing customerPublishedAssetApproval check."
     );
 
     const academyDetail = await requestJson(started.baseUrl, `/api/academies/${academySlug}`, {
