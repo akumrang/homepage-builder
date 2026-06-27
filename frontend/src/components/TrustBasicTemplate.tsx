@@ -28,6 +28,18 @@ function getFooterNote(academy: AcademySite) {
   return publication.footerNote ?? academy.location.address;
 }
 
+function getEntryBandBody(academy: AcademySite) {
+  if (academy.publication.mode === "CUSTOMER_PUBLISHED") {
+    return "재원생과 보호자가 필요한 서비스로 이동할 수 있도록 결제 안내, 학원관리, 시험지 생성관리 진입 경로를 제공합니다.";
+  }
+
+  if (academy.publication.mode === "CUSTOMER_PREVIEW") {
+    return "고객 확인용 미리보기에서 결제 안내와 SaaS 진입 경로의 문구를 함께 검수합니다.";
+  }
+
+  return "이번 MVP에서는 실제 결제와 외부 시스템 연동 없이 진입 구조만 표시합니다.";
+}
+
 export default function TrustBasicTemplate({ academy }: { academy: AcademySite }) {
   const [isConsultationVisible, setIsConsultationVisible] = useState(false);
 
@@ -271,7 +283,7 @@ export default function TrustBasicTemplate({ academy }: { academy: AcademySite }
           <div>
             <p className="eyebrow">Muksan SaaS Entry</p>
             <h2>재원생 결제와 관리자 진입</h2>
-            <p>이번 MVP에서는 실제 결제와 외부 시스템 연동 없이 진입 구조만 표시합니다.</p>
+            <p>{getEntryBandBody(academy)}</p>
           </div>
           <div className="entry-actions">
             <a className="button button-secondary" href={academy.links.payment} id="payment">

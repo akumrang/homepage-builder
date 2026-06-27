@@ -10,6 +10,16 @@ import type {
 
 const allowedTemplateIds: TemplateId[] = ["trust-basic-v1"];
 const allowedPublicationModes: PublicationMode[] = ["SAMPLE", "CUSTOMER_PREVIEW", "CUSTOMER_PUBLISHED"];
+const customerPublishedForbiddenTexts = [
+  "샘플",
+  "실제 개인정보",
+  "샘플 공개 프로필",
+  "샘플 주소",
+  "샘플 안내",
+  "확인되지 않은 경력이나 실적은 표시하지 않습니다",
+  "MVP에서는 실제 결제와 외부 시스템 연동 없이",
+  "sample"
+];
 const allowedProductionStatuses: ProductionStatus[] = [
   "REQUESTED",
   "WAITING_FOR_MATERIALS",
@@ -93,8 +103,100 @@ interface AcademyContentCheckOptions {
   visibleNoticeCount?: number;
 }
 
+interface PublicTextField {
+  path: string;
+  value: string;
+}
+
+function collectCustomerPublishedPublicText(academy: AcademySite): PublicTextField[] {
+  const fields: PublicTextField[] = [
+    { path: "name", value: academy.name },
+    { path: "tagline", value: academy.tagline },
+    { path: "summary", value: academy.summary },
+    { path: "heroImage", value: academy.heroImage },
+    { path: "introduction.philosophy", value: academy.introduction.philosophy },
+    { path: "introduction.operation", value: academy.introduction.operation },
+    { path: "introduction.management", value: academy.introduction.management },
+    { path: "location.address", value: academy.location.address },
+    { path: "location.phone", value: academy.location.phone },
+    { path: "location.hours", value: academy.location.hours },
+    { path: "location.transit", value: academy.location.transit },
+    { path: "location.parking", value: academy.location.parking },
+    { path: "consultation.description", value: academy.consultation.description },
+    { path: "consultation.availableTime", value: academy.consultation.availableTime }
+  ];
+
+  if (academy.publication.footerNote) {
+    fields.push({ path: "publication.footerNote", value: academy.publication.footerNote });
+  }
+
+  academy.subjects.forEach((subject, index) => fields.push({ path: `subjects[${index}]`, value: subject }));
+  academy.targetGrades.forEach((grade, index) => fields.push({ path: `targetGrades[${index}]`, value: grade }));
+  academy.strengths.forEach((strength, index) => {
+    fields.push({ path: `strengths[${index}].title`, value: strength.title });
+    fields.push({ path: `strengths[${index}].body`, value: strength.body });
+  });
+  academy.teachers.forEach((teacher, index) => {
+    fields.push({ path: `teachers[${index}].name`, value: teacher.name });
+    fields.push({ path: `teachers[${index}].role`, value: teacher.role });
+    fields.push({ path: `teachers[${index}].grades`, value: teacher.grades });
+    fields.push({ path: `teachers[${index}].focus`, value: teacher.focus });
+    fields.push({ path: `teachers[${index}].note`, value: teacher.note });
+  });
+  academy.curriculum.forEach((track, index) => {
+    fields.push({ path: `curriculum[${index}].title`, value: track.title });
+    fields.push({ path: `curriculum[${index}].grades`, value: track.grades });
+    fields.push({ path: `curriculum[${index}].goal`, value: track.goal });
+    fields.push({ path: `curriculum[${index}].method`, value: track.method });
+  });
+  academy.schedules.forEach((schedule, index) => {
+    fields.push({ path: `schedules[${index}].day`, value: schedule.day });
+    fields.push({ path: `schedules[${index}].time`, value: schedule.time });
+    fields.push({ path: `schedules[${index}].grade`, value: schedule.grade });
+    fields.push({ path: `schedules[${index}].subject`, value: schedule.subject });
+    fields.push({ path: `schedules[${index}].className`, value: schedule.className });
+  });
+  academy.notices.forEach((notice, index) => {
+    fields.push({ path: `notices[${index}].title`, value: notice.title });
+    fields.push({ path: `notices[${index}].date`, value: notice.date });
+    fields.push({ path: `notices[${index}].body`, value: notice.body });
+  });
+
+  return fields;
+}
+
+function collectCustomerPublishedForbiddenTextHits(academy: AcademySite): string[] {
+  if (academy.publication.mode !== "CUSTOMER_PUBLISHED") {
+    return [];
+  }
+
+  const hits = new Set<string>();
+
+  for (const field of collectCustomerPublishedPublicText(academy)) {
+    const lowerValue = field.value.toLowerCase();
+
+    for (const forbiddenText of customerPublishedForbiddenTexts) {
+      if (lowerValue.includes(forbiddenText.toLowerCase())) {
+        hits.add(`${field.path}: ${forbiddenText}`);
+      }
+    }
+  }
+
+  return [...hits];
+}
+
+function formatForbiddenTextHits(hits: string[]): string {
+  if (hits.length === 0) {
+    return "";
+  }
+
+  const preview = hits.slice(0, 3).join(", ");
+  return hits.length > 3 ? `${preview} 외 ${hits.length - 3}건` : preview;
+}
+
 export function getAcademyContentChecks(academy: AcademySite, options: AcademyContentCheckOptions = {}): ContentCheck[] {
   const visibleNoticeCount = options.visibleNoticeCount ?? academy.notices.filter((notice) => notice.visible).length;
+  const customerPublishedForbiddenTextHits = collectCustomerPublishedForbiddenTextHits(academy);
 
   return [
     {
@@ -116,6 +218,14 @@ export function getAcademyContentChecks(academy: AcademySite, options: AcademyCo
             (!academy.publication.sampleDisclosureVisible && academy.publication.customerApprovedForPublish),
       severity: "recommended",
       message: "샘플 footer와 실제 고객 게시용 footer가 섞이지 않도록 확인합니다."
+    },
+    {
+      key: "customerPublishedSampleResidue",
+      label: "고객 게시 샘플 문구 제거",
+      value: formatForbiddenTextHits(customerPublishedForbiddenTextHits),
+      ok: academy.publication.mode !== "CUSTOMER_PUBLISHED" || customerPublishedForbiddenTextHits.length === 0,
+      severity: "required",
+      message: "실제 고객 게시 화면에는 샘플 고지, 샘플 asset, MVP 방어 문구가 남으면 안 됩니다."
     },
     {
       key: "name",

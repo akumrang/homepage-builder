@@ -5,7 +5,10 @@ import {
   getInternalAccessConfigurationStatus,
   minimumProductionInternalAccessTokenLength
 } from "./internalAccess.js";
+import { academySites } from "./sampleAcademies.js";
+import { getAcademyContentChecks } from "./contentValidation.js";
 import { prisma } from "./prismaClient.js";
+import type { AcademySite, ContentCheck } from "./types.js";
 
 const academySlug = "sample-korean-academy";
 const internalAccessToken = process.env.HOMEPAGE_INTERNAL_ACCESS_TOKEN?.trim() || "muksan-local-dev";
@@ -139,6 +142,75 @@ function assertInternalAccessConfigurationRules(): void {
   }
 }
 
+function createCustomerPublishedFixture(source: AcademySite): AcademySite {
+  const fixture = JSON.parse(
+    JSON.stringify(source)
+      .replaceAll("샘플", "고객")
+      .replaceAll("sample", "customer")
+      .replaceAll("실제 개인정보 없음", "게시 승인 완료")
+      .replaceAll("실제 개인정보를 포함하지 않습니다", "공개 승인된 수업 방식만 소개합니다")
+      .replaceAll("확인되지 않은 경력이나 실적은 표시하지 않습니다", "공개 승인된 수업 방식만 표시합니다")
+  ) as AcademySite;
+
+  return {
+    ...fixture,
+    id: "homepage_customer_published_fixture",
+    academyId: "academy_customer_fixture_001",
+    slug: "customer-korean-academy",
+    productionStatus: "PUBLISHED",
+    publication: {
+      mode: "CUSTOMER_PUBLISHED",
+      sampleDisclosureVisible: false,
+      customerApprovedForPublish: true,
+      heroAssetApproved: true,
+      footerNote: "서울시 묵산구 배움로 12, 3층"
+    },
+    name: "한빛국어학원",
+    heroImage: "/assets/customer-approved-hero.png",
+    location: {
+      ...fixture.location,
+      address: "서울시 묵산구 배움로 12, 3층",
+      phone: "02-1234-5678"
+    }
+  };
+}
+
+function findContentCheck(checks: ContentCheck[], key: string): ContentCheck {
+  const check = checks.find((item) => item.key === key);
+  assert(check, `content checks must include ${key}.`);
+  return check;
+}
+
+function assertCustomerPublishedContentValidationRules(): void {
+  const sourceAcademy = academySites.find((academy) => academy.slug === academySlug);
+  assert(sourceAcademy, "customer published fixture source academy must exist.");
+
+  const validPublishedAcademy = createCustomerPublishedFixture(sourceAcademy);
+  const validResidueCheck = findContentCheck(
+    getAcademyContentChecks(validPublishedAcademy),
+    "customerPublishedSampleResidue"
+  );
+  assert(validResidueCheck.ok, "customer published fixture without sample copy must pass residue validation.");
+
+  const invalidPublishedAcademy = createCustomerPublishedFixture(sourceAcademy);
+  invalidPublishedAcademy.publication.footerNote = "샘플 홈페이지 · 실제 개인정보 없음";
+  invalidPublishedAcademy.teachers[0] = {
+    ...invalidPublishedAcademy.teachers[0],
+    note: "샘플 공개 프로필입니다."
+  };
+
+  const invalidResidueCheck = findContentCheck(
+    getAcademyContentChecks(invalidPublishedAcademy),
+    "customerPublishedSampleResidue"
+  );
+  assert(!invalidResidueCheck.ok, "customer published fixture with sample copy must fail residue validation.");
+  assert(
+    invalidResidueCheck.value.includes("publication.footerNote") ||
+      invalidResidueCheck.value.includes("teachers[0].note"),
+    "customer published residue validation must report the source field."
+  );
+}
+
 async function main() {
   let server: Server | null = null;
   let createdInquiryId: string | null = null;
@@ -147,6 +219,7 @@ async function main() {
 
   try {
     assertInternalAccessConfigurationRules();
+    assertCustomerPublishedContentValidationRules();
 
     const started = await startSmokeServer();
     server = started.server;
@@ -278,6 +351,12 @@ async function main() {
     assert(
       contentChecks.checks.some((check: { key?: string; ok?: boolean }) => check.key === "publicationMode" && check.ok),
       "content checks must include a passing publicationMode check."
+    );
+    assert(
+      contentChecks.checks.some(
+        (check: { key?: string; ok?: boolean }) => check.key === "customerPublishedSampleResidue" && check.ok
+      ),
+      "content checks must include a passing customerPublishedSampleResidue check."
     );
 
     const academyDetail = await requestJson(started.baseUrl, `/api/academies/${academySlug}`, {

@@ -201,7 +201,7 @@ hero 사진 우선순위:
 고객 게시 모드에서 제거해야 하는 문구:
 
 - 샘플
-- 실제 개인정보 없음
+- 실제 개인정보 없음 또는 실제 개인정보 미사용 고지
 - 샘플 공개 프로필
 - 확인되지 않은 경력이나 실적은 표시하지 않습니다
 - MVP에서는 실제 결제와 외부 시스템 연동 없이
@@ -237,6 +237,8 @@ hero 사진 우선순위:
 
 - `sample-korean-academy`는 샘플 모드로 취급한다.
 - footer는 `publication` 필드 기준으로 샘플/고객 미리보기/고객 게시 문구를 분리해 렌더링한다.
+- `CUSTOMER_PUBLISHED` 검증 fixture로 샘플 고지, 샘플 asset 경로, MVP 방어 문구 잔존 여부를 자동 확인한다.
+- 고객 게시 모드에서는 entry band의 MVP 방어 문구를 고객 게시용 안내 문구로 전환한다.
 - logo 필드는 아직 없다.
 - `heroImage`는 샘플 asset 경로다.
 - 고객 게시용 실제 로고와 실제 사진 승인 상태는 아직 asset 관리 시스템으로 모델링하지 않았다.
@@ -265,9 +267,9 @@ interface AcademyPublicationPolicy {
 이 정책 이후의 구현 후보는 다음이다.
 
 ```text
-publication mode별 공개 문구 검증 강화
-→ customer published fixture 추가
-→ content validation에 샘플 문구 잔존 체크 추가
+고객 게시 전 asset 승인 필드 강화
+→ logo asset과 hero asset의 출처/승인 상태 분리
+→ 고객 게시 모드에서 미승인 asset을 NO-GO로 판정
 ```
 
 다만 실제 고객 파일럿 전에는 먼저 고객 자료 수집 양식과 실제 asset 준비 상태를 확인해야 한다.
