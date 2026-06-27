@@ -189,7 +189,27 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/windows/Test-Muks
 
 ---
 
-## 8. 보안 기준
+## 8. Service 조작 보조 스크립트
+
+Windows Service wrapper 명령을 같은 방식으로 실행하기 위해 보조 스크립트를 둔다.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action status
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action install
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action start
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action stop
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action restart
+```
+
+로컬 또는 문서 검증 단계에서는 실제 service를 건드리지 않도록 `-DryRun`을 사용한다.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/windows/Invoke-MuksanHomepageService.ps1 -Action status -DryRun -SkipPathChecks
+```
+
+---
+
+## 9. 보안 기준
 
 - 실제 `HOMEPAGE_INTERNAL_ACCESS_TOKEN`은 저장소에 커밋하지 않는다.
 - 운영 `.env`, runtime service XML, runtime Caddyfile은 서버 전용 파일로 관리한다.
@@ -199,13 +219,12 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File deploy/windows/Test-Muks
 
 ---
 
-## 9. 아직 구현이 아닌 항목
+## 10. 아직 구현이 아닌 항목
 
 이 문서는 템플릿 초안이다. 다음은 아직 자동화하지 않았다.
 
 - Caddy 설치 자동화
 - Windows Service wrapper 실행 파일 배치
-- service install/uninstall 자동 스크립트
 - 운영 secret 주입 자동화
 - log cleanup task 등록
 - 실제 도메인 인증서 발급 리허설

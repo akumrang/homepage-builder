@@ -240,13 +240,13 @@ WinSW 계열 wrapper 기준 예:
 
 ```powershell
 Copy-Item C:/path/to/winsw.exe C:/muksan-homepage/runtime/muksan-homepage-backend.exe
-C:/muksan-homepage/runtime/muksan-homepage-backend.exe install
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action install
 ```
 
 설치 확인:
 
 ```powershell
-C:/muksan-homepage/runtime/muksan-homepage-backend.exe status
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action status
 Get-Service muksan-homepage-backend
 ```
 
@@ -270,13 +270,13 @@ Get-Service muksan-homepage-backend
 명령:
 
 ```powershell
-C:/muksan-homepage/runtime/muksan-homepage-backend.exe start
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action start
 ```
 
 확인:
 
 ```powershell
-C:/muksan-homepage/runtime/muksan-homepage-backend.exe status
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action status
 Invoke-RestMethod http://127.0.0.1:4200/api/health
 Invoke-RestMethod http://127.0.0.1:4200/api/ready
 ```
@@ -304,13 +304,13 @@ Invoke-RestMethod http://127.0.0.1:4200/api/ready
 명령:
 
 ```powershell
-C:/muksan-homepage/runtime/muksan-homepage-backend.exe stop
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action stop
 ```
 
 확인:
 
 ```powershell
-C:/muksan-homepage/runtime/muksan-homepage-backend.exe status
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action status
 Test-NetConnection 127.0.0.1 -Port 4200
 ```
 
@@ -334,14 +334,14 @@ Test-NetConnection 127.0.0.1 -Port 4200
 명령:
 
 ```powershell
-C:/muksan-homepage/runtime/muksan-homepage-backend.exe start
-C:/muksan-homepage/runtime/muksan-homepage-backend.exe restart
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action start
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action restart
 ```
 
 확인:
 
 ```powershell
-C:/muksan-homepage/runtime/muksan-homepage-backend.exe status
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Invoke-MuksanHomepageService.ps1 -Action status
 Invoke-RestMethod http://127.0.0.1:4200/api/ready
 ```
 
@@ -472,7 +472,6 @@ NO-GO이면 운영 반영을 중단하고 실패 단계, 로그 파일명, readi
 
 - Caddy 설치
 - Windows Service wrapper 실행 파일 다운로드 또는 배치
-- service install/start/stop/restart 자동 스크립트
 - Caddy service 등록
 - DNS와 실제 HTTPS 인증서 발급
 - log cleanup task 등록
