@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import InquiryForm from "./InquiryForm";
 import type { AcademySite } from "../types";
 
@@ -12,6 +13,27 @@ function SectionHeading({ eyebrow, title, body }: { eyebrow: string; title: stri
 }
 
 export default function TrustBasicTemplate({ academy }: { academy: AcademySite }) {
+  const [isConsultationVisible, setIsConsultationVisible] = useState(false);
+
+  useEffect(() => {
+    const target = document.getElementById("consultation");
+
+    if (!target || typeof IntersectionObserver === "undefined") {
+      return undefined;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsConsultationVisible(entry.isIntersecting && entry.intersectionRatio > 0.08);
+      },
+      { threshold: [0, 0.08, 0.2] }
+    );
+
+    observer.observe(target);
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="site-shell">
       <header className="site-header">
@@ -252,10 +274,10 @@ export default function TrustBasicTemplate({ academy }: { academy: AcademySite }
       <footer className="site-footer">
         <span>{academy.name}</span>
         <span>샘플 홈페이지 · 실제 개인정보 없음</span>
-        <a href="/internal">내부 제작 화면</a>
+        <a href="#consultation">상담 문의</a>
       </footer>
 
-      <div className="mobile-action-bar">
+      <div className={isConsultationVisible ? "mobile-action-bar is-hidden" : "mobile-action-bar"}>
         <a href={`tel:${academy.location.phone}`}>전화</a>
         <a href="#consultation">상담 신청</a>
       </div>

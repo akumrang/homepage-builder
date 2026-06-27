@@ -713,6 +713,12 @@ dd {
   display: none;
 }
 
+.mobile-action-bar.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(calc(100% + 20px));
+}
+
 .plain-state {
   min-height: 100vh;
   display: grid;
@@ -1637,6 +1643,9 @@ dd {
     border-radius: 8px;
     background: var(--green);
     box-shadow: 0 16px 34px rgba(16, 25, 24, 0.22);
+    transition:
+      opacity 160ms ease,
+      transform 160ms ease;
   }
 
   .mobile-action-bar a {

@@ -32,6 +32,7 @@
 첫 구현은 샘플 학원 데이터를 기반으로 `trust-basic-v1` 템플릿 1종을 렌더링하고, 상담 문의를 backend로 접수하는 최소 구조입니다.
 
 체크리스트 기준 구현 상태는 `docs/MVP_IMPLEMENTATION_STATUS.md`에 정리되어 있습니다.
+공개 홈페이지 1차 시각 QA 결과는 `docs/11_PUBLIC_HOMEPAGE_VISUAL_QA_REPORT.md`에 정리되어 있습니다.
 
 첫 고객 파일럿을 위한 홈페이지 자료 수집 양식과 현재 seed 구조 매핑은 `planning/13_CUSTOMER_HOMEPAGE_INTAKE_SCHEMA.md`에 정리되어 있습니다.
 
