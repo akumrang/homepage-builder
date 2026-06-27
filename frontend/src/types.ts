@@ -10,6 +10,16 @@ export type ProductionStatus =
   | "APPROVED"
   | "PUBLISHED";
 
+export type PublicationMode = "SAMPLE" | "CUSTOMER_PREVIEW" | "CUSTOMER_PUBLISHED";
+
+export interface AcademyPublicationPolicy {
+  mode: PublicationMode;
+  sampleDisclosureVisible: boolean;
+  customerApprovedForPublish: boolean;
+  heroAssetApproved: boolean;
+  footerNote?: string;
+}
+
 export interface TeacherProfile {
   name: string;
   role: string;
@@ -49,6 +59,7 @@ export interface AcademySite {
   slug: string;
   templateId: TemplateId;
   productionStatus: ProductionStatus;
+  publication: AcademyPublicationPolicy;
   name: string;
   tagline: string;
   summary: string;

@@ -5,6 +5,13 @@
     "slug": "sample-korean-academy",
     "templateId": "trust-basic-v1",
     "productionStatus": "PUBLISHED",
+    "publication": {
+      "mode": "SAMPLE",
+      "sampleDisclosureVisible": true,
+      "customerApprovedForPublish": false,
+      "heroAssetApproved": true,
+      "footerNote": "샘플 홈페이지 · 실제 개인정보 없음"
+    },
     "name": "샘플 한빛국어학원",
     "tagline": "읽고 쓰는 힘을 차분히 쌓는 국어 수업",
     "summary": "중등 내신과 고등 국어의 기초가 되는 독해, 문법, 서술형 풀이를 작은 반에서 꾸준히 점검합니다.",

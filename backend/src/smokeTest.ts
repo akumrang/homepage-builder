@@ -275,6 +275,10 @@ async function main() {
       (check: { ok?: boolean; severity?: string }) => check.severity === "required" && check.ok !== true
     );
     assert(requiredFailures.length === 0, `required content checks failed: ${JSON.stringify(requiredFailures)}`);
+    assert(
+      contentChecks.checks.some((check: { key?: string; ok?: boolean }) => check.key === "publicationMode" && check.ok),
+      "content checks must include a passing publicationMode check."
+    );
 
     const academyDetail = await requestJson(started.baseUrl, `/api/academies/${academySlug}`, {
       expectedStatus: 200,
@@ -289,6 +293,14 @@ async function main() {
         academyDetail.academy !== null &&
         !("productionStatus" in academyDetail.academy),
       "public academy detail response must not expose productionStatus."
+    );
+    assert(
+      "publication" in academyDetail.academy &&
+        typeof academyDetail.academy.publication === "object" &&
+        academyDetail.academy.publication !== null &&
+        "mode" in academyDetail.academy.publication &&
+        academyDetail.academy.publication.mode === "SAMPLE",
+      "public academy detail response must expose publication mode."
     );
 
     const targetProductionStatus =

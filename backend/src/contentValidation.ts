@@ -1,6 +1,15 @@
-import type { AcademySite, ContentCheck, ContentReadiness, ContentReviewResult, ProductionStatus, TemplateId } from "./types.js";
+import type {
+  AcademySite,
+  ContentCheck,
+  ContentReadiness,
+  ContentReviewResult,
+  ProductionStatus,
+  PublicationMode,
+  TemplateId
+} from "./types.js";
 
 const allowedTemplateIds: TemplateId[] = ["trust-basic-v1"];
+const allowedPublicationModes: PublicationMode[] = ["SAMPLE", "CUSTOMER_PREVIEW", "CUSTOMER_PUBLISHED"];
 const allowedProductionStatuses: ProductionStatus[] = [
   "REQUESTED",
   "WAITING_FOR_MATERIALS",
@@ -88,6 +97,26 @@ export function getAcademyContentChecks(academy: AcademySite, options: AcademyCo
   const visibleNoticeCount = options.visibleNoticeCount ?? academy.notices.filter((notice) => notice.visible).length;
 
   return [
+    {
+      key: "publicationMode",
+      label: "게시 모드",
+      value: academy.publication.mode,
+      ok: allowedPublicationModes.includes(academy.publication.mode),
+      severity: "required",
+      message: "샘플, 고객 미리보기, 실제 고객 게시 화면을 구분하는 기준입니다."
+    },
+    {
+      key: "publicationFooter",
+      label: "공개 footer 기준",
+      value: academy.publication.footerNote ?? "",
+      ok:
+        academy.publication.mode === "SAMPLE"
+          ? academy.publication.sampleDisclosureVisible && (academy.publication.footerNote?.includes("샘플") ?? false)
+          : academy.publication.mode !== "CUSTOMER_PUBLISHED" ||
+            (!academy.publication.sampleDisclosureVisible && academy.publication.customerApprovedForPublish),
+      severity: "recommended",
+      message: "샘플 footer와 실제 고객 게시용 footer가 섞이지 않도록 확인합니다."
+    },
     {
       key: "name",
       label: "학원명",
@@ -316,6 +345,24 @@ function collectAcademySeedErrors(value: unknown, path: string): string[] {
 
   if (!allowedProductionStatuses.includes(value.productionStatus as ProductionStatus)) {
     errors.push(`${path}.productionStatus must be one of: ${allowedProductionStatuses.join(", ")}.`);
+  }
+
+  if (!isObject(value.publication)) {
+    errors.push(`${path}.publication must be an object.`);
+  } else {
+    if (!allowedPublicationModes.includes(value.publication.mode as PublicationMode)) {
+      errors.push(`${path}.publication.mode must be one of: ${allowedPublicationModes.join(", ")}.`);
+    }
+
+    for (const field of ["sampleDisclosureVisible", "customerApprovedForPublish", "heroAssetApproved"]) {
+      if (!isBoolean(value.publication[field])) {
+        errors.push(`${path}.publication.${field} must be a boolean.`);
+      }
+    }
+
+    if (value.publication.footerNote !== undefined && !isNonEmptyString(value.publication.footerNote)) {
+      errors.push(`${path}.publication.footerNote must be a non-empty string when provided.`);
+    }
   }
 
   if (!isNonEmptyStringArray(value.subjects)) {

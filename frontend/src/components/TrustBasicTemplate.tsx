@@ -12,6 +12,22 @@ function SectionHeading({ eyebrow, title, body }: { eyebrow: string; title: stri
   );
 }
 
+function getFooterNote(academy: AcademySite) {
+  const { publication } = academy;
+
+  if (publication.mode === "SAMPLE") {
+    return publication.sampleDisclosureVisible
+      ? publication.footerNote ?? "샘플 홈페이지 · 실제 개인정보 없음"
+      : academy.location.address;
+  }
+
+  if (publication.mode === "CUSTOMER_PREVIEW") {
+    return publication.footerNote ?? "고객 확인용 미리보기 · 일반 공개 전";
+  }
+
+  return publication.footerNote ?? academy.location.address;
+}
+
 export default function TrustBasicTemplate({ academy }: { academy: AcademySite }) {
   const [isConsultationVisible, setIsConsultationVisible] = useState(false);
 
@@ -273,7 +289,7 @@ export default function TrustBasicTemplate({ academy }: { academy: AcademySite }
 
       <footer className="site-footer">
         <span>{academy.name}</span>
-        <span>샘플 홈페이지 · 실제 개인정보 없음</span>
+        <span>{getFooterNote(academy)}</span>
         <a href="#consultation">상담 문의</a>
       </footer>
 

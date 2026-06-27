@@ -231,17 +231,17 @@ hero 사진 우선순위:
 
 ## 10. 현재 MVP와의 관계
 
-현재 구현은 아직 게시 모드 필드를 갖고 있지 않다.
+현재 구현은 게시 모드 초안 필드를 갖고 있다.
 
 현재 상태:
 
 - `sample-korean-academy`는 샘플 모드로 취급한다.
-- footer에는 샘플 고지가 남아 있다.
+- footer는 `publication` 필드 기준으로 샘플/고객 미리보기/고객 게시 문구를 분리해 렌더링한다.
 - logo 필드는 아직 없다.
 - `heroImage`는 샘플 asset 경로다.
-- 고객 게시용 footer, 실제 로고, 실제 사진 승인 상태는 아직 모델링하지 않았다.
+- 고객 게시용 실제 로고와 실제 사진 승인 상태는 아직 asset 관리 시스템으로 모델링하지 않았다.
 
-다음 구현 후보:
+현재 초안:
 
 ```ts
 type PublicationMode = "SAMPLE" | "CUSTOMER_PREVIEW" | "CUSTOMER_PUBLISHED";
@@ -265,8 +265,8 @@ interface AcademyPublicationPolicy {
 이 정책 이후의 구현 후보는 다음이다.
 
 ```text
-AcademySite에 publication mode 초안 필드 추가
-→ sample/customer footer 렌더링 분리
+publication mode별 공개 문구 검증 강화
+→ customer published fixture 추가
 → content validation에 샘플 문구 잔존 체크 추가
 ```
 
