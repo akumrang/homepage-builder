@@ -10,6 +10,8 @@ Last Updated: 2026-06-27
 
 이 문서는 MVP 1차 운영 기준인 Windows 단일 서버, Caddy, Windows Service wrapper 조합을 실제 운영 서버 또는 staging 서버에서 수동으로 리허설하는 절차를 정의한다.
 
+처음 배포 절차를 훑을 때는 `docs/10_WINDOWS_DEPLOYMENT_QUICKSTART.md`를 먼저 보고, 세부 실패 대응은 이 체크리스트를 따른다.
+
 목표는 다음 네 가지를 운영자 손으로 끝까지 확인하는 것이다.
 
 ```text

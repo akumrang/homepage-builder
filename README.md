@@ -157,6 +157,7 @@ npm.cmd run db:init
 
 운영 또는 배포 환경에서는 migration을 명시적으로 적용합니다.
 
+Windows 운영 배포 첫 실행 순서는 `docs/10_WINDOWS_DEPLOYMENT_QUICKSTART.md`에 정리되어 있습니다.
 운영 배포 전 상세 점검 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 정리되어 있습니다.
 SQLite 백업/복구 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있습니다.
 운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
@@ -166,6 +167,7 @@ backend process 시작, 중지, 재시작 기준은 `docs/05_BACKEND_PROCESS_RUN
 MVP 1차 운영 환경 결정은 `docs/07_MVP_PRODUCTION_ENVIRONMENT_DECISION.md`에 정리되어 있습니다.
 Windows Caddy와 Service wrapper 설정 초안은 `docs/08_WINDOWS_CADDY_SERVICE_TEMPLATES.md`에 정리되어 있습니다.
 Windows 운영 수동 리허설 체크리스트는 `docs/09_WINDOWS_OPERATION_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
+Windows 배포 Quickstart는 상세 런북을 실행 순서대로 묶은 입구 문서입니다.
 Windows runtime 설정 사전점검 스크립트는 `deploy/windows/Test-MuksanHomepageRuntime.ps1`입니다.
 Windows service 조작 보조 스크립트는 `deploy/windows/Invoke-MuksanHomepageService.ps1`입니다.
 Windows Caddy 조작 보조 스크립트는 `deploy/windows/Invoke-MuksanHomepageCaddy.ps1`입니다.

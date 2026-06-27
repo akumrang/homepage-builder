@@ -10,6 +10,8 @@ Last Updated: 2026-06-27
 
 이 문서는 homepage MVP를 운영 또는 운영에 준하는 staging 환경에 올리기 전에, 실제 배포 순서를 한 번 끝까지 재현하기 위한 체크리스트다.
 
+Windows 단일 서버 기준의 첫 실행 순서는 `docs/10_WINDOWS_DEPLOYMENT_QUICKSTART.md`에서 먼저 확인한다.
+
 리허설의 목표는 코드를 더 구현하는 것이 아니라 다음 순서가 운영자 관점에서 끊기지 않는지 확인하는 것이다.
 
 ```text
