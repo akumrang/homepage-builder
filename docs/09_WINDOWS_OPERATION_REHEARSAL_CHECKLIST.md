@@ -163,6 +163,14 @@ Test-Path C:/muksan-homepage/app/frontend/dist/index.html
 
 ## 6. Step 3: Caddy Validation
 
+validation 전에 runtime 사전점검을 실행한다.
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File C:/muksan-homepage/app/deploy/windows/Test-MuksanHomepageRuntime.ps1
+```
+
+사전점검이 실패하면 Caddy validation과 service install을 진행하지 않는다.
+
 명령:
 
 ```powershell
