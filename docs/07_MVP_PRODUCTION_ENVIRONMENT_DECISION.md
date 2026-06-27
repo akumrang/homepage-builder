@@ -171,8 +171,10 @@ service install 또는 등록
 
 이 문서는 결정 문서다. 다음은 아직 자동화하지 않았다.
 
-- Windows Service wrapper 설정 파일 생성
-- Caddyfile 실제 운영 파일 생성
+- Windows Service wrapper 설정 파일 자동 생성
+- Caddyfile 실제 운영 파일 자동 생성
 - Windows log rotation 또는 cleanup task 등록
 - 실제 운영 서버 provision
 - 실제 도메인과 HTTPS 인증서 발급
+
+복제용 초안 템플릿은 `docs/08_WINDOWS_CADDY_SERVICE_TEMPLATES.md`와 `deploy/windows/`에 둔다.

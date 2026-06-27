@@ -1,0 +1,27 @@
+<service>
+  <id>muksan-homepage-backend</id>
+  <name>Muksan Homepage Backend</name>
+  <description>Muksan homepage Express backend for public academy sites and internal operations.</description>
+
+  <executable>C:\Program Files\nodejs\node.exe</executable>
+  <arguments>C:\muksan-homepage\app\backend\dist\server.js</arguments>
+  <workingdirectory>C:\muksan-homepage\app</workingdirectory>
+
+  <env name="NODE_ENV" value="production" />
+  <env name="DATABASE_URL" value="file:C:/muksan-homepage/data/homepage-prod.db" />
+  <env name="HOMEPAGE_DB_BACKUP_DIR" value="C:/muksan-homepage/backups" />
+  <env name="HOMEPAGE_INTERNAL_ACCESS_TOKEN" value="REPLACE_WITH_AT_LEAST_32_RANDOM_CHARACTERS" />
+  <env name="HOST" value="127.0.0.1" />
+  <env name="PORT" value="4200" />
+
+  <logpath>C:\muksan-homepage\logs</logpath>
+  <log mode="roll-by-time">
+    <pattern>yyyyMMdd</pattern>
+  </log>
+
+  <onfailure action="restart" delay="10 sec" />
+  <onfailure action="restart" delay="30 sec" />
+  <onfailure action="none" />
+  <resetfailure>1 hour</resetfailure>
+  <stoptimeout>15 sec</stoptimeout>
+</service>

@@ -28,6 +28,7 @@ process manager는 다음 역할을 맡아야 한다.
 - 재시작 후 `/api/health`, `/api/ready` 확인 가능
 
 MVP 1차 운영 기준은 `docs/07_MVP_PRODUCTION_ENVIRONMENT_DECISION.md`를 따른다. 현재 1차 기준은 Windows Service wrapper다.
+Windows Service wrapper XML 초안은 `deploy/windows/muksan-homepage-backend.winsw.xml.template`에 둔다.
 
 process manager 후보는 운영 서버 선택에 따라 정한다.
 
@@ -214,7 +215,7 @@ P1 또는 P2 장애는 `docs/06_OPERATION_LOG_AND_INCIDENT_RUNBOOK.md`의 incide
 - process manager 설정 파일 생성
 - Windows Service 또는 systemd unit 등록
 - process manager별 log rotation 설정 파일 생성
-- Windows Service wrapper 설정 파일 생성
+- Windows Service wrapper 설정 파일 자동 생성
 - 외부 uptime monitoring
 - 장애 알림 발송
 - 무중단 배포
