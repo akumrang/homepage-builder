@@ -38,6 +38,7 @@
 첫 고객 파일럿을 위한 홈페이지 자료 수집 양식과 현재 seed 구조 매핑은 `planning/13_CUSTOMER_HOMEPAGE_INTAKE_SCHEMA.md`에 정리되어 있습니다.
 자료 수집 전체 API와 내부 입력 화면 구현 여부 판단은 `docs/13_CUSTOMER_INTAKE_IMPLEMENTATION_DECISION.md`에 정리되어 있습니다.
 첫 파일럿에서 고객에게 보낼 자료 요청 패킷은 `docs/14_FIRST_PILOT_CUSTOMER_INTAKE_PACKET.md`에 정리되어 있습니다.
+첫 파일럿 자료 수집 리허설과 누락 항목 기록은 `docs/15_FIRST_PILOT_INTAKE_REHEARSAL.md`에 정리되어 있습니다.
 
 포함된 것:
 

@@ -326,3 +326,5 @@ academy-counseling-room-01.jpg
 - 자료 수집 API로 승격할 명확한 이유가 생겼는지
 
 이 기록을 기준으로 자료 수집 API와 내부 입력 화면 구현 여부를 다시 판단한다.
+
+가상 고객 1곳 기준의 첫 리허설 기록은 `docs/15_FIRST_PILOT_INTAKE_REHEARSAL.md`에 둔다.
