@@ -24,6 +24,8 @@ Last Updated: 2026-06-27
 
 MVP 1차 운영은 same-origin reverse proxy를 권장한다.
 
+MVP 1차 운영 환경 결정은 `docs/07_MVP_PRODUCTION_ENVIRONMENT_DECISION.md`를 따른다. 현재 1차 기준은 Windows 단일 서버, Caddy, Windows Service wrapper다.
+
 ```text
 https://homepage.example.com
 ├─ /h/sample-korean-academy  → frontend/dist SPA fallback
@@ -58,7 +60,7 @@ C:/muksan-homepage/backups          # SQLite backup
 C:/muksan-homepage/logs             # process/reverse proxy log
 ```
 
-또는 Linux:
+Linux 대안:
 
 ```text
 /opt/muksan-homepage/app
@@ -174,6 +176,8 @@ https://homepage.example.com/internal
 
 ## 7. Caddy 예시
 
+MVP 1차 운영의 reverse proxy 기준은 Caddy다.
+
 예시일 뿐이며, 실제 경로와 도메인은 운영 서버에 맞게 바꾼다.
 
 ```caddyfile
@@ -209,6 +213,8 @@ Invoke-RestMethod https://homepage.example.com/api/ready
 ---
 
 ## 8. Nginx 예시
+
+Nginx는 Linux 운영으로 전환할 때의 대안 예시다. MVP 1차 기준은 아니다.
 
 예시일 뿐이며, 실제 경로와 도메인은 운영 서버에 맞게 바꾼다.
 
@@ -304,6 +310,7 @@ NO-GO 조건:
 - HTTPS 인증서 자동 발급/갱신
 - process manager 설정 파일 자동 생성
 - reverse proxy log rotation 설정 파일 자동 생성
+- Windows Service wrapper 설정 파일 자동 생성
 - 배포 artifact 업로드
 - custom domain 자동 연결
 - 외부 모니터링과 알림

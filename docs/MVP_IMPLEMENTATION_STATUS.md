@@ -113,7 +113,7 @@ npm.cmd run verify
 - 실제 운영 서버 provision, HTTPS 인증서 발급, process manager 실제 등록
 - 운영 DB 백업 스케줄링과 정기 복구 리허설
 
-운영 배포 전 점검표, health check, 환경 변수, DB 백업 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 별도 문서화되어 있다. SQLite 백업/복구 실행 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있다. 운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있으며, 로컬 production 시뮬레이션 명령은 `npm.cmd run rehearse:local-production`이다. 호스팅, reverse proxy, backend `HOST` bind 기준은 `docs/04_HOSTING_REVERSE_PROXY_PLAN.md`에 정리되어 있다. backend process 시작, 중지, 재시작 기준은 `docs/05_BACKEND_PROCESS_RUNBOOK.md`에 정리되어 있다. 운영 로그 rotation과 장애 기록 양식은 `docs/06_OPERATION_LOG_AND_INCIDENT_RUNBOOK.md`에 정리되어 있다.
+운영 배포 전 점검표, health check, 환경 변수, DB 백업 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 별도 문서화되어 있다. SQLite 백업/복구 실행 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있다. 운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있으며, 로컬 production 시뮬레이션 명령은 `npm.cmd run rehearse:local-production`이다. 호스팅, reverse proxy, backend `HOST` bind 기준은 `docs/04_HOSTING_REVERSE_PROXY_PLAN.md`에 정리되어 있다. backend process 시작, 중지, 재시작 기준은 `docs/05_BACKEND_PROCESS_RUNBOOK.md`에 정리되어 있다. 운영 로그 rotation과 장애 기록 양식은 `docs/06_OPERATION_LOG_AND_INCIDENT_RUNBOOK.md`에 정리되어 있다. MVP 1차 운영 환경은 Windows 단일 서버, Caddy, Windows Service wrapper로 결정했으며 `docs/07_MVP_PRODUCTION_ENVIRONMENT_DECISION.md`에 정리되어 있다.
 
 ---
 

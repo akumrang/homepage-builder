@@ -27,6 +27,8 @@ process manager는 다음 역할을 맡아야 한다.
 - 운영자가 명시적으로 stop/restart 할 수 있는 명령 제공
 - 재시작 후 `/api/health`, `/api/ready` 확인 가능
 
+MVP 1차 운영 기준은 `docs/07_MVP_PRODUCTION_ENVIRONMENT_DECISION.md`를 따른다. 현재 1차 기준은 Windows Service wrapper다.
+
 process manager 후보는 운영 서버 선택에 따라 정한다.
 
 | 환경 | 후보 |
@@ -36,7 +38,7 @@ process manager 후보는 운영 서버 선택에 따라 정한다.
 | Node 중심 운영 | PM2 |
 | 컨테이너 운영 | container runtime restart policy |
 
-어느 방식을 쓰더라도 backend 실행 명령과 환경 변수 기준은 동일해야 한다.
+이번 MVP에서는 Windows Service wrapper를 1차 기준으로 삼고, Task Scheduler는 장기 운영 process manager가 아니라 보조 작업 스케줄러 후보로만 본다. 어느 방식을 쓰더라도 backend 실행 명령과 환경 변수 기준은 동일해야 한다.
 
 ---
 
@@ -212,6 +214,7 @@ P1 또는 P2 장애는 `docs/06_OPERATION_LOG_AND_INCIDENT_RUNBOOK.md`의 incide
 - process manager 설정 파일 생성
 - Windows Service 또는 systemd unit 등록
 - process manager별 log rotation 설정 파일 생성
+- Windows Service wrapper 설정 파일 생성
 - 외부 uptime monitoring
 - 장애 알림 발송
 - 무중단 배포
