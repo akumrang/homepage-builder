@@ -47,6 +47,7 @@
 2차 시각 QA 결과는 `docs/21_SECOND_VISUAL_QA_REPORT.md`에 정리되어 있습니다.
 자료 누락 체크와 제작 준비도 강화 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`에 정리되어 있습니다.
 파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 정리되어 있습니다.
+브라우저 스크린샷 회귀 테스트 결과는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 정리되어 있습니다.
 
 포함된 것:
 
@@ -159,6 +160,22 @@ npm.cmd run build
 `content:validate`는 `backend/content/sample-academies.json`의 필수 구조와 공개 콘텐츠 필수 항목을 확인합니다. `typecheck`와 `build`는 backend 검증 단계에서 이 명령을 먼저 실행하므로 seed 콘텐츠가 깨지면 TypeScript 컴파일 전에 실패합니다.
 
 `api:smoke`는 backend 앱을 임시 포트로 실행해 `health`, `readiness`, 내부 접근 토큰 설정 방어, 내부 API 접근 보호, 콘텐츠 점검 API, 홈페이지 제작 상태 변경, 잘못된 제작 상태 차단, 공지사항 생성·수정·삭제, 공지 공개/비공개 노출, 상담 문의 정상 접수, 문의 상태 변경, 잘못된 문의 상태 차단, 개인정보 미동의 차단을 실제 HTTP 요청으로 검증합니다. 테스트 중 변경한 홈페이지 상태는 원래 값으로 되돌리고, 생성한 공지사항과 상담 문의는 검증 종료 시 삭제합니다.
+
+브라우저 스크린샷 회귀 테스트는 별도 명령으로 실행합니다.
+
+최초 1회 Playwright Chromium이 없으면 다음 명령을 실행합니다.
+
+```powershell
+npx.cmd playwright install chromium
+```
+
+이후 다음 명령으로 production build, 임시 SQLite DB, same-origin frontend dist server를 띄워 공개 홈페이지와 내부 제작 화면의 desktop/mobile 캡처를 생성합니다.
+
+```powershell
+npm.cmd run visual:regression
+```
+
+산출물은 `.tmp/visual-regression/<timestamp>/` 아래에 생성되며 Git에 커밋하지 않습니다.
 
 Prisma SQLite 개발 DB만 수동으로 준비하려면 다음 명령을 사용합니다.
 

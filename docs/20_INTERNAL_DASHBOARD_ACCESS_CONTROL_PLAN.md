@@ -292,12 +292,14 @@ NO-GO:
 
 파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 둔다.
 
-다음 1순위는 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트를 추가하는 것이다.
+브라우저 스크린샷 회귀 테스트는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 둔다.
+
+다음 1순위는 Prisma migration과 배포 환경 정리 상태를 재점검하는 것이다.
 
 범위:
 
-- 공개 홈페이지와 내부 제작 화면의 핵심 뷰를 desktop/mobile viewport로 캡처한다.
-- 화면 로드 실패와 주요 문구 미노출을 자동 실패 조건으로 둔다.
+- 운영 DB migration 적용 순서와 문서/script 일관성을 확인한다.
+- fresh production SQLite DB에서 `db:deploy`와 backend startup을 확인한다.
 - 고객 포털, 고객 계정, 자유 편집기는 계속 보류한다.
 
-이 작업은 고객 기능을 늘리는 것이 아니라, 묵산이 파일럿 시연 전후 같은 화면을 반복 확인하게 만드는 작업이다.
+이 작업은 고객 기능을 늘리는 것이 아니라, 묵산이 운영 배포 전 DB 적용과 process 흐름을 흔들리지 않게 확인하는 작업이다.

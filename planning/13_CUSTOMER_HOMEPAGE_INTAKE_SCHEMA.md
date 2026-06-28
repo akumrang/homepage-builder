@@ -346,6 +346,7 @@ interface CustomerHomepageIntake {
 2차 시각 QA 결과는 `docs/21_SECOND_VISUAL_QA_REPORT.md`에 정리한다.
 자료 누락 체크와 제작 준비도 강화 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`에 정리한다.
 파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 정리한다.
+브라우저 스크린샷 회귀 테스트는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 정리한다.
 
 ---
 
@@ -354,12 +355,12 @@ interface CustomerHomepageIntake {
 이 문서 이후의 구현 후보는 다음이다.
 
 ```text
-모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트
+Prisma migration과 배포 환경 정리 상태 재점검
 ```
 
 구현 범위는 다음으로 제한한다.
 
-- 공개 홈페이지와 내부 제작 화면의 핵심 뷰를 브라우저로 열어 스크린샷 저장
-- 데스크톱과 모바일 viewport를 모두 확인
-- 자동 비교는 MVP 이후로 미루고, 우선 재현 가능한 캡처와 smoke 실패 조건부터 추가
+- 운영 DB migration 적용 순서와 문서/script 일관성 확인
+- fresh production SQLite DB에서 `db:deploy`와 backend startup 확인
+- 실제 운영 DB 삭제 또는 reset 절차는 만들지 않음
 - 고객 계정, 고객 포털, 자유 편집기는 만들지 않음

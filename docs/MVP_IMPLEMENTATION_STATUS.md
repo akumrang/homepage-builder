@@ -34,7 +34,7 @@ Last Updated: 2026-06-28
 |---|---|---|
 | 실행 체크 | 완료 | root workspace에 `dev:frontend`, `dev:backend`, `verify`가 있고 frontend 5175, backend 4200 포트가 README에 기록되어 있다. |
 | 공개 홈페이지 체크 | 완료 | `frontend/src/App.tsx`가 `/h/sample-korean-academy`를 공개 페이지로 연결하고 `TrustBasicTemplate`이 소개, 강사진, 커리큘럼, 공지, 오시는 길, 상담 CTA를 렌더링한다. |
-| 모바일 품질 체크 | 1차 확인 | 반응형 CSS와 모바일 breakpoint가 구현되어 있고, `docs/11_PUBLIC_HOMEPAGE_VISUAL_QA_REPORT.md`에서 데스크톱/태블릿/모바일 캡처 기준 1차 시각 QA를 기록했다. |
+| 모바일 품질 체크 | 자동 캡처 추가 | 반응형 CSS와 모바일 breakpoint가 구현되어 있고, `docs/11_PUBLIC_HOMEPAGE_VISUAL_QA_REPORT.md`, `docs/21_SECOND_VISUAL_QA_REPORT.md`, `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에서 수동 QA와 자동 캡처 기준을 기록했다. |
 | 게시 모드 체크 | 초안 구현 | `publication.mode`로 샘플, 고객 미리보기, 고객 게시 화면의 footer와 entry 문구를 분리하고, 고객 게시 모드의 샘플 문구 잔존 검증, logo/hero asset 승인 검증, 자료 수집 asset 입력에서 `publication.assets`로의 변환 smoke test를 포함했다. |
 | 상담 문의 체크 | 완료 | `InquiryForm`이 보호자 이름, 연락처, 학년, 과목, 문의 내용, 개인정보 동의를 받고 `POST /api/inquiries`로 전송한다. |
 | 내부 제작 화면 체크 | 완료 | `/internal`에서 샘플 학원 상태, 콘텐츠 점검과 제작 준비도, logo/hero asset 승인 준비도, 공지 CRUD, 문의 목록/상태 변경을 확인한다. 고객용 자유 편집기 기능은 없다. |
@@ -62,6 +62,7 @@ Last Updated: 2026-06-28
 | 콘텐츠 검증 | `backend/src/contentValidation.ts` |
 | 공통 문의 검증 | `shared/src/index.ts` |
 | API smoke test | `backend/src/smokeTest.ts` |
+| 브라우저 스크린샷 회귀 테스트 | `scripts/captureVisualRegression.mjs` |
 
 ---
 
@@ -90,6 +91,15 @@ npm.cmd run verify
 - `api:smoke`: health, CORS origin guard, readiness, 내부 접근 토큰 설정 방어, 콘텐츠 점검, 제작 상태 변경, 공지 CRUD, 문의 접수, 문의 상태 변경, 개인정보 미동의 차단 확인
 - `typecheck`: shared/backend/frontend TypeScript 검사
 - `build`: shared/backend/frontend production build
+- `visual:regression`: Playwright Chromium으로 공개 홈페이지와 내부 제작 화면의 desktop/mobile 스크린샷 캡처
+
+브라우저 스크린샷 회귀 테스트는 별도 명령으로 실행한다.
+
+```powershell
+npm.cmd run visual:regression
+```
+
+2026-06-28 실행 결과: 통과. 산출물은 `.tmp/visual-regression/20260628T070534Z/`에 생성됐다.
 
 ---
 
@@ -109,11 +119,10 @@ npm.cmd run verify
 
 추가로 남아 있는 품질 보강 항목:
 
-- 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트
 - 실제 운영 서버 provision, HTTPS 인증서 발급, process manager 실제 등록
 - 운영 DB 백업 스케줄링과 정기 복구 리허설
 
-운영 배포 전 점검표, health check, 환경 변수, DB 백업 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 별도 문서화되어 있다. SQLite 백업/복구 실행 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있다. 운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있으며, 로컬 production 시뮬레이션 명령은 `npm.cmd run rehearse:local-production`이다. 호스팅, reverse proxy, backend `HOST` bind 기준은 `docs/04_HOSTING_REVERSE_PROXY_PLAN.md`에 정리되어 있다. backend process 시작, 중지, 재시작 기준은 `docs/05_BACKEND_PROCESS_RUNBOOK.md`에 정리되어 있다. 운영 로그 rotation과 장애 기록 양식은 `docs/06_OPERATION_LOG_AND_INCIDENT_RUNBOOK.md`에 정리되어 있다. MVP 1차 운영 환경은 Windows 단일 서버, Caddy, Windows Service wrapper로 결정했으며 `docs/07_MVP_PRODUCTION_ENVIRONMENT_DECISION.md`에 정리되어 있다. Windows Caddy와 Service wrapper 설정 초안은 `docs/08_WINDOWS_CADDY_SERVICE_TEMPLATES.md`와 `deploy/windows/`에 둔다. Windows 운영 수동 리허설 체크리스트는 `docs/09_WINDOWS_OPERATION_REHEARSAL_CHECKLIST.md`에 정리되어 있다. Windows 배포 첫 실행 순서는 `docs/10_WINDOWS_DEPLOYMENT_QUICKSTART.md`에 정리되어 있다. 공개 홈페이지 시각 QA는 `docs/11_PUBLIC_HOMEPAGE_VISUAL_QA_REPORT.md`, 샘플과 실제 고객 게시 화면의 분리 기준은 `docs/12_PUBLICATION_MODE_POLICY.md`, 고객 자료 수집 구현 방식 판단은 `docs/13_CUSTOMER_INTAKE_IMPLEMENTATION_DECISION.md`, 첫 파일럿 고객 자료 요청 패킷은 `docs/14_FIRST_PILOT_CUSTOMER_INTAKE_PACKET.md`, 첫 자료 수집 리허설은 `docs/15_FIRST_PILOT_INTAKE_REHEARSAL.md`, 실고객 발송 전 최종 검토는 `docs/16_FIRST_PILOT_INTAKE_PACKET_FINAL_REVIEW.md`, 고객별 발송용 사본 템플릿은 `docs/17_FIRST_PILOT_CUSTOMER_SEND_COPY.md`, 자료 회신 후 접수 기록 양식은 `docs/18_FIRST_PILOT_INTAKE_RECEIPT_RECORD_TEMPLATE.md`, 자료 접수 가상 판정 예시는 `docs/19_FIRST_PILOT_INTAKE_RECEIPT_REHEARSAL.md`, 내부 제작 화면 접근 제어 설계는 `docs/20_INTERNAL_DASHBOARD_ACCESS_CONTROL_PLAN.md`, 2차 시각 QA 결과는 `docs/21_SECOND_VISUAL_QA_REPORT.md`, 자료 누락 체크와 제작 준비도 강화 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`, 파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 정리되어 있다. Windows runtime 설정 사전점검 스크립트는 `deploy/windows/Test-MuksanHomepageRuntime.ps1`, service 조작 보조 스크립트는 `deploy/windows/Invoke-MuksanHomepageService.ps1`, Caddy 조작 보조 스크립트는 `deploy/windows/Invoke-MuksanHomepageCaddy.ps1`이다.
+운영 배포 전 점검표, health check, 환경 변수, DB 백업 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 별도 문서화되어 있다. SQLite 백업/복구 실행 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있다. 운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있으며, 로컬 production 시뮬레이션 명령은 `npm.cmd run rehearse:local-production`이다. 호스팅, reverse proxy, backend `HOST` bind 기준은 `docs/04_HOSTING_REVERSE_PROXY_PLAN.md`에 정리되어 있다. backend process 시작, 중지, 재시작 기준은 `docs/05_BACKEND_PROCESS_RUNBOOK.md`에 정리되어 있다. 운영 로그 rotation과 장애 기록 양식은 `docs/06_OPERATION_LOG_AND_INCIDENT_RUNBOOK.md`에 정리되어 있다. MVP 1차 운영 환경은 Windows 단일 서버, Caddy, Windows Service wrapper로 결정했으며 `docs/07_MVP_PRODUCTION_ENVIRONMENT_DECISION.md`에 정리되어 있다. Windows Caddy와 Service wrapper 설정 초안은 `docs/08_WINDOWS_CADDY_SERVICE_TEMPLATES.md`와 `deploy/windows/`에 둔다. Windows 운영 수동 리허설 체크리스트는 `docs/09_WINDOWS_OPERATION_REHEARSAL_CHECKLIST.md`에 정리되어 있다. Windows 배포 첫 실행 순서는 `docs/10_WINDOWS_DEPLOYMENT_QUICKSTART.md`에 정리되어 있다. 공개 홈페이지 시각 QA는 `docs/11_PUBLIC_HOMEPAGE_VISUAL_QA_REPORT.md`, 샘플과 실제 고객 게시 화면의 분리 기준은 `docs/12_PUBLICATION_MODE_POLICY.md`, 고객 자료 수집 구현 방식 판단은 `docs/13_CUSTOMER_INTAKE_IMPLEMENTATION_DECISION.md`, 첫 파일럿 고객 자료 요청 패킷은 `docs/14_FIRST_PILOT_CUSTOMER_INTAKE_PACKET.md`, 첫 자료 수집 리허설은 `docs/15_FIRST_PILOT_INTAKE_REHEARSAL.md`, 실고객 발송 전 최종 검토는 `docs/16_FIRST_PILOT_INTAKE_PACKET_FINAL_REVIEW.md`, 고객별 발송용 사본 템플릿은 `docs/17_FIRST_PILOT_CUSTOMER_SEND_COPY.md`, 자료 회신 후 접수 기록 양식은 `docs/18_FIRST_PILOT_INTAKE_RECEIPT_RECORD_TEMPLATE.md`, 자료 접수 가상 판정 예시는 `docs/19_FIRST_PILOT_INTAKE_RECEIPT_REHEARSAL.md`, 내부 제작 화면 접근 제어 설계는 `docs/20_INTERNAL_DASHBOARD_ACCESS_CONTROL_PLAN.md`, 2차 시각 QA 결과는 `docs/21_SECOND_VISUAL_QA_REPORT.md`, 자료 누락 체크와 제작 준비도 강화 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`, 파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`, 브라우저 스크린샷 회귀 테스트는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 정리되어 있다. Windows runtime 설정 사전점검 스크립트는 `deploy/windows/Test-MuksanHomepageRuntime.ps1`, service 조작 보조 스크립트는 `deploy/windows/Invoke-MuksanHomepageService.ps1`, Caddy 조작 보조 스크립트는 `deploy/windows/Invoke-MuksanHomepageCaddy.ps1`이다.
 
 ---
 
@@ -145,4 +154,4 @@ npm.cmd run verify
 
 ## 8. 다음 판단
 
-다음 작업은 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트를 추가하는 것이다.
+다음 작업은 Prisma migration과 배포 환경 정리 상태를 재점검하는 것이다.

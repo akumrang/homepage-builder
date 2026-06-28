@@ -30,6 +30,7 @@ Last Updated: 2026-06-28
 - 브라우저 기반 2차 시각 QA
 - 자료 누락 체크와 제작 준비도 강화
 - 파일럿 시연용 로컬 개발 DB 정리 절차 문서화
+- 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트
 - 제품 정의와 고객 디자인 권리 원칙 문서화
 
 보류로 확정한 것:
@@ -62,8 +63,8 @@ MVP 이후의 다음 개발은 다음 기준으로 고른다.
 | 2차 시각 QA | 완료 | 상담 폼 오류/완료 상태, 내부 접근 화면, 내부 탭 전환을 확인했다. 결과는 `docs/21_SECOND_VISUAL_QA_REPORT.md`에 둔다. |
 | 자료 누락 체크와 제작 준비도 강화 | 완료 | 내부 제작 공정 자동화의 첫 실무 가치가 크다. 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`에 둔다. |
 | 파일럿 시연용 로컬 개발 DB 정리 절차 | 완료 | 2차 시각 QA에서 과거 테스트 문의가 내부 문의 탭에 남는 문제가 확인되어 시연 전 통제 절차를 문서화했다. |
-| 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트 | 현재 1순위 | 시각 QA가 반복 작업으로 남아 있어 공개 홈페이지와 내부 제작 화면의 레이아웃 깨짐을 빠르게 확인할 자동화가 필요하다. |
-| Prisma migration과 배포 환경 정리 | 후속 후보 | 운영 전 필요하지만, 현재 로컬 MVP 단계에서는 접근 경계, QA, 시연 데이터 통제 이후에 진행해도 된다. |
+| 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트 | 완료 | `npm.cmd run visual:regression`으로 공개 홈페이지와 내부 제작 화면의 desktop/mobile 캡처를 생성한다. 결과는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 둔다. |
+| Prisma migration과 배포 환경 정리 | 현재 1순위 | 운영 전 migration 적용 순서, production DB 초기화, 배포 문서와 script의 일관성을 다시 확인해야 한다. |
 | 완성형 샘플 갤러리 기획 | 후속 후보 | 고객 디자인 권리 2단계인 `방향 선택형`의 후보지만, 즉시 구현 대상은 아니다. |
 | 완성형 샘플 갤러리 구현 | 보류 | 템플릿 수, 공개 범위, 고객 선택 제출 여부, 커스터마이징 기대 관리가 정리된 뒤 진행한다. |
 | academy/exam_system2 실제 연동 | 보류 | MVP 이후에도 API 경계 설계가 먼저이며 직접 DB 공유는 금지한다. |
@@ -75,53 +76,52 @@ MVP 이후의 다음 개발은 다음 기준으로 고른다.
 이 문서 작성 당시 다음 실제 구현 후보는 다음으로 정했다.
 
 ```text
-모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트
+Prisma migration과 배포 환경 정리
 ```
 
 현재 상태:
 
-- 공개 홈페이지와 내부 제작 화면은 1차, 2차 수동 시각 QA를 거쳤다.
-- 시각 QA 결과는 `docs/11_PUBLIC_HOMEPAGE_VISUAL_QA_REPORT.md`와 `docs/21_SECOND_VISUAL_QA_REPORT.md`에 기록되어 있다.
-- 현재 `npm.cmd run verify`는 API, typecheck, build 중심이며 브라우저 화면 캡처 회귀는 포함하지 않는다.
-- 묵산의 직접 시각 판정 전후로 같은 viewport를 반복 확인할 자동화가 필요하다.
+- Prisma schema와 초기 migration은 존재한다.
+- `npm.cmd run db:deploy`와 `npm.cmd run rehearse:local-production` 명령은 존재한다.
+- Windows 운영 배포 문서와 service/Caddy 보조 script는 마련되어 있다.
+- 다만 운영 전 migration 적용 순서, 임시/운영 DB 경로, 배포 문서와 script의 현재 일관성을 다시 점검할 필요가 있다.
 
 목표:
 
-- 공개 홈페이지와 내부 제작 화면의 핵심 뷰를 브라우저로 열어 스크린샷을 저장한다.
-- 데스크톱과 모바일 viewport를 모두 확인한다.
-- 화면 로드 실패, 주요 문구 미노출, 내부 접근 키 화면 미노출 같은 명확한 실패 조건을 자동 검증한다.
-- 첫 단계에서는 픽셀 단위 diff보다 재현 가능한 캡처와 smoke 실패 조건을 우선한다.
+- 운영 전 DB migration 적용 흐름이 문서와 script에서 같은 순서로 설명되는지 확인한다.
+- fresh production SQLite DB에서 `db:deploy`와 backend startup이 충돌하지 않는지 확인한다.
+- 배포 문서, README, Windows 보조 script의 실행 순서가 서로 어긋나지 않게 정리한다.
+- 샘플 갤러리나 고객 기능 구현으로 범위를 넓히지 않는다.
 
 가능한 최소 구현 범위:
 
-- dev server 또는 production preview를 띄운다.
-- Playwright 또는 기존 Node 기반 브라우저 도구로 desktop/mobile viewport를 연다.
-- `/h/sample-korean-academy`, `/internal` 접근 키 화면, 접근 후 내부 기본 탭을 캡처한다.
-- 캡처 산출물은 `.tmp/` 또는 문서용 명시 폴더에 둔다.
-- README에 실행 명령과 산출물 위치를 기록한다.
+- `backend/prisma/migrations`와 `schema.prisma` 현재 상태 점검
+- `db:init`, `db:deploy`, `rehearse:local-production` 역할 분리 재확인
+- Windows 배포 Quickstart와 운영 체크리스트의 DB 관련 문구 점검
+- 필요한 경우 작은 문서 수정 또는 script guard 보강
+- `npm.cmd run verify`, `npm.cmd run rehearse:local-production` 확인
 
 이번 후보에서 하지 않을 것:
 
-- 시각 디자인 자체 변경
-- 픽셀 단위 승인 시스템
-- 외부 클라우드 스크린샷 서비스 연동
-- 고객별 화면 승인 워크플로
-- 고객 포털 또는 제한 편집기 구현
+- DB 엔진 교체
+- academy/exam_system2 직접 DB 공유
+- 실제 운영 DB 삭제 또는 reset
+- 고객 기능 추가
+- 샘플 갤러리 구현
 
 ---
 
 ## 6. 1순위 후보의 성공 기준
 
-다음이 만족되면 `모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트`는 MVP 수준에서 완료로 본다.
+다음이 만족되면 `Prisma migration과 배포 환경 정리`는 MVP 수준에서 완료로 본다.
 
-- desktop viewport에서 공개 홈페이지 스크린샷이 생성된다.
-- mobile viewport에서 공개 홈페이지 스크린샷이 생성된다.
-- 내부 접근 키 화면 스크린샷이 생성된다.
-- 접근 키 입력 후 내부 기본 화면 스크린샷이 생성된다.
-- 주요 텍스트가 보이지 않거나 화면 로드가 실패하면 명령이 실패한다.
-- 생성 산출물 위치와 실행 명령이 README에 기록된다.
+- fresh production SQLite DB에 `db:deploy`가 성공한다.
+- `npm.cmd run rehearse:local-production`이 통과한다.
+- README와 운영 배포 문서가 같은 DB 적용 순서를 설명한다.
+- 개발 DB용 `db:init`과 운영 DB용 `db:deploy`의 경계가 명확하다.
+- 운영 DB reset이나 실제 데이터 삭제 절차를 추가하지 않는다.
 
-픽셀 diff, 시각 승인 UI, CI 연동은 후속 단계로 둔다.
+PostgreSQL 전환, 관리형 DB 도입, 자동 migration 승인 UI는 후속 단계로 둔다.
 
 ---
 
@@ -148,7 +148,7 @@ MVP 이후의 다음 개발은 다음 기준으로 고른다.
 
 따라서 현재 우선순위는 다음 순서로 둔다.
 
-1. 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트
-2. Prisma migration과 배포 환경 정리
-3. 샘플 갤러리 기획 재검토
-4. 다중 운영자 접근 제어 고도화 검토
+1. Prisma migration과 배포 환경 정리
+2. 샘플 갤러리 기획 재검토
+3. 다중 운영자 접근 제어 고도화 검토
+4. academy/exam_system2 API 경계 설계

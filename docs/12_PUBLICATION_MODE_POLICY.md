@@ -286,11 +286,12 @@ interface AcademyPublicationPolicy {
 이 정책 이후의 구현 후보는 다음이다.
 
 ```text
-모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트
-→ 공개 홈페이지와 내부 제작 화면의 핵심 뷰를 반복 캡처한다
+Prisma migration과 배포 환경 정리 상태 재점검
+→ 운영 전 DB 적용 순서와 배포 문서/script 일관성을 확인한다
 → 고객 계정과 고객용 자유 편집기는 계속 보류
 ```
 
 파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 정리했다.
+브라우저 스크린샷 회귀 테스트는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 정리했다.
 
 다만 실제 고객 파일럿 전에는 먼저 고객 자료 수집 양식, 실제 asset 준비 상태, 내부 접근 제어 기준, 2차 시각 QA 결과, 자료 누락 체크 강화 결과를 확인해야 한다.
