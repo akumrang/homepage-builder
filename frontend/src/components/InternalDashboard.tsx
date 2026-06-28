@@ -619,18 +619,39 @@ export default function InternalDashboard() {
               <strong>다음 조치</strong>
               <p>{contentReadiness.nextAction}</p>
             </div>
+            <div className={`material-gate ${contentReadiness.materialGate.canTransition ? "ready" : "blocked"}`}>
+              <div>
+                <strong>{contentReadiness.materialGate.label}</strong>
+                <p>{contentReadiness.materialGate.message}</p>
+              </div>
+              <span>{contentReadiness.materialGate.targetStatus}</span>
+            </div>
             {requiredMissingCount > 0 || recommendedMissingCount > 0 ? (
               <div className="missing-summary">
                 {requiredMissingCount > 0 ? (
                   <div>
                     <strong>필수 누락</strong>
-                    <p>{contentReadiness.required.missing.join(", ")}</p>
+                    <ul>
+                      {contentReadiness.required.missingItems.map((item) => (
+                        <li key={item.key}>
+                          <b>{item.intakeField}</b>
+                          <span>{item.action}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 ) : null}
                 {recommendedMissingCount > 0 ? (
                   <div>
                     <strong>권장 보강</strong>
-                    <p>{contentReadiness.recommended.missing.join(", ")}</p>
+                    <ul>
+                      {contentReadiness.recommended.missingItems.map((item) => (
+                        <li key={item.key}>
+                          <b>{item.intakeField}</b>
+                          <span>{item.action}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 ) : null}
               </div>
@@ -702,6 +723,7 @@ export default function InternalDashboard() {
                   <span>{item.ok ? "확인" : "누락"}</span>
                   <h3>{item.label}</h3>
                   <p>{item.value || "입력 필요"}</p>
+                  {item.intakeField ? <em>접수 항목: {item.intakeField}</em> : null}
                   <small>{item.message}</small>
                 </article>
               ))}

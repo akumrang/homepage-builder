@@ -164,9 +164,26 @@ export interface ContentCheck {
   ok: boolean;
   severity: "required" | "recommended";
   message: string;
+  intakeField?: string;
+  missingAction?: string;
 }
 
 export type ContentReadinessStatus = "READY" | "NEEDS_RECOMMENDED" | "NEEDS_REQUIRED";
+
+export interface ContentReadinessMissingItem {
+  key: string;
+  label: string;
+  intakeField: string;
+  action: string;
+}
+
+export interface ContentReadinessMaterialGate {
+  targetStatus: "MATERIALS_READY";
+  canTransition: boolean;
+  label: string;
+  message: string;
+  blockingItems: ContentReadinessMissingItem[];
+}
 
 export interface ContentReadiness {
   status: ContentReadinessStatus;
@@ -177,12 +194,15 @@ export interface ContentReadiness {
     total: number;
     passed: number;
     missing: string[];
+    missingItems: ContentReadinessMissingItem[];
   };
   recommended: {
     total: number;
     passed: number;
     missing: string[];
+    missingItems: ContentReadinessMissingItem[];
   };
+  materialGate: ContentReadinessMaterialGate;
   nextAction: string;
 }
 

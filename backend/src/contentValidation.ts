@@ -2,6 +2,7 @@ import type {
   AcademySite,
   ContentCheck,
   ContentReadiness,
+  ContentReadinessMissingItem,
   ContentReviewResult,
   PublicationAssetSource,
   ProductionStatus,
@@ -37,6 +38,107 @@ const allowedProductionStatuses: ProductionStatus[] = [
   "APPROVED",
   "PUBLISHED"
 ];
+
+const contentCheckIntakeMetadata: Record<string, { intakeField: string; missingAction: string }> = {
+  publicationMode: {
+    intakeField: "게시 전 최종 확인 절차",
+    missingAction: "샘플, 고객 확인, 고객 게시 중 현재 공개 모드를 먼저 확정합니다."
+  },
+  publicationFooter: {
+    intakeField: "게시 전 최종 확인 절차",
+    missingAction: "샘플 footer와 실제 고객 게시용 footer 문구를 다시 확인합니다."
+  },
+  customerPublishedSampleResidue: {
+    intakeField: "게시 전 최종 확인 절차",
+    missingAction: "고객 게시 전 샘플 문구, 샘플 고지, MVP 방어 문구를 제거합니다."
+  },
+  customerPublishedAssetApproval: {
+    intakeField: "Asset 승인 상태",
+    missingAction: "고객 승인, hero asset 승인, logo asset 또는 텍스트 로고 fallback 승인을 확인합니다."
+  },
+  name: {
+    intakeField: "학원명",
+    missingAction: "홈페이지에 공개할 학원명을 고객에게 확인합니다."
+  },
+  tagline: {
+    intakeField: "대표 문구",
+    missingAction: "첫 화면에 넣을 대표 문구 또는 묵산 작성 방향을 확정합니다."
+  },
+  summary: {
+    intakeField: "대표 문구",
+    missingAction: "첫 화면 요약 문구를 묵산이 작성할 수 있도록 학원 소개 방향을 확인합니다."
+  },
+  targetGrades: {
+    intakeField: "대상 학년 1개 이상",
+    missingAction: "홈페이지에 공개할 대상 학년을 고객에게 확인합니다."
+  },
+  subjects: {
+    intakeField: "대표 과목 1개 이상",
+    missingAction: "홈페이지 첫 화면에 표시할 대표 과목을 고객에게 확인합니다."
+  },
+  strengths: {
+    intakeField: "강조 장점 3개 후보",
+    missingAction: "고객이 강조하고 싶은 장점 후보를 최소 3개 받습니다."
+  },
+  phone: {
+    intakeField: "공개 연락처",
+    missingAction: "상담 문의와 전화 상담에 사용할 공개 연락처를 확인합니다."
+  },
+  address: {
+    intakeField: "주소",
+    missingAction: "오시는 길에 표시할 공개 주소를 확인합니다."
+  },
+  hours: {
+    intakeField: "운영 시간 또는 상담 가능 시간",
+    missingAction: "홈페이지에 공개할 운영 시간 또는 상담 가능 시간을 확인합니다."
+  },
+  consultation: {
+    intakeField: "상담 방식",
+    missingAction: "전화, 문의 폼, 방문 상담 등 가능한 상담 방식을 확인합니다."
+  },
+  teachers: {
+    intakeField: "강사진 또는 공개 가능한 담당자 소개",
+    missingAction: "허위 경력 없이 공개 가능한 강사진 또는 담당자 소개를 받습니다."
+  },
+  curriculum: {
+    intakeField: "커리큘럼 1개 이상",
+    missingAction: "대표 커리큘럼을 최소 1개 이상 고객에게 확인합니다."
+  },
+  heroImage: {
+    intakeField: "대표 사진 또는 교실 사진",
+    missingAction: "사용 동의가 확인된 대표 사진을 받거나 묵산 승인 대체 이미지를 준비합니다."
+  },
+  schedules: {
+    intakeField: "수업 시간표 1개 이상",
+    missingAction: "공개 가능한 대표 시간표를 1개 이상 받습니다."
+  },
+  publicNotices: {
+    intakeField: "초기 공지 1개 이상",
+    missingAction: "개강 안내, 상담 안내 등 초기 공개 공지를 1개 이상 준비합니다."
+  },
+  transit: {
+    intakeField: "교통 안내",
+    missingAction: "대중교통 또는 방문 기준 위치 안내를 보강합니다."
+  },
+  parking: {
+    intakeField: "주차 안내",
+    missingAction: "주차 가능 여부를 확인하거나, 없으면 생략 가능 여부를 정합니다."
+  }
+};
+
+function attachIntakeMetadata(check: ContentCheck): ContentCheck {
+  const metadata = contentCheckIntakeMetadata[check.key];
+
+  if (!metadata) {
+    return check;
+  }
+
+  return {
+    ...check,
+    intakeField: metadata.intakeField,
+    missingAction: metadata.missingAction
+  };
+}
 
 function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
@@ -262,7 +364,7 @@ export function getAcademyContentChecks(academy: AcademySite, options: AcademyCo
   const customerPublishedForbiddenTextHits = collectCustomerPublishedForbiddenTextHits(academy);
   const customerPublishedAssetApprovalIssues = collectCustomerPublishedAssetApprovalIssues(academy);
 
-  return [
+  const checks: ContentCheck[] = [
     {
       key: "publicationMode",
       label: "게시 모드",
@@ -437,16 +539,30 @@ export function getAcademyContentChecks(academy: AcademySite, options: AcademyCo
       message: "방문 상담이 있는 학원은 주차 가능 여부를 안내하는 편이 좋습니다."
     }
   ];
+
+  return checks.map(attachIntakeMetadata);
 }
 
 function summarizeChecks(checks: ContentCheck[], severity: ContentCheck["severity"]) {
   const scopedChecks = checks.filter((check) => check.severity === severity);
-  const missing = scopedChecks.filter((check) => !check.ok).map((check) => check.label);
+  const missingChecks = scopedChecks.filter((check) => !check.ok);
+  const missing = missingChecks.map((check) => check.label);
+  const missingItems = missingChecks.map(toMissingItem);
 
   return {
     total: scopedChecks.length,
     passed: scopedChecks.length - missing.length,
-    missing
+    missing,
+    missingItems
+  };
+}
+
+function toMissingItem(check: ContentCheck): ContentReadinessMissingItem {
+  return {
+    key: check.key,
+    label: check.label,
+    intakeField: check.intakeField ?? check.label,
+    action: check.missingAction ?? `${check.label} 자료를 보완합니다.`
   };
 }
 
@@ -464,6 +580,16 @@ export function getContentReadiness(checks: ContentCheck[]): ContentReadiness {
   const recommended = summarizeChecks(checks, "recommended");
   const passedCount = checks.filter((check) => check.ok).length;
   const score = checks.length === 0 ? 0 : Math.round((passedCount / checks.length) * 100);
+  const materialGate = {
+    targetStatus: "MATERIALS_READY" as const,
+    canTransition: required.missingItems.length === 0,
+    label: required.missingItems.length === 0 ? "MATERIALS_READY 전환 가능" : "MATERIALS_READY 보류",
+    message:
+      required.missingItems.length === 0
+        ? "필수 자료가 충족되어 초안 제작 상태로 넘길 수 있습니다."
+        : `필수 자료 ${required.missingItems.length}개가 부족해 고객에게 먼저 재요청해야 합니다.`,
+    blockingItems: required.missingItems
+  };
 
   if (required.missing.length > 0) {
     return {
@@ -473,6 +599,7 @@ export function getContentReadiness(checks: ContentCheck[]): ContentReadiness {
       score,
       required,
       recommended,
+      materialGate,
       nextAction: `고객에게 ${formatMissingItems(required.missing)} 자료를 먼저 요청합니다.`
     };
   }
@@ -485,6 +612,7 @@ export function getContentReadiness(checks: ContentCheck[]): ContentReadiness {
       score,
       required,
       recommended,
+      materialGate,
       nextAction: `초안 제작은 가능하며, ${formatMissingItems(recommended.missing)} 보강을 권장합니다.`
     };
   }
@@ -496,6 +624,7 @@ export function getContentReadiness(checks: ContentCheck[]): ContentReadiness {
     score,
     required,
     recommended,
+    materialGate,
     nextAction: "MATERIALS_READY 이후 초안 제작과 내부 검수로 진행합니다."
   };
 }

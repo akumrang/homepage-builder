@@ -344,6 +344,7 @@ interface CustomerHomepageIntake {
 자료 접수 가상 판정 예시는 `docs/19_FIRST_PILOT_INTAKE_RECEIPT_REHEARSAL.md`에 정리한다.
 내부 제작 화면 접근 제어 설계는 `docs/20_INTERNAL_DASHBOARD_ACCESS_CONTROL_PLAN.md`에 정리한다.
 2차 시각 QA 결과는 `docs/21_SECOND_VISUAL_QA_REPORT.md`에 정리한다.
+자료 누락 체크와 제작 준비도 강화 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`에 정리한다.
 
 ---
 
@@ -352,14 +353,12 @@ interface CustomerHomepageIntake {
 이 문서 이후의 구현 후보는 다음이다.
 
 ```text
-자료 누락 체크와 제작 준비도 강화
+파일럿 시연용 로컬 개발 DB 정리 절차 문서화
 ```
 
 구현 범위는 다음으로 제한한다.
 
-- 고객 자료 접수 기록 양식의 필수/권장 항목을 내부 콘텐츠 준비도와 연결
-- `MATERIALS_READY` 전환 전 부족 항목 표시 강화
+- 로컬 개발 DB의 테스트 문의와 상태값을 시연 전 어떻게 정리할지 문서화
 - 실제 고객 개인정보나 민감 자료는 저장소에 넣지 않음
-- 고객 계정, 고객 포털, 파일 업로드 UI는 계속 보류
-- 고객 입력 양식 전체 API와 내부 입력 화면은 첫 파일럿 후 필요성이 확인되면 별도 범위로 진행
+- 운영 DB 삭제 또는 destructive reset 절차는 만들지 않음
 - 고객 계정, 고객 포털, 자유 편집기는 만들지 않음

@@ -255,4 +255,6 @@ publication.assets.hero:
 
 2차 시각 QA 결과는 `docs/21_SECOND_VISUAL_QA_REPORT.md`에 둔다.
 
-다음 1순위는 자료 누락 체크와 제작 준비도 강화다.
+자료 누락 체크와 제작 준비도 강화 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`에 둔다.
+
+다음 1순위는 파일럿 시연용 로컬 개발 DB 정리 절차를 문서화하는 것이다.

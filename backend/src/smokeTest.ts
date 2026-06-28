@@ -419,11 +419,34 @@ async function main() {
         contentChecks.readiness.score === 100,
       "sample academy content readiness score must be 100."
     );
+    assert(
+      "materialGate" in contentChecks.readiness &&
+        typeof contentChecks.readiness.materialGate === "object" &&
+        contentChecks.readiness.materialGate !== null &&
+        "canTransition" in contentChecks.readiness.materialGate &&
+        contentChecks.readiness.materialGate.canTransition === true,
+      "content readiness must include a passing MATERIALS_READY gate."
+    );
+    assert(
+      "required" in contentChecks.readiness &&
+        typeof contentChecks.readiness.required === "object" &&
+        contentChecks.readiness.required !== null &&
+        "missingItems" in contentChecks.readiness.required &&
+        Array.isArray(contentChecks.readiness.required.missingItems),
+      "content readiness required summary must include missingItems."
+    );
 
     const requiredFailures = contentChecks.checks.filter(
       (check: { ok?: boolean; severity?: string }) => check.severity === "required" && check.ok !== true
     );
     assert(requiredFailures.length === 0, `required content checks failed: ${JSON.stringify(requiredFailures)}`);
+    assert(
+      contentChecks.checks.some(
+        (check: { key?: string; intakeField?: string; missingAction?: string }) =>
+          check.key === "subjects" && check.intakeField === "대표 과목 1개 이상" && Boolean(check.missingAction)
+      ),
+      "content checks must map core fields to intake packet items."
+    );
     assert(
       contentChecks.checks.some((check: { key?: string; ok?: boolean }) => check.key === "publicationMode" && check.ok),
       "content checks must include a passing publicationMode check."

@@ -920,6 +920,7 @@ dd {
 .readiness-score,
 .readiness-stats,
 .readiness-next-action,
+.material-gate,
 .missing-summary {
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -979,10 +980,44 @@ dd {
   padding: 14px 16px;
 }
 
+.material-gate {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+}
+
+.material-gate.ready {
+  border-color: #c8d8cf;
+  background: #f2f8f4;
+}
+
+.material-gate.blocked {
+  border-color: #ddb093;
+  background: #fff8f1;
+}
+
 .readiness-next-action strong,
+.material-gate strong,
 .missing-summary strong {
   color: var(--green);
   font-size: 13px;
+  font-weight: 900;
+}
+
+.material-gate p {
+  margin: 6px 0 0;
+}
+
+.material-gate span {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 8px 10px;
+  background: var(--green);
+  color: var(--white);
+  font-size: 12px;
   font-weight: 900;
 }
 
@@ -999,6 +1034,29 @@ dd {
 .missing-summary div {
   padding: 14px 16px;
   background: #fffefa;
+}
+
+.missing-summary ul {
+  display: grid;
+  gap: 10px;
+  margin: 12px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.missing-summary li {
+  display: grid;
+  gap: 4px;
+}
+
+.missing-summary b {
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.missing-summary li span {
+  color: var(--muted);
+  line-height: 1.45;
 }
 
 .admin-list {
@@ -1213,6 +1271,16 @@ dd {
   margin: 0;
   color: var(--muted);
   line-height: 1.55;
+}
+
+.content-check-card em {
+  display: block;
+  margin-top: 10px;
+  color: var(--green);
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1.45;
 }
 
 .content-check-card small {
@@ -1512,6 +1580,11 @@ dd {
   .readiness-stats div + div {
     border-top: 1px solid var(--line);
     border-left: 0;
+  }
+
+  .material-gate {
+    align-items: flex-start;
+    flex-direction: column;
   }
 
   .track-row {
