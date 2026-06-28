@@ -31,6 +31,7 @@ Last Updated: 2026-06-28
 - 자료 누락 체크와 제작 준비도 강화
 - 파일럿 시연용 로컬 개발 DB 정리 절차 문서화
 - 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트
+- Prisma migration과 배포 환경 정리 재점검
 - 제품 정의와 고객 디자인 권리 원칙 문서화
 
 보류로 확정한 것:
@@ -64,8 +65,8 @@ MVP 이후의 다음 개발은 다음 기준으로 고른다.
 | 자료 누락 체크와 제작 준비도 강화 | 완료 | 내부 제작 공정 자동화의 첫 실무 가치가 크다. 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`에 둔다. |
 | 파일럿 시연용 로컬 개발 DB 정리 절차 | 완료 | 2차 시각 QA에서 과거 테스트 문의가 내부 문의 탭에 남는 문제가 확인되어 시연 전 통제 절차를 문서화했다. |
 | 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트 | 완료 | `npm.cmd run visual:regression`으로 공개 홈페이지와 내부 제작 화면의 desktop/mobile 캡처를 생성한다. 결과는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 둔다. |
-| Prisma migration과 배포 환경 정리 | 현재 1순위 | 운영 전 migration 적용 순서, production DB 초기화, 배포 문서와 script의 일관성을 다시 확인해야 한다. |
-| 완성형 샘플 갤러리 기획 | 후속 후보 | 고객 디자인 권리 2단계인 `방향 선택형`의 후보지만, 즉시 구현 대상은 아니다. |
+| Prisma migration과 배포 환경 정리 | 완료 | fresh SQLite DB 기준 local production 리허설과 문서/script 일관성 재점검을 완료했다. 결과는 `docs/25_PRISMA_MIGRATION_DEPLOYMENT_RECHECK_REPORT.md`에 둔다. |
+| 완성형 샘플 갤러리 기획 | 다음 기획 후보 | 고객 디자인 권리 2단계인 `방향 선택형`의 후보지만, 즉시 구현 대상은 아니다. 먼저 범위와 기대 관리 문구를 정리한다. |
 | 완성형 샘플 갤러리 구현 | 보류 | 템플릿 수, 공개 범위, 고객 선택 제출 여부, 커스터마이징 기대 관리가 정리된 뒤 진행한다. |
 | academy/exam_system2 실제 연동 | 보류 | MVP 이후에도 API 경계 설계가 먼저이며 직접 DB 공유는 금지한다. |
 
@@ -73,7 +74,7 @@ MVP 이후의 다음 개발은 다음 기준으로 고른다.
 
 ## 5. 1순위 구현 후보와 현재 상태
 
-이 문서 작성 당시 다음 실제 구현 후보는 다음으로 정했다.
+이 문서 작성 당시 다음 실제 구현 후보는 Prisma migration과 배포 환경 정리였다.
 
 ```text
 Prisma migration과 배포 환경 정리
@@ -84,7 +85,8 @@ Prisma migration과 배포 환경 정리
 - Prisma schema와 초기 migration은 존재한다.
 - `npm.cmd run db:deploy`와 `npm.cmd run rehearse:local-production` 명령은 존재한다.
 - Windows 운영 배포 문서와 service/Caddy 보조 script는 마련되어 있다.
-- 다만 운영 전 migration 적용 순서, 임시/운영 DB 경로, 배포 문서와 script의 현재 일관성을 다시 점검할 필요가 있다.
+- 2026-06-28 재점검에서 fresh SQLite DB 기준 local production 리허설이 통과했다.
+- 결과는 `docs/25_PRISMA_MIGRATION_DEPLOYMENT_RECHECK_REPORT.md`에 둔다.
 
 목표:
 
@@ -113,7 +115,7 @@ Prisma migration과 배포 환경 정리
 
 ## 6. 1순위 후보의 성공 기준
 
-다음이 만족되면 `Prisma migration과 배포 환경 정리`는 MVP 수준에서 완료로 본다.
+다음이 만족되어 `Prisma migration과 배포 환경 정리`는 MVP 수준에서 완료로 본다.
 
 - fresh production SQLite DB에 `db:deploy`가 성공한다.
 - `npm.cmd run rehearse:local-production`이 통과한다.
@@ -148,7 +150,6 @@ PostgreSQL 전환, 관리형 DB 도입, 자동 migration 승인 UI는 후속 단
 
 따라서 현재 우선순위는 다음 순서로 둔다.
 
-1. Prisma migration과 배포 환경 정리
-2. 샘플 갤러리 기획 재검토
-3. 다중 운영자 접근 제어 고도화 검토
-4. academy/exam_system2 API 경계 설계
+1. 샘플 갤러리 기획 재검토
+2. 다중 운영자 접근 제어 고도화 검토
+3. academy/exam_system2 API 경계 설계

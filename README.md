@@ -199,6 +199,7 @@ MVP 1차 운영 환경 결정은 `docs/07_MVP_PRODUCTION_ENVIRONMENT_DECISION.md
 Windows Caddy와 Service wrapper 설정 초안은 `docs/08_WINDOWS_CADDY_SERVICE_TEMPLATES.md`에 정리되어 있습니다.
 Windows 운영 수동 리허설 체크리스트는 `docs/09_WINDOWS_OPERATION_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
 Windows 배포 Quickstart는 상세 런북을 실행 순서대로 묶은 입구 문서입니다.
+Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIGRATION_DEPLOYMENT_RECHECK_REPORT.md`에 정리되어 있습니다.
 Windows runtime 설정 사전점검 스크립트는 `deploy/windows/Test-MuksanHomepageRuntime.ps1`입니다.
 Windows service 조작 보조 스크립트는 `deploy/windows/Invoke-MuksanHomepageService.ps1`입니다.
 Windows Caddy 조작 보조 스크립트는 `deploy/windows/Invoke-MuksanHomepageCaddy.ps1`입니다.

@@ -347,20 +347,22 @@ interface CustomerHomepageIntake {
 자료 누락 체크와 제작 준비도 강화 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`에 정리한다.
 파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 정리한다.
 브라우저 스크린샷 회귀 테스트는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 정리한다.
+Prisma migration과 배포 환경 정리 재점검은 `docs/25_PRISMA_MIGRATION_DEPLOYMENT_RECHECK_REPORT.md`에 정리한다.
 
 ---
 
 ## 11. 다음 구현 후보
 
-이 문서 이후의 구현 후보는 다음이다.
+이 문서 이후의 추천 작업은 다음이다.
 
 ```text
-Prisma migration과 배포 환경 정리 상태 재점검
+현재 변경분 커밋 및 원격 푸시
 ```
 
-구현 범위는 다음으로 제한한다.
+커밋 후 다음 추천 작업은 샘플 갤러리 기획 재검토다. 구현 범위는 다음으로 제한한다.
 
-- 운영 DB migration 적용 순서와 문서/script 일관성 확인
-- fresh production SQLite DB에서 `db:deploy`와 backend startup 확인
+- 고객 디자인 권리 2단계인 `방향 선택형`의 범위 정의
+- 갤러리가 고객용 자유형 빌더로 오해되지 않게 하는 문구 정리
+- 템플릿 후보와 선택값 처리 방식 검토
 - 실제 운영 DB 삭제 또는 reset 절차는 만들지 않음
 - 고객 계정, 고객 포털, 자유 편집기는 만들지 않음
