@@ -209,8 +209,9 @@ QA용 더미 데이터로 상담 문의를 제출했다.
 
 자료 누락 체크와 제작 준비도 강화 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`에 둔다.
 
-다음 1순위는 이 변경분을 커밋하는 것이다.
+이 변경분은 `302bfaa Document second visual QA pass`로 커밋하고 원격 저장소에 푸시했다.
 
 방향:
 
-- 커밋 후 다음 추천 작업은 파일럿 시연용 로컬 개발 DB 정리 절차를 문서화하는 것이다.
+- 파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 둔다.
+- 다음 추천 작업은 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트를 추가하는 것이다.

@@ -257,4 +257,6 @@ publication.assets.hero:
 
 자료 누락 체크와 제작 준비도 강화 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`에 둔다.
 
-다음 1순위는 파일럿 시연용 로컬 개발 DB 정리 절차를 문서화하는 것이다.
+파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 둔다.
+
+다음 1순위는 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트를 추가하는 것이다.

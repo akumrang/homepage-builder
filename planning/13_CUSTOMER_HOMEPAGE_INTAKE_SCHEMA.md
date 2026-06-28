@@ -345,6 +345,7 @@ interface CustomerHomepageIntake {
 내부 제작 화면 접근 제어 설계는 `docs/20_INTERNAL_DASHBOARD_ACCESS_CONTROL_PLAN.md`에 정리한다.
 2차 시각 QA 결과는 `docs/21_SECOND_VISUAL_QA_REPORT.md`에 정리한다.
 자료 누락 체크와 제작 준비도 강화 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`에 정리한다.
+파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 정리한다.
 
 ---
 
@@ -353,12 +354,12 @@ interface CustomerHomepageIntake {
 이 문서 이후의 구현 후보는 다음이다.
 
 ```text
-파일럿 시연용 로컬 개발 DB 정리 절차 문서화
+모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트
 ```
 
 구현 범위는 다음으로 제한한다.
 
-- 로컬 개발 DB의 테스트 문의와 상태값을 시연 전 어떻게 정리할지 문서화
-- 실제 고객 개인정보나 민감 자료는 저장소에 넣지 않음
-- 운영 DB 삭제 또는 destructive reset 절차는 만들지 않음
+- 공개 홈페이지와 내부 제작 화면의 핵심 뷰를 브라우저로 열어 스크린샷 저장
+- 데스크톱과 모바일 viewport를 모두 확인
+- 자동 비교는 MVP 이후로 미루고, 우선 재현 가능한 캡처와 smoke 실패 조건부터 추가
 - 고객 계정, 고객 포털, 자유 편집기는 만들지 않음

@@ -46,6 +46,7 @@
 내부 제작 화면 접근 제어 설계는 `docs/20_INTERNAL_DASHBOARD_ACCESS_CONTROL_PLAN.md`에 정리되어 있습니다.
 2차 시각 QA 결과는 `docs/21_SECOND_VISUAL_QA_REPORT.md`에 정리되어 있습니다.
 자료 누락 체크와 제작 준비도 강화 결과는 `docs/22_MATERIAL_READINESS_ENHANCEMENT_REPORT.md`에 정리되어 있습니다.
+파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 정리되어 있습니다.
 
 포함된 것:
 
@@ -172,6 +173,7 @@ npm.cmd run db:init
 Windows 운영 배포 첫 실행 순서는 `docs/10_WINDOWS_DEPLOYMENT_QUICKSTART.md`에 정리되어 있습니다.
 운영 배포 전 상세 점검 기준은 `docs/01_OPERATION_READINESS_CHECKLIST.md`에 정리되어 있습니다.
 SQLite 백업/복구 절차는 `docs/02_SQLITE_BACKUP_RESTORE_RUNBOOK.md`에 정리되어 있습니다.
+파일럿 시연 전 로컬 개발 DB를 깨끗한 테스트 상태로 정리하는 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 정리되어 있습니다.
 운영 배포 리허설 절차는 `docs/03_OPERATION_DEPLOYMENT_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
 운영 호스팅과 reverse proxy 구성안은 `docs/04_HOSTING_REVERSE_PROXY_PLAN.md`에 정리되어 있습니다.
 backend process 시작, 중지, 재시작 기준은 `docs/05_BACKEND_PROCESS_RUNBOOK.md`에 정리되어 있습니다.
