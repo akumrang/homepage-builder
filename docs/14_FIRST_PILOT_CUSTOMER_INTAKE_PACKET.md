@@ -355,3 +355,5 @@ academy-counseling-room-01.jpg
 이 기록을 기준으로 자료 수집 API와 내부 입력 화면 구현 여부를 다시 판단한다.
 
 가상 고객 1곳 기준의 첫 리허설 기록은 `docs/15_FIRST_PILOT_INTAKE_REHEARSAL.md`에 둔다.
+
+실고객 발송 전 최종 검토 기록은 `docs/16_FIRST_PILOT_INTAKE_PACKET_FINAL_REVIEW.md`에 둔다.

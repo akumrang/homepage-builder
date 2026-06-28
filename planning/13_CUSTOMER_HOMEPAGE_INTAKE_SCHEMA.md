@@ -338,6 +338,7 @@ interface CustomerHomepageIntake {
 
 자료 수집 전체 API와 내부 입력 화면은 첫 파일럿 전에는 구현하지 않는다. 판단 근거는 `docs/13_CUSTOMER_INTAKE_IMPLEMENTATION_DECISION.md`에 정리한다.
 첫 파일럿에서 고객에게 보낼 자료 요청 패킷은 `docs/14_FIRST_PILOT_CUSTOMER_INTAKE_PACKET.md`에 정리한다.
+실고객 발송 전 최종 검토는 `docs/16_FIRST_PILOT_INTAKE_PACKET_FINAL_REVIEW.md`에 정리한다.
 
 ---
 
@@ -346,13 +347,13 @@ interface CustomerHomepageIntake {
 이 문서 이후의 구현 후보는 다음이다.
 
 ```text
-첫 파일럿 자료 요청 패킷 실고객 발송 전 최종 검토
+첫 파일럿 고객별 발송용 자료 요청 사본 작성
 ```
 
 구현 범위는 다음으로 제한한다.
 
-- 질문량이 첫 고객에게 부담스럽지 않은지 확인
-- 묵산 발송 문안의 톤과 책임 범위를 확인
-- 실제 고객에게 보낼 파일 제출 안내가 충분히 명확한지 확인
+- 고객명, 담당자 호칭, 회신 기한, 파일 제출 방식, 샘플 링크, 묵산 문의 연락처만 채움
+- 실고객 개인정보나 민감 자료는 저장소에 넣지 않음
+- 고객 계정, 고객 포털, 파일 업로드 UI는 계속 보류
 - 고객 입력 양식 전체 API와 내부 입력 화면은 첫 파일럿 후 필요성이 확인되면 별도 범위로 진행
 - 고객 계정, 고객 포털, 자유 편집기는 만들지 않음
