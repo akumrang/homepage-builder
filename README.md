@@ -40,6 +40,7 @@
 첫 파일럿에서 고객에게 보낼 자료 요청 패킷은 `docs/14_FIRST_PILOT_CUSTOMER_INTAKE_PACKET.md`에 정리되어 있습니다.
 첫 파일럿 자료 수집 리허설과 누락 항목 기록은 `docs/15_FIRST_PILOT_INTAKE_REHEARSAL.md`에 정리되어 있습니다.
 첫 파일럿 자료 요청 패킷의 실고객 발송 전 최종 검토는 `docs/16_FIRST_PILOT_INTAKE_PACKET_FINAL_REVIEW.md`에 정리되어 있습니다.
+첫 파일럿 고객별 발송용 자료 요청 사본 템플릿은 `docs/17_FIRST_PILOT_CUSTOMER_SEND_COPY.md`에 정리되어 있습니다.
 
 포함된 것:
 
