@@ -43,6 +43,7 @@
 첫 파일럿 고객별 발송용 자료 요청 사본 템플릿은 `docs/17_FIRST_PILOT_CUSTOMER_SEND_COPY.md`에 정리되어 있습니다.
 첫 파일럿 자료 회신 후 접수 기록 양식은 `docs/18_FIRST_PILOT_INTAKE_RECEIPT_RECORD_TEMPLATE.md`에 정리되어 있습니다.
 첫 파일럿 자료 접수 가상 판정 예시는 `docs/19_FIRST_PILOT_INTAKE_RECEIPT_REHEARSAL.md`에 정리되어 있습니다.
+내부 제작 화면 접근 제어 설계는 `docs/20_INTERNAL_DASHBOARD_ACCESS_CONTROL_PLAN.md`에 정리되어 있습니다.
 
 포함된 것:
 

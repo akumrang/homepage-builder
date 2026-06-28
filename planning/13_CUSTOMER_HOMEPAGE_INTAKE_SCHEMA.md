@@ -342,6 +342,7 @@ interface CustomerHomepageIntake {
 고객별 발송용 사본 템플릿은 `docs/17_FIRST_PILOT_CUSTOMER_SEND_COPY.md`에 정리한다.
 자료 회신 후 접수 기록 양식은 `docs/18_FIRST_PILOT_INTAKE_RECEIPT_RECORD_TEMPLATE.md`에 정리한다.
 자료 접수 가상 판정 예시는 `docs/19_FIRST_PILOT_INTAKE_RECEIPT_REHEARSAL.md`에 정리한다.
+내부 제작 화면 접근 제어 설계는 `docs/20_INTERNAL_DASHBOARD_ACCESS_CONTROL_PLAN.md`에 정리한다.
 
 ---
 
@@ -350,13 +351,14 @@ interface CustomerHomepageIntake {
 이 문서 이후의 구현 후보는 다음이다.
 
 ```text
-내부 제작 화면 접근 제어 설계 문서 작성
+2차 시각 QA
 ```
 
 구현 범위는 다음으로 제한한다.
 
-- 내부 제작 화면 접근 주체, 접근 키, 운영 secret 관리 기준 정리
-- 첫 파일럿 고객 자료를 다루기 전 내부 작업자 책임 경계 정리
+- 상담 폼 오류와 완료 상태 확인
+- 내부 접근 키 입력 화면 확인
+- 내부 탭 전환, 필터, 긴 스크롤 확인
 - 실제 고객 개인정보나 민감 자료는 저장소에 넣지 않음
 - 고객 계정, 고객 포털, 파일 업로드 UI는 계속 보류
 - 고객 입력 양식 전체 API와 내부 입력 화면은 첫 파일럿 후 필요성이 확인되면 별도 범위로 진행

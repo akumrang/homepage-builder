@@ -251,4 +251,6 @@ publication.assets.hero:
 - `MATERIALS_READY` 전환 판단이 흔들리지 않는지 확인
 - `CUSTOMER_PUBLISHED` 전환 전 보류 항목을 분리할 수 있는지 확인
 
-다음 1순위는 내부 제작 화면 접근 제어 설계 문서를 작성하는 것이다.
+내부 제작 화면 접근 제어 설계는 `docs/20_INTERNAL_DASHBOARD_ACCESS_CONTROL_PLAN.md`에 둔다.
+
+다음 1순위는 2차 시각 QA를 수행하는 것이다.

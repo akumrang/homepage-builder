@@ -207,7 +207,9 @@ NO-GO:
 
 이 양식을 사용한 첫 파일럿 자료 접수 가상 판정 예시는 `docs/19_FIRST_PILOT_INTAKE_RECEIPT_REHEARSAL.md`에 둔다.
 
-다음 1순위는 내부 제작 화면 접근 제어 설계 문서를 작성하는 것이다.
+내부 제작 화면 접근 제어 설계는 `docs/20_INTERNAL_DASHBOARD_ACCESS_CONTROL_PLAN.md`에 둔다.
+
+다음 1순위는 2차 시각 QA를 수행하는 것이다.
 
 발송용 사본에는 다음만 채운다.
 
