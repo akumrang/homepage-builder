@@ -203,7 +203,9 @@ NO-GO:
 
 첫 파일럿 고객별 발송용 자료 요청 사본 템플릿은 `docs/17_FIRST_PILOT_CUSTOMER_SEND_COPY.md`에 둔다.
 
-다음 1순위는 실제 발송 후 고객 회신 자료를 접수할 때 사용할 자료 접수 기록 양식을 만드는 것이다.
+자료 회신 후 접수 기록 양식은 `docs/18_FIRST_PILOT_INTAKE_RECEIPT_RECORD_TEMPLATE.md`에 둔다.
+
+다음 1순위는 이 양식을 사용해 첫 파일럿 자료 접수 가상 판정 예시를 작성하는 것이다.
 
 발송용 사본에는 다음만 채운다.
 

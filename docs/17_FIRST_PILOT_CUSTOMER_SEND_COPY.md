@@ -251,3 +251,5 @@ Last Updated: 2026-06-28
 - `CUSTOMER_PUBLISHED` 전환 전 남은 확인 항목
 
 실제 고객 개인정보나 민감 자료는 저장소에 기록하지 않는다.
+
+자료 회신 후 내부 접수 기록 양식은 `docs/18_FIRST_PILOT_INTAKE_RECEIPT_RECORD_TEMPLATE.md`를 사용한다.

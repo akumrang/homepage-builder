@@ -286,8 +286,8 @@ interface AcademyPublicationPolicy {
 이 정책 이후의 구현 후보는 다음이다.
 
 ```text
-첫 파일럿 자료 회신 후 접수 기록 양식 작성
-→ 회신 자료의 부족 항목, NO-GO, MATERIALS_READY 가능 여부를 기록한다
+첫 파일럿 자료 접수 기록 가상 판정 예시 작성
+→ docs/18_FIRST_PILOT_INTAKE_RECEIPT_RECORD_TEMPLATE.md 양식으로 회신 자료의 부족 항목, NO-GO, MATERIALS_READY 가능 여부를 검증한다
 → 고객 계정과 고객용 자유 편집기는 계속 보류
 ```
 
