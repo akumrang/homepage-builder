@@ -33,6 +33,7 @@ Last Updated: 2026-06-28
 - 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트
 - Prisma migration과 배포 환경 정리 재점검
 - 샘플 갤러리 기획 재검토
+- 샘플 방향 3종 브리프 작성
 - 제품 정의와 고객 디자인 권리 원칙 문서화
 
 보류로 확정한 것:
@@ -68,7 +69,8 @@ MVP 이후의 다음 개발은 다음 기준으로 고른다.
 | 모바일/데스크톱 브라우저 스크린샷 기반 자동 회귀 테스트 | 완료 | `npm.cmd run visual:regression`으로 공개 홈페이지와 내부 제작 화면의 desktop/mobile 캡처를 생성한다. 결과는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 둔다. |
 | Prisma migration과 배포 환경 정리 | 완료 | fresh SQLite DB 기준 local production 리허설과 문서/script 일관성 재점검을 완료했다. 결과는 `docs/25_PRISMA_MIGRATION_DEPLOYMENT_RECHECK_REPORT.md`에 둔다. |
 | 완성형 샘플 갤러리 기획 | 완료 | 고객 디자인 권리 2단계인 `방향 선택형`의 범위, 기대 관리 문구, 선택값 처리 원칙을 재검토했다. 결과는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 둔다. |
-| 샘플 방향 3종 브리프 | 다음 기획 후보 | 갤러리 구현 전 `trust-basic-v1`, `exam-focus-v1`, `small-group-v1` 후보의 목적, 섹션, 자료 요구사항, 금지 문구를 먼저 정리해야 한다. |
+| 샘플 방향 3종 브리프 | 완료 | `trust-basic-v1`, `exam-focus-v1`, `small-group-v1` 후보의 목적, 섹션, 자료 요구사항, 금지 문구, 운영 난이도를 정리했다. 결과는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 둔다. |
+| 샘플 카드 문안과 고객 기대 관리 문구 | 다음 기획 후보 | 브리프를 고객에게 보여줄 카드 문안과 선택 전 고지 문구로 정리해야 한다. |
 | 완성형 샘플 갤러리 구현 | 보류 | 템플릿 수, 공개 범위, 고객 선택 제출 여부, 커스터마이징 기대 관리가 정리된 뒤 진행한다. |
 | academy/exam_system2 실제 연동 | 보류 | MVP 이후에도 API 경계 설계가 먼저이며 직접 DB 공유는 금지한다. |
 
@@ -148,7 +150,8 @@ PostgreSQL 전환, 관리형 DB 도입, 자동 migration 승인 UI는 후속 단
 
 - 샘플 갤러리는 전략상 유지한다.
 - 즉시 구현은 보류한다.
-- 먼저 샘플 방향 3종 브리프를 작성한다.
+- 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리했다.
+- 다음은 고객에게 보여줄 카드 문안과 선택 전 고지 문구를 정리한다.
 - 고객 선택은 자동 게시 명령이 아니라 묵산 내부 제작 입력값으로 처리한다.
 - 자유형 빌더, 고객별 별도 코드베이스, 검수 없는 게시로 보이는 흐름은 금지한다.
 
@@ -160,6 +163,6 @@ PostgreSQL 전환, 관리형 DB 도입, 자동 migration 승인 UI는 후속 단
 
 따라서 현재 우선순위는 다음 순서로 둔다.
 
-1. 샘플 방향 3종 브리프 작성
+1. 샘플 카드 문안과 고객 기대 관리 문구 초안 작성
 2. 다중 운영자 접근 제어 고도화 검토
 3. academy/exam_system2 API 경계 설계
