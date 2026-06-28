@@ -348,6 +348,7 @@ interface CustomerHomepageIntake {
 파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 정리한다.
 브라우저 스크린샷 회귀 테스트는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 정리한다.
 Prisma migration과 배포 환경 정리 재점검은 `docs/25_PRISMA_MIGRATION_DEPLOYMENT_RECHECK_REPORT.md`에 정리한다.
+샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리한다.
 
 ---
 
@@ -359,10 +360,10 @@ Prisma migration과 배포 환경 정리 재점검은 `docs/25_PRISMA_MIGRATION_
 현재 변경분 커밋 및 원격 푸시
 ```
 
-커밋 후 다음 추천 작업은 샘플 갤러리 기획 재검토다. 구현 범위는 다음으로 제한한다.
+커밋 후 다음 추천 작업은 샘플 방향 3종 브리프 작성이다. 구현 범위는 다음으로 제한한다.
 
-- 고객 디자인 권리 2단계인 `방향 선택형`의 범위 정의
-- 갤러리가 고객용 자유형 빌더로 오해되지 않게 하는 문구 정리
-- 템플릿 후보와 선택값 처리 방식 검토
+- `trust-basic-v1`, `exam-focus-v1`, `small-group-v1` 후보 문서화
+- 각 방향의 목적, 필수 섹션, 필요한 자료, 금지 문구, 운영 난이도 정리
+- 고객용 자유형 빌더나 샘플 선택 제출 기능 구현은 보류
 - 실제 운영 DB 삭제 또는 reset 절차는 만들지 않음
 - 고객 계정, 고객 포털, 자유 편집기는 만들지 않음
