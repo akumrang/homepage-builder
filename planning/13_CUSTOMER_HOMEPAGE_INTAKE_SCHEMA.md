@@ -350,6 +350,7 @@ interface CustomerHomepageIntake {
 Prisma migration과 배포 환경 정리 재점검은 `docs/25_PRISMA_MIGRATION_DEPLOYMENT_RECHECK_REPORT.md`에 정리한다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리한다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리한다.
+샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리한다.
 
 ---
 
@@ -361,10 +362,11 @@ Prisma migration과 배포 환경 정리 재점검은 `docs/25_PRISMA_MIGRATION_
 현재 변경분 커밋 및 원격 푸시
 ```
 
-커밋 후 다음 추천 작업은 샘플 카드 문안과 고객 기대 관리 문구 초안 작성이다. 구현 범위는 다음으로 제한한다.
+커밋 후 다음 추천 작업은 묵산 내부 검토용 정적 샘플 자료 구성안 작성이다. 구현 범위는 다음으로 제한한다.
 
-- 고객에게 보여줄 샘플 카드 제목, 설명, 적합/부적합 안내 문구 정리
-- 선택 전 고지 문구와 선택 후 처리 안내 문구 정리
+- 카드 문안, 방향 브리프, 현재 `trust-basic-v1` 샘플의 검토 순서 정리
+- 내부 상담/검토용 자료 화면 구성안 문서화
+- 실제 `/samples` 또는 `/gallery` 라우트 구현은 보류
 - 선택값 저장 API나 고객용 갤러리 화면 구현은 보류
 - 고객용 자유형 빌더나 샘플 선택 제출 기능 구현은 보류
 - 실제 운영 DB 삭제 또는 reset 절차는 만들지 않음
