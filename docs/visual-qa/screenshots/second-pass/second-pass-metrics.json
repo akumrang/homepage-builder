@@ -1,0 +1,133 @@
+{
+  "generatedAt": "2026-06-28T03:32:42.943Z",
+  "baseUrl": "http://127.0.0.1:5175",
+  "screenshots": {
+    "publicDesktopFull": "C:/Users/akumr/Bettle/withgpt/homepage/docs/visual-qa/screenshots/second-pass/public-desktop-full.png",
+    "publicMobileFull": "C:/Users/akumr/Bettle/withgpt/homepage/docs/visual-qa/screenshots/second-pass/public-mobile-full.png",
+    "inquiryErrorMobile": "C:/Users/akumr/Bettle/withgpt/homepage/docs/visual-qa/screenshots/second-pass/public-inquiry-error-mobile.png",
+    "inquirySuccessMobile": "C:/Users/akumr/Bettle/withgpt/homepage/docs/visual-qa/screenshots/second-pass/public-inquiry-success-mobile.png",
+    "internalAccessMobile": "C:/Users/akumr/Bettle/withgpt/homepage/docs/visual-qa/screenshots/second-pass/internal-access-mobile.png",
+    "internalStatusMobile": "C:/Users/akumr/Bettle/withgpt/homepage/docs/visual-qa/screenshots/second-pass/internal-status-mobile.png",
+    "internalContentMobile": "C:/Users/akumr/Bettle/withgpt/homepage/docs/visual-qa/screenshots/second-pass/internal-content-mobile.png",
+    "internalInquiriesMobile": "C:/Users/akumr/Bettle/withgpt/homepage/docs/visual-qa/screenshots/second-pass/internal-inquiries-mobile.png",
+    "internalStatusDesktop": "C:/Users/akumr/Bettle/withgpt/homepage/docs/visual-qa/screenshots/second-pass/internal-status-desktop.png"
+  },
+  "metrics": [
+    {
+      "name": "public-desktop-full",
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "scrollHeight": 6795,
+      "viewportHeight": 1100,
+      "overflowCount": 0,
+      "overflowElements": [],
+      "activeHeading": "샘플 한빛국어학원"
+    },
+    {
+      "name": "public-mobile-full",
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "scrollHeight": 8655,
+      "viewportHeight": 900,
+      "overflowCount": 0,
+      "overflowElements": [],
+      "activeHeading": "샘플 한빛국어학원"
+    },
+    {
+      "name": "public-inquiry-error-mobile",
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "scrollHeight": 8909,
+      "viewportHeight": 900,
+      "overflowCount": 0,
+      "overflowElements": [],
+      "activeHeading": "샘플 한빛국어학원"
+    },
+    {
+      "name": "public-inquiry-success-mobile",
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "scrollHeight": 8765,
+      "viewportHeight": 900,
+      "overflowCount": 0,
+      "overflowElements": [],
+      "activeHeading": "샘플 한빛국어학원"
+    },
+    {
+      "name": "internal-access-mobile",
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "scrollHeight": 900,
+      "viewportHeight": 900,
+      "overflowCount": 0,
+      "overflowElements": [],
+      "activeHeading": "내부 접근 확인"
+    },
+    {
+      "name": "internal-status-mobile",
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "scrollHeight": 900,
+      "viewportHeight": 900,
+      "overflowCount": 0,
+      "overflowElements": [],
+      "activeHeading": "홈페이지 내부 제작 화면"
+    },
+    {
+      "name": "internal-content-mobile",
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "scrollHeight": 6368,
+      "viewportHeight": 900,
+      "overflowCount": 0,
+      "overflowElements": [],
+      "activeHeading": "홈페이지 내부 제작 화면"
+    },
+    {
+      "name": "internal-inquiries-mobile",
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "bodyScrollWidth": 390,
+      "scrollHeight": 2572,
+      "viewportHeight": 900,
+      "overflowCount": 0,
+      "overflowElements": [],
+      "activeHeading": "홈페이지 내부 제작 화면"
+    },
+    {
+      "name": "internal-status-desktop",
+      "clientWidth": 1440,
+      "scrollWidth": 1440,
+      "bodyScrollWidth": 1440,
+      "scrollHeight": 1000,
+      "viewportHeight": 1000,
+      "overflowCount": 0,
+      "overflowElements": [],
+      "activeHeading": "홈페이지 내부 제작 화면"
+    }
+  ],
+  "observations": {
+    "inquiryErrorMessages": [
+      "보호자 이름을 입력해 주세요.",
+      "연락처를 입력해 주세요.",
+      "학생 학년을 선택해 주세요.",
+      "관심 과목을 선택해 주세요.",
+      "문의 내용을 입력해 주세요.",
+      "개인정보 수집·이용 동의가 필요합니다.",
+      "입력값을 확인해 주세요."
+    ],
+    "inquirySuccessMessages": [
+      "상담 신청이 접수되었습니다. 학원에서 확인 후 연락드리겠습니다."
+    ],
+    "internalAccessText": "MUKSAN INTERNAL\n\n내부 접근 확인\n\n묵산 내부 제작 화면은 상담 문의와 제작 상태를 다루므로 접근 키가 필요합니다.\n\n샘플 홈페이지\n\nINTERNAL ACCESS\n\n내부 접근 키 입력\n\n공개 홈페이지와 상담 문의 제출은 외부에 열려 있고, 내부 현황 확인은 접근 키가 필요합니다.\n\n접근 키\n내부 화면 열기",
+    "internalInquiryText": "INQUIRIES\n\n상담 문의\n5/5건\n검색어\n상태\n전체\n미확인\n확인 완료\n학년\n전체\n중1\n초5-초6\n중2\n중3\n과목\n전체\n국어\n독서\n초기화\n\n2026. 6. 28. 오후 12:32:42 · sample-korean-academy\n\nQA보호자 보호자 · 중1 · 국어\n\n시각 QA용 테스트 문의입니다. 실제 개인정보가 아닙니다.\n\n미확인\n010-1234-5678\n확인 처리\n\n2026. 6. 27. 오후 5:31:01 · sample-korean-academy\n\nghjghj 보호자 · 초5-초6 · 독서\n\nspsdlkfjadf\n\n미확인\n010-904-4563\n확인 처리\n\n2026. 6. 25. 오전 11:59:47 · sample-korean-academy\n\n테스트 보호자 보호자 · 중2 · 국어\n\n콘텐츠 검증 작업 후 상담 문의 저장 확인용 테스트입니다.\n\n미확인\n010-0000-0000\n확인 처리\n\n2026. 6. 25. 오전 11:14:49 · sample-korean-academy\n\n상태 테스트 보호자 보호자 · 중1 · 국어\n\n상담 상태 변경 검증 문의입니다.\n\n미확인\n010-3333-4444\n확인 처리\n\n2026. 6. 25. 오전 11:08:52 · sample-korean-academy\n\nPrisma 테스트 보호자 보호자 · 중3 · 국어\n\nPrisma 저장 검증 문의입니다.\n\n미확인\n010-1111-2222\n확인 처리"
+  },
+  "pass": true
+}

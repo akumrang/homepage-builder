@@ -253,4 +253,6 @@ publication.assets.hero:
 
 내부 제작 화면 접근 제어 설계는 `docs/20_INTERNAL_DASHBOARD_ACCESS_CONTROL_PLAN.md`에 둔다.
 
-다음 1순위는 2차 시각 QA를 수행하는 것이다.
+2차 시각 QA 결과는 `docs/21_SECOND_VISUAL_QA_REPORT.md`에 둔다.
+
+다음 1순위는 자료 누락 체크와 제작 준비도 강화다.
