@@ -42,6 +42,7 @@
 첫 파일럿 자료 요청 패킷의 실고객 발송 전 최종 검토는 `docs/16_FIRST_PILOT_INTAKE_PACKET_FINAL_REVIEW.md`에 정리되어 있습니다.
 첫 파일럿 고객별 발송용 자료 요청 사본 템플릿은 `docs/17_FIRST_PILOT_CUSTOMER_SEND_COPY.md`에 정리되어 있습니다.
 첫 파일럿 자료 회신 후 접수 기록 양식은 `docs/18_FIRST_PILOT_INTAKE_RECEIPT_RECORD_TEMPLATE.md`에 정리되어 있습니다.
+첫 파일럿 자료 접수 가상 판정 예시는 `docs/19_FIRST_PILOT_INTAKE_RECEIPT_REHEARSAL.md`에 정리되어 있습니다.
 
 포함된 것:
 

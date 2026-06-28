@@ -205,7 +205,9 @@ NO-GO:
 
 자료 회신 후 접수 기록 양식은 `docs/18_FIRST_PILOT_INTAKE_RECEIPT_RECORD_TEMPLATE.md`에 둔다.
 
-다음 1순위는 이 양식을 사용해 첫 파일럿 자료 접수 가상 판정 예시를 작성하는 것이다.
+이 양식을 사용한 첫 파일럿 자료 접수 가상 판정 예시는 `docs/19_FIRST_PILOT_INTAKE_RECEIPT_REHEARSAL.md`에 둔다.
+
+다음 1순위는 내부 제작 화면 접근 제어 설계 문서를 작성하는 것이다.
 
 발송용 사본에는 다음만 채운다.
 
