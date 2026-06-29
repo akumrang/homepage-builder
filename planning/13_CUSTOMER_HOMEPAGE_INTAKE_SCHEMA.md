@@ -352,6 +352,7 @@ Prisma migration과 배포 환경 정리 재점검은 `docs/25_PRISMA_MIGRATION_
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리한다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리한다.
 묵산 내부 검토용 정적 샘플 자료 구성안은 `planning/17_INTERNAL_STATIC_SAMPLE_REVIEW_PACK.md`에 정리한다.
+내부 정적 샘플 자료 상담 리허설 체크리스트는 `planning/18_INTERNAL_SAMPLE_REHEARSAL_CHECKLIST.md`에 정리한다.
 
 ---
 
@@ -363,10 +364,10 @@ Prisma migration과 배포 환경 정리 재점검은 `docs/25_PRISMA_MIGRATION_
 현재 변경분 커밋 및 원격 푸시
 ```
 
-커밋 후 다음 추천 작업은 내부 정적 샘플 자료 기준의 상담 리허설 체크리스트 작성이다. 구현 범위는 다음으로 제한한다.
+커밋 후 다음 추천 작업은 가상 고객 기준 상담 리허설 기록 작성이다. 구현 범위는 다음으로 제한한다.
 
-- 정적 샘플 자료를 기준으로 묵산 내부 상담자가 따라갈 점검 순서 정리
-- 고객 오해, 자료 누락, 과장 문구, 자유형 빌더 오해를 확인하는 체크리스트 문서화
+- `planning/18_INTERNAL_SAMPLE_REHEARSAL_CHECKLIST.md`를 가상 고객 시나리오에 적용
+- 상담 흐름, 질문 대응, 자료 누락, 기대 관리 리스크, GO/HOLD/NO-GO 판정 기록
 - 실제 `/samples` 또는 `/gallery` 라우트 구현은 보류
 - 선택값 저장 API나 고객용 갤러리 화면 구현은 보류
 - 고객용 자유형 빌더나 샘플 선택 제출 기능 구현은 보류

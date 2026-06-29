@@ -173,6 +173,7 @@ NO-GO 조건:
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 둔다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 둔다.
 묵산 내부 검토용 정적 샘플 자료 구성안은 `planning/17_INTERNAL_STATIC_SAMPLE_REVIEW_PACK.md`에 둔다.
+내부 정적 샘플 자료 상담 리허설 체크리스트는 `planning/18_INTERNAL_SAMPLE_REHEARSAL_CHECKLIST.md`에 둔다.
 
 ---
 
@@ -180,6 +181,6 @@ NO-GO 조건:
 
 다음 1순위 추천 작업은 이 변경분을 커밋하고 원격 저장소에 푸시하는 것이다.
 
-커밋 후 다음 추천 작업은 내부 정적 샘플 자료 기준의 상담 리허설 체크리스트 작성이다.
+커밋 후 다음 추천 작업은 가상 고객 기준 상담 리허설 기록 작성이다.
 
-그 작업에서도 코드는 구현하지 않는다. 실제 고객에게 보여주기 전, 묵산 내부에서 자료 흐름과 기대 관리 문구가 충분한지 점검하는 체크리스트를 문서화한다.
+그 작업에서도 코드는 구현하지 않는다. 체크리스트를 가상 고객 시나리오에 적용해 상담 흐름, 질문 대응, 자료 누락, GO/HOLD/NO-GO 판정을 기록한다.

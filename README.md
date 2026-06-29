@@ -53,6 +53,7 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
 묵산 내부 검토용 정적 샘플 자료 구성안은 `planning/17_INTERNAL_STATIC_SAMPLE_REVIEW_PACK.md`에 정리되어 있습니다.
+내부 정적 샘플 자료 상담 리허설 체크리스트는 `planning/18_INTERNAL_SAMPLE_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
 
 포함된 것:
 
@@ -209,6 +210,7 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
 묵산 내부 검토용 정적 샘플 자료 구성안은 `planning/17_INTERNAL_STATIC_SAMPLE_REVIEW_PACK.md`에 정리되어 있습니다.
+내부 정적 샘플 자료 상담 리허설 체크리스트는 `planning/18_INTERNAL_SAMPLE_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
 Windows runtime 설정 사전점검 스크립트는 `deploy/windows/Test-MuksanHomepageRuntime.ps1`입니다.
 Windows service 조작 보조 스크립트는 `deploy/windows/Invoke-MuksanHomepageService.ps1`입니다.
 Windows Caddy 조작 보조 스크립트는 `deploy/windows/Invoke-MuksanHomepageCaddy.ps1`입니다.
