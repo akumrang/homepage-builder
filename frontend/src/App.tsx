@@ -54,7 +54,7 @@ function AcademyPage({ slug }: { slug: string }) {
   if (!academy) {
     return (
       <main className="plain-state">
-        <p className="eyebrow">Muksan Homepage</p>
+        <p className="eyebrow">Bettle System Homepage</p>
         <h1>샘플 홈페이지를 불러오는 중입니다.</h1>
       </main>
     );
@@ -66,7 +66,7 @@ function AcademyPage({ slug }: { slug: string }) {
 function HomeEntry() {
   return (
     <main className="plain-state">
-      <p className="eyebrow">Muksan Homepage MVP</p>
+      <p className="eyebrow">Bettle System Homepage MVP</p>
       <h1>샘플 학원 홈페이지와 내부 제작 화면</h1>
       <div className="plain-actions">
         <a className="button button-primary" href="/h/sample-korean-academy">

@@ -37,8 +37,8 @@ Last Updated: 2026-06-27
 | 구분 | 의미 | 예 |
 |---|---|---|
 | 고객 필수 입력 | 홈페이지 제작에 반드시 필요한 공개 정보 | 학원명, 주소, 연락처, 대상 학년, 과목 |
-| 고객 선택 입력 | 품질을 높이지만 없으면 묵산이 대체안을 만들 수 있는 정보 | 대표 사진, 로고, 색상 선호, 상담 문구 톤 |
-| 묵산 제작 입력 | 고객 자료를 바탕으로 묵산이 작성하거나 정리하는 정보 | 대표 문구, 강점 3개, 소개 문단, 커리큘럼 설명 |
+| 고객 선택 입력 | 품질을 높이지만 없으면 베틀 시스템이 대체안을 만들 수 있는 정보 | 대표 사진, 로고, 색상 선호, 상담 문구 톤 |
+| 베틀 시스템 제작 입력 | 고객 자료를 바탕으로 베틀 시스템이 작성하거나 정리하는 정보 | 대표 문구, 강점 3개, 소개 문단, 커리큘럼 설명 |
 | 내부 시스템 필드 | 고객에게 노출하지 않는 운영 필드 | `id`, `slug`, `templateId`, `productionStatus`, 내부 링크 |
 
 ---
@@ -224,9 +224,9 @@ interface CustomerHomepageIntake {
 | `templateId` | 묵산 판단 | 고객 분위기 선호와 과목을 보고 선택 |
 | `productionStatus` | 내부 제작 상태 | 고객이 직접 입력하지 않음 |
 | `publication.assets.logo` | `assets.logoAssetId`, `assets.logoUsageConfirmed`, `assets.logoTextFallbackApproved` | 로고 파일이 있으면 출처와 사용 승인 상태를 반영하고, 없으면 승인된 텍스트 로고 fallback 여부를 반영 |
-| `publication.assets.hero` | `assets.heroPhotoAssetId`, `assets.heroPhotoUsageConfirmed` | 대표 사진 asset의 출처와 사용 승인 상태를 반영하고, 없으면 묵산 승인 대체 이미지 준비 전 상태로 남김 |
+| `publication.assets.hero` | `assets.heroPhotoAssetId`, `assets.heroPhotoUsageConfirmed` | 대표 사진 asset의 출처와 사용 승인 상태를 반영하고, 없으면 베틀 시스템 승인 대체 이미지 준비 전 상태로 남김 |
 | `name` | `identity.academyName` | 공개 학원명으로 사용 |
-| `tagline` | `positioning.taglineDraft` 또는 묵산 작성 | 고객 초안이 없으면 묵산이 작성 |
+| `tagline` | `positioning.taglineDraft` 또는 베틀 시스템 작성 | 고객 초안이 없으면 베틀 시스템이 작성 |
 | `summary` | 고객 수업 정보 + 묵산 작성 | 첫 화면 요약 문구로 정리 |
 | `heroImage` | `assets.heroPhotoAssetId` 또는 기본 이미지 | 사진이 없으면 템플릿 기본 이미지 사용 |
 | `subjects` | `education.subjects` | 그대로 사용하되 표현 통일 |
@@ -325,12 +325,12 @@ interface CustomerHomepageIntake {
 
 권장 운영 방식:
 
-1. 묵산이 고객에게 자료 수집 양식을 보낸다.
+1. 베틀 시스템이 고객에게 자료 수집 양식을 보낸다.
 2. 고객은 공개 가능한 정보와 선호를 제출한다.
 3. 묵산 내부 제작자가 자료 누락을 확인한다.
 4. 부족한 항목은 고객에게 다시 요청한다.
 5. 자료가 충분하면 `MATERIALS_READY`로 전환한다.
-6. 묵산이 초안을 작성하고 `trust-basic-v1` 또는 적절한 템플릿에 반영한다.
+6. 베틀 시스템이 초안을 작성하고 `trust-basic-v1` 또는 적절한 템플릿에 반영한다.
 7. 내부 검수 후 고객 확인을 받는다.
 8. 고객 승인 후 게시한다.
 
@@ -366,10 +366,10 @@ Prisma migration과 배포 환경 정리 재점검은 `docs/25_PRISMA_MIGRATION_
 현재 변경분 커밋 및 원격 푸시
 ```
 
-다음 1순위 추천 작업은 묵산의 문구 톤 확인이다. 확인 범위는 다음으로 제한한다.
+다음 1순위 추천 작업은 베틀 시스템 외부 브랜드 문구 톤 확인이다. 확인 범위는 다음으로 제한한다.
 
 - `planning/20_SAMPLE_REHEARSAL_COPY_SEQUENCE_REVISIONS.md`의 8번 항목 확인
-- 고객에게 보일 가능성이 있는 문구가 묵산 톤에 맞는지 GO/HOLD/NO-GO 판정
+- 고객에게 보일 가능성이 있는 문구가 베틀 시스템 외부 브랜드 톤에 맞는지 GO/HOLD/NO-GO 판정
 - 실제 `/samples` 또는 `/gallery` 라우트 구현은 보류
 - 선택값 저장 API나 고객용 갤러리 화면 구현은 보류
 - 고객용 자유형 빌더나 샘플 선택 제출 기능 구현은 보류

@@ -62,11 +62,11 @@ const contentCheckIntakeMetadata: Record<string, { intakeField: string; missingA
   },
   tagline: {
     intakeField: "대표 문구",
-    missingAction: "첫 화면에 넣을 대표 문구 또는 묵산 작성 방향을 확정합니다."
+    missingAction: "첫 화면에 넣을 대표 문구 또는 베틀 시스템 작성 방향을 확정합니다."
   },
   summary: {
     intakeField: "대표 문구",
-    missingAction: "첫 화면 요약 문구를 묵산이 작성할 수 있도록 학원 소개 방향을 확인합니다."
+    missingAction: "첫 화면 요약 문구를 베틀 시스템이 작성할 수 있도록 학원 소개 방향을 확인합니다."
   },
   targetGrades: {
     intakeField: "대상 학년 1개 이상",
@@ -106,7 +106,7 @@ const contentCheckIntakeMetadata: Record<string, { intakeField: string; missingA
   },
   heroImage: {
     intakeField: "대표 사진 또는 교실 사진",
-    missingAction: "사용 동의가 확인된 대표 사진을 받거나 묵산 승인 대체 이미지를 준비합니다."
+    missingAction: "사용 동의가 확인된 대표 사진을 받거나 베틀 시스템 승인 대체 이미지를 준비합니다."
   },
   schedules: {
     intakeField: "수업 시간표 1개 이상",

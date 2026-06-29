@@ -75,8 +75,8 @@ const publicationModeLabels = {
 const assetSourceLabels: Record<PublicationAssetSource, string> = {
   SAMPLE: "샘플",
   CUSTOMER_PROVIDED: "고객 제공",
-  MUKSAN_CREATED: "묵산 제작",
-  MUKSAN_APPROVED_REPLACEMENT: "묵산 승인 대체"
+  MUKSAN_CREATED: "베틀 시스템 제작",
+  MUKSAN_APPROVED_REPLACEMENT: "베틀 시스템 승인 대체"
 };
 
 function isNonSampleApprovedAsset(asset: {
@@ -130,7 +130,7 @@ function getPublicationAssetReviewItems(academy: AcademySite): PublicationAssetR
       tone: heroReady ? "ready" : hero.source === "SAMPLE" ? "pending" : "blocked",
       source: assetSourceLabels[hero.source],
       assetId: hero.assetId ?? "대표 이미지 미지정",
-      detail: "고객 제공 사진 또는 묵산 승인 대체 이미지만 실제 게시에 사용합니다."
+      detail: "고객 제공 사진 또는 베틀 시스템 승인 대체 이미지만 실제 게시에 사용합니다."
     },
     {
       id: "publication",
@@ -442,9 +442,9 @@ export default function InternalDashboard() {
       <main className="internal-page">
         <header className="internal-header">
           <div>
-            <p className="eyebrow">Muksan Internal</p>
+            <p className="eyebrow">Bettle System Internal</p>
             <h1>내부 접근 확인</h1>
-            <p>묵산 내부 제작 화면은 상담 문의와 제작 상태를 다루므로 접근 키가 필요합니다.</p>
+            <p>베틀 시스템 내부 제작 화면은 상담 문의와 제작 상태를 다루므로 접근 키가 필요합니다.</p>
           </div>
           <div className="internal-actions">
             <a className="button button-secondary" href="/h/sample-korean-academy">
@@ -483,7 +483,7 @@ export default function InternalDashboard() {
     <main className="internal-page">
       <header className="internal-header">
         <div>
-          <p className="eyebrow">Muksan Internal</p>
+          <p className="eyebrow">Bettle System Internal</p>
           <h1>홈페이지 내부 제작 화면</h1>
           <p>샘플 홈페이지와 상담 접수 상태를 확인합니다.</p>
         </div>

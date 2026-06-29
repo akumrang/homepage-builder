@@ -80,7 +80,7 @@ MVP 이후의 다음 개발은 다음 기준으로 고른다.
 | 내부 정적 샘플 자료 상담 리허설 체크리스트 | 완료 | 실제 고객에게 보여주기 전 내부자가 따라갈 상담 흐름, 질문 대응, 자료 누락, GO/HOLD/NO-GO 기준을 정리했다. 결과는 `planning/18_INTERNAL_SAMPLE_REHEARSAL_CHECKLIST.md`에 둔다. |
 | 가상 고객 기준 상담 리허설 기록 | 완료 | 체크리스트를 가상 시나리오에 적용해 상담 흐름, 질문 대응, 자료 누락, HOLD 판정을 기록했다. 결과는 `planning/19_VIRTUAL_CUSTOMER_SAMPLE_REHEARSAL_RECORD.md`에 둔다. |
 | 리허설 결과 기반 문구·자료 순서 보완 | 완료 | 고객 공유용 문구를 더 부드럽게 다듬고 자료 순서를 보완했다. 결과는 `planning/20_SAMPLE_REHEARSAL_COPY_SEQUENCE_REVISIONS.md`에 둔다. |
-| 묵산 문구 톤 확인 | 현재 1순위 | 고객에게 보일 수 있는 표현이므로 묵산이 직접 톤을 확인해야 한다. |
+| 베틀 시스템 외부 브랜드 문구 톤 확인 | 현재 1순위 | 고객에게 보일 수 있는 표현이므로 묵산이 직접 톤을 확인해야 한다. |
 | 완성형 샘플 갤러리 구현 | 보류 | 템플릿 수, 공개 범위, 고객 선택 제출 여부, 커스터마이징 기대 관리가 정리된 뒤 진행한다. |
 | academy/exam_system2 실제 연동 | 보류 | MVP 이후에도 API 경계 설계가 먼저이며 직접 DB 공유는 금지한다. |
 
@@ -166,7 +166,7 @@ PostgreSQL 전환, 관리형 DB 도입, 자동 migration 승인 UI는 후속 단
 - 내부 정적 샘플 자료 상담 리허설 체크리스트는 `planning/18_INTERNAL_SAMPLE_REHEARSAL_CHECKLIST.md`에 정리했다.
 - 가상 고객 기준 상담 리허설 기록은 `planning/19_VIRTUAL_CUSTOMER_SAMPLE_REHEARSAL_RECORD.md`에 정리했다.
 - 리허설 결과 기반 문구·자료 순서 보완은 `planning/20_SAMPLE_REHEARSAL_COPY_SEQUENCE_REVISIONS.md`에 정리했다.
-- 다음은 묵산의 문구 톤 확인이다.
+- 다음은 베틀 시스템 외부 브랜드 문구 톤 확인이다.
 - 고객 선택은 자동 게시 명령이 아니라 묵산 내부 제작 입력값으로 처리한다.
 - 자유형 빌더, 고객별 별도 코드베이스, 검수 없는 게시로 보이는 흐름은 금지한다.
 

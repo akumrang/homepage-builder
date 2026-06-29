@@ -281,7 +281,7 @@ export default function TrustBasicTemplate({ academy }: { academy: AcademySite }
 
         <section className="entry-band" id="admin-entry">
           <div>
-            <p className="eyebrow">Muksan SaaS Entry</p>
+            <p className="eyebrow">베틀 시스템 연동</p>
             <h2>재원생 결제와 관리자 진입</h2>
             <p>{getEntryBandBody(academy)}</p>
           </div>

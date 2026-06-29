@@ -1,16 +1,18 @@
-# Muksan Homepage Project
+# Bettle System Homepage Project
 
-묵산 SaaS의 세 번째 축인 학원 홈페이지 제작·관리 프로젝트입니다.
+베틀 시스템 SaaS의 세 번째 축인 학원 홈페이지 제작·관리 프로젝트입니다.
 
-이 프로젝트는 고객에게 홈페이지 제작툴을 판매하는 것이 아니라, 묵산 SaaS 구독 학원에게 학원당 1개의 고품질 홈페이지를 제작·제공하고, 이를 상담·공지·결제·학원관리·시험지 생성관리와 연결하는 외부 접점 시스템을 목표로 합니다.
+이 프로젝트는 고객에게 홈페이지 제작툴을 판매하는 것이 아니라, 베틀 시스템 SaaS 구독 학원에게 학원당 1개의 고품질 홈페이지를 제작·제공하고, 이를 상담·공지·결제·학원관리·시험지 생성관리와 연결하는 외부 접점 시스템을 목표로 합니다.
+
+`묵산`은 개발 대화와 내부 판단에서 쓰는 호칭이며, 고객에게 노출되는 브랜드명은 `베틀 시스템`입니다. 고객용 화면, 발송 문안, 샘플 설명, 외부 안내 문구에는 `베틀 시스템`을 사용합니다.
 
 ## 제품 정의
 
-묵산 homepage 프로젝트는 구독 학원마다 개별 완성 홈페이지를 제공하되, 이를 공통 템플릿·학원별 콘텐츠 데이터·묵산 내부 제작 화면으로 반복 생산하고 운영하기 위한 플랫폼입니다.
+베틀 시스템 homepage 프로젝트는 구독 학원마다 개별 완성 홈페이지를 제공하되, 이를 공통 템플릿·학원별 콘텐츠 데이터·베틀 시스템 내부 제작 화면으로 반복 생산하고 운영하기 위한 플랫폼입니다.
 
-고객은 자유형 홈페이지 빌더를 사용하는 것이 아니라, 묵산이 미리 준비한 완성형 샘플과 템플릿 방향을 보고 선호 유형을 선택합니다. 이후 묵산 내부 제작자가 학원 자료를 받아 콘텐츠를 구성하고, 검수와 고객 확인을 거쳐 게시합니다.
+고객은 자유형 홈페이지 빌더를 사용하는 것이 아니라, 베틀 시스템이 미리 준비한 완성형 샘플과 템플릿 방향을 보고 선호 유형을 선택합니다. 이후 베틀 시스템 내부 제작자가 학원 자료를 받아 콘텐츠를 구성하고, 검수와 고객 확인을 거쳐 게시합니다.
 
-고객은 자기 학원의 얼굴에 대한 미학적 표현 권리를 가지지만, 그 권리는 묵산의 표준 템플릿, 디자인 토큰, 검수 절차, 운영 가능 범위 안에서 행사됩니다.
+고객은 자기 학원의 얼굴에 대한 미학적 표현 권리를 가지지만, 그 권리는 베틀 시스템의 표준 템플릿, 디자인 토큰, 검수 절차, 운영 가능 범위 안에서 행사됩니다.
 
 기본 제작 흐름:
 
@@ -18,8 +20,8 @@
 완성형 샘플 확인
 → 고객의 선호 방향 선택
 → 학원 자료 수집
-→ 묵산 내부 제작
-→ 묵산 검수
+→ 베틀 시스템 내부 제작
+→ 베틀 시스템 검수
 → 고객 확인
 → 게시
 → 상담·공지·결제·학원관리 연결
@@ -52,7 +54,7 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
-묵산 내부 검토용 정적 샘플 자료 구성안은 `planning/17_INTERNAL_STATIC_SAMPLE_REVIEW_PACK.md`에 정리되어 있습니다.
+베틀 시스템 내부 검토용 정적 샘플 자료 구성안은 `planning/17_INTERNAL_STATIC_SAMPLE_REVIEW_PACK.md`에 정리되어 있습니다.
 내부 정적 샘플 자료 상담 리허설 체크리스트는 `planning/18_INTERNAL_SAMPLE_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
 가상 고객 기준 상담 리허설 기록은 `planning/19_VIRTUAL_CUSTOMER_SAMPLE_REHEARSAL_RECORD.md`에 정리되어 있습니다.
 리허설 결과 기반 문구·자료 순서 보완은 `planning/20_SAMPLE_REHEARSAL_COPY_SEQUENCE_REVISIONS.md`에 정리되어 있습니다.
@@ -211,7 +213,7 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
-묵산 내부 검토용 정적 샘플 자료 구성안은 `planning/17_INTERNAL_STATIC_SAMPLE_REVIEW_PACK.md`에 정리되어 있습니다.
+베틀 시스템 내부 검토용 정적 샘플 자료 구성안은 `planning/17_INTERNAL_STATIC_SAMPLE_REVIEW_PACK.md`에 정리되어 있습니다.
 내부 정적 샘플 자료 상담 리허설 체크리스트는 `planning/18_INTERNAL_SAMPLE_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
 가상 고객 기준 상담 리허설 기록은 `planning/19_VIRTUAL_CUSTOMER_SAMPLE_REHEARSAL_RECORD.md`에 정리되어 있습니다.
 리허설 결과 기반 문구·자료 순서 보완은 `planning/20_SAMPLE_REHEARSAL_COPY_SEQUENCE_REVISIONS.md`에 정리되어 있습니다.

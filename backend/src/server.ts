@@ -416,7 +416,7 @@ export async function startServer(listenPort = port, listenHost = host): Promise
   await initializeStores();
 
   return app.listen(listenPort, listenHost, () => {
-    console.log(`Muksan homepage backend is running on http://${listenHost}:${listenPort}`);
+    console.log(`Bettle System homepage backend is running on http://${listenHost}:${listenPort}`);
   });
 }
 
