@@ -37,6 +37,8 @@ Last Updated: 2026-06-29
 - 샘플 카드 문안과 고객 기대 관리 문구 초안 작성
 - 묵산 내부 검토용 정적 샘플 자료 구성안 작성
 - 내부 정적 샘플 자료 상담 리허설 체크리스트 작성
+- 가상 고객 기준 상담 리허설 기록 작성
+- 리허설 결과 기반 문구·자료 순서 보완
 - 제품 정의와 고객 디자인 권리 원칙 문서화
 
 보류로 확정한 것:
@@ -76,7 +78,9 @@ MVP 이후의 다음 개발은 다음 기준으로 고른다.
 | 샘플 카드 문안과 고객 기대 관리 문구 | 완료 | 고객에게 보여줄 카드 제목, 설명, 적합/부적합 안내, 선택 전/후 고지 문구를 정리했다. 결과는 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 둔다. |
 | 묵산 내부 검토용 정적 샘플 자료 구성안 | 완료 | 카드 문안, 방향 브리프, 현재 `trust-basic-v1` 샘플을 내부 상담/검토 자료 구조로 묶었다. 결과는 `planning/17_INTERNAL_STATIC_SAMPLE_REVIEW_PACK.md`에 둔다. |
 | 내부 정적 샘플 자료 상담 리허설 체크리스트 | 완료 | 실제 고객에게 보여주기 전 내부자가 따라갈 상담 흐름, 질문 대응, 자료 누락, GO/HOLD/NO-GO 기준을 정리했다. 결과는 `planning/18_INTERNAL_SAMPLE_REHEARSAL_CHECKLIST.md`에 둔다. |
-| 가상 고객 기준 상담 리허설 기록 | 다음 기획 후보 | 체크리스트를 가상 시나리오에 실제로 적용해 상담 흐름과 기대 관리 문구의 충분성을 확인해야 한다. |
+| 가상 고객 기준 상담 리허설 기록 | 완료 | 체크리스트를 가상 시나리오에 적용해 상담 흐름, 질문 대응, 자료 누락, HOLD 판정을 기록했다. 결과는 `planning/19_VIRTUAL_CUSTOMER_SAMPLE_REHEARSAL_RECORD.md`에 둔다. |
+| 리허설 결과 기반 문구·자료 순서 보완 | 완료 | 고객 공유용 문구를 더 부드럽게 다듬고 자료 순서를 보완했다. 결과는 `planning/20_SAMPLE_REHEARSAL_COPY_SEQUENCE_REVISIONS.md`에 둔다. |
+| 묵산 문구 톤 확인 | 현재 1순위 | 고객에게 보일 수 있는 표현이므로 묵산이 직접 톤을 확인해야 한다. |
 | 완성형 샘플 갤러리 구현 | 보류 | 템플릿 수, 공개 범위, 고객 선택 제출 여부, 커스터마이징 기대 관리가 정리된 뒤 진행한다. |
 | academy/exam_system2 실제 연동 | 보류 | MVP 이후에도 API 경계 설계가 먼저이며 직접 DB 공유는 금지한다. |
 
@@ -160,7 +164,9 @@ PostgreSQL 전환, 관리형 DB 도입, 자동 migration 승인 UI는 후속 단
 - 샘플 카드 문안과 기대 관리 문구는 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리했다.
 - 묵산 내부 검토용 정적 샘플 자료 구성안은 `planning/17_INTERNAL_STATIC_SAMPLE_REVIEW_PACK.md`에 정리했다.
 - 내부 정적 샘플 자료 상담 리허설 체크리스트는 `planning/18_INTERNAL_SAMPLE_REHEARSAL_CHECKLIST.md`에 정리했다.
-- 다음은 가상 고객 기준 상담 리허설 기록을 작성한다.
+- 가상 고객 기준 상담 리허설 기록은 `planning/19_VIRTUAL_CUSTOMER_SAMPLE_REHEARSAL_RECORD.md`에 정리했다.
+- 리허설 결과 기반 문구·자료 순서 보완은 `planning/20_SAMPLE_REHEARSAL_COPY_SEQUENCE_REVISIONS.md`에 정리했다.
+- 다음은 묵산의 문구 톤 확인이다.
 - 고객 선택은 자동 게시 명령이 아니라 묵산 내부 제작 입력값으로 처리한다.
 - 자유형 빌더, 고객별 별도 코드베이스, 검수 없는 게시로 보이는 흐름은 금지한다.
 
@@ -172,6 +178,6 @@ PostgreSQL 전환, 관리형 DB 도입, 자동 migration 승인 UI는 후속 단
 
 따라서 현재 우선순위는 다음 순서로 둔다.
 
-1. 가상 고객 기준 상담 리허설 기록 작성
+1. 묵산 문구 톤 확인
 2. 다중 운영자 접근 제어 고도화 검토
 3. academy/exam_system2 API 경계 설계
