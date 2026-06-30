@@ -52,7 +52,7 @@
 브라우저 스크린샷 회귀 테스트 결과는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 정리되어 있습니다.
 Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIGRATION_DEPLOYMENT_RECHECK_REPORT.md`에 정리되어 있습니다.
 내부 식별자 rename 범위 판단은 `docs/26_INTERNAL_IDENTIFIER_RENAME_SCOPE_DECISION.md`에 정리되어 있습니다.
-첫 파일럿 고객 발송 자료 최종 패키지 점검은 `docs/27_FIRST_PILOT_SEND_PACKAGE_FINAL_CHECK.md`에 정리되어 있습니다.
+첫 파일럿 발송 패키지 준비도 점검은 `docs/27_FIRST_PILOT_SEND_PACKAGE_FINAL_CHECK.md`에 정리되어 있습니다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
@@ -213,7 +213,7 @@ Windows 운영 수동 리허설 체크리스트는 `docs/09_WINDOWS_OPERATION_RE
 Windows 배포 Quickstart는 상세 런북을 실행 순서대로 묶은 입구 문서입니다.
 Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIGRATION_DEPLOYMENT_RECHECK_REPORT.md`에 정리되어 있습니다.
 내부 식별자 rename 범위 판단은 `docs/26_INTERNAL_IDENTIFIER_RENAME_SCOPE_DECISION.md`에 정리되어 있습니다.
-첫 파일럿 고객 발송 자료 최종 패키지 점검은 `docs/27_FIRST_PILOT_SEND_PACKAGE_FINAL_CHECK.md`에 정리되어 있습니다.
+첫 파일럿 발송 패키지 준비도 점검은 `docs/27_FIRST_PILOT_SEND_PACKAGE_FINAL_CHECK.md`에 정리되어 있습니다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
