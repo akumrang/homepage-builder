@@ -51,6 +51,7 @@
 파일럿 시연용 로컬 개발 DB 정리 절차는 `docs/23_PILOT_DEMO_LOCAL_DB_CLEANUP_RUNBOOK.md`에 정리되어 있습니다.
 브라우저 스크린샷 회귀 테스트 결과는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 정리되어 있습니다.
 Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIGRATION_DEPLOYMENT_RECHECK_REPORT.md`에 정리되어 있습니다.
+내부 식별자 rename 범위 판단은 `docs/26_INTERNAL_IDENTIFIER_RENAME_SCOPE_DECISION.md`에 정리되어 있습니다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
@@ -210,6 +211,7 @@ Windows Caddy와 Service wrapper 설정 초안은 `docs/08_WINDOWS_CADDY_SERVICE
 Windows 운영 수동 리허설 체크리스트는 `docs/09_WINDOWS_OPERATION_REHEARSAL_CHECKLIST.md`에 정리되어 있습니다.
 Windows 배포 Quickstart는 상세 런북을 실행 순서대로 묶은 입구 문서입니다.
 Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIGRATION_DEPLOYMENT_RECHECK_REPORT.md`에 정리되어 있습니다.
+내부 식별자 rename 범위 판단은 `docs/26_INTERNAL_IDENTIFIER_RENAME_SCOPE_DECISION.md`에 정리되어 있습니다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
