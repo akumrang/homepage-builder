@@ -2,7 +2,7 @@
 
 Status: Draft
 Project: homepage
-Last Updated: 2026-06-28
+Last Updated: 2026-06-30
 
 ---
 
@@ -11,6 +11,8 @@ Last Updated: 2026-06-28
 이 문서는 `docs/18_FIRST_PILOT_INTAKE_RECEIPT_RECORD_TEMPLATE.md`를 실제 접수 상황에 적용한다는 가정으로 작성한 가상 판정 예시다.
 
 실제 고객명, 담당자명, 연락처, 원본 사진 링크, 원본 로고 파일 링크, 학생 정보는 기록하지 않는다.
+
+최신 발송 패키지 기준 재점검은 `docs/29_FIRST_PILOT_RECEIPT_REHEARSAL_RECHECK.md`에 둔다.
 
 목표는 다음 세 가지다.
 
@@ -284,11 +286,4 @@ CUSTOMER_PUBLISHED
 
 브라우저 스크린샷 회귀 테스트는 `docs/24_SCREENSHOT_REGRESSION_TEST_REPORT.md`에 둔다.
 
-다음 1순위는 Prisma migration과 배포 환경 정리 상태를 재점검하는 것이다.
-
-이유:
-
-- 파일럿 시연 전 통제된 로컬 DB 절차는 문서화됐다.
-- 출시 전 반복 시각 확인은 자동화됐다.
-- 운영 전 DB 적용 순서와 배포 문서/script 일관성은 다시 확인해야 한다.
-- 고객 포털, 고객 계정, 자유형 편집기는 계속 보류한다.
+최신 발송 패키지 기준 재점검은 `docs/29_FIRST_PILOT_RECEIPT_REHEARSAL_RECHECK.md`에 둔다.
