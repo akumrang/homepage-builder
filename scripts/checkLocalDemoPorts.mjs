@@ -131,8 +131,9 @@ function main() {
 
   if (hasHold) {
     console.log("[demo:ports] HOLD local demo precheck failed.");
-    console.log("[demo:ports] If Vite uses an alternate frontend port, restart backend with HOMEPAGE_CORS_ORIGINS for that port.");
-    console.log("[demo:ports] Example: $env:HOMEPAGE_CORS_ORIGINS=\"http://127.0.0.1:5176,http://localhost:5176\"");
+    console.log("[demo:ports] Keep the local visual review on HOLD until the port conflict is resolved.");
+    console.log("[demo:ports] Use an alternate frontend port only as an explicitly declared temporary verification URL.");
+    console.log("[demo:ports] Temporary example: $env:HOMEPAGE_CORS_ORIGINS=\"http://127.0.0.1:5176,http://localhost:5176\"");
     process.exitCode = 1;
     return;
   }

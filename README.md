@@ -58,6 +58,7 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 파일럿 시연 URL 준비 상태 점검은 `docs/30_PILOT_DEMO_URL_READINESS_CHECK.md`에 정리되어 있습니다.
 로컬 시연 URL 브라우저 확인 결과는 `docs/31_LOCAL_DEMO_URL_BROWSER_CHECK.md`에 정리되어 있습니다.
 로컬 시연 포트 충돌 사전점검 절차는 `docs/32_LOCAL_DEMO_PORT_PRECHECK_RUNBOOK.md`에 정리되어 있습니다.
+로컬 시연 포트 정책 결정은 `docs/33_LOCAL_DEMO_PORT_POLICY_DECISION.md`에 정리되어 있습니다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
@@ -133,7 +134,7 @@ backend 환경 변수 예시는 `backend/.env.example`에 있습니다.
 npm.cmd run dev:frontend
 ```
 
-Vite가 `Port 5175 is in use, trying another one...`을 출력하면 기본 확인 URL을 사용하지 않습니다. 실제로 할당된 frontend URL을 확인하고, backend `HOMEPAGE_CORS_ORIGINS`도 해당 포트에 맞춰 다시 실행한 뒤 시각 판정을 요청합니다.
+homepage frontend는 `5175` strict port로 실행합니다. `5175`가 이미 사용 중이면 Vite가 `5176`으로 자동 이동하지 않고 실패해야 합니다. 이 경우 `npm.cmd run demo:ports`로 점유 프로세스를 확인하고, 시각 판정은 HOLD합니다.
 
 기본 포트:
 
@@ -266,6 +267,7 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 파일럿 시연 URL 준비 상태 점검은 `docs/30_PILOT_DEMO_URL_READINESS_CHECK.md`에 정리되어 있습니다.
 로컬 시연 URL 브라우저 확인 결과는 `docs/31_LOCAL_DEMO_URL_BROWSER_CHECK.md`에 정리되어 있습니다.
 로컬 시연 포트 충돌 사전점검 절차는 `docs/32_LOCAL_DEMO_PORT_PRECHECK_RUNBOOK.md`에 정리되어 있습니다.
+로컬 시연 포트 정책 결정은 `docs/33_LOCAL_DEMO_PORT_POLICY_DECISION.md`에 정리되어 있습니다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.

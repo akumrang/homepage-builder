@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "npm --prefix ../shared run build && vite --host 127.0.0.1 --port 5175",
+    "dev": "npm --prefix ../shared run build && vite --host 127.0.0.1 --port 5175 --strictPort",
     "build": "npm --prefix ../shared run build && tsc -p tsconfig.json --noEmit && tsc -p tsconfig.node.json --noEmit && vite build",
     "typecheck": "npm --prefix ../shared run build && tsc -p tsconfig.json --noEmit --pretty false && tsc -p tsconfig.node.json --noEmit --pretty false",
-    "preview": "vite preview --host 127.0.0.1 --port 5175"
+    "preview": "vite preview --host 127.0.0.1 --port 5175 --strictPort"
   },
   "dependencies": {
     "@muksan-homepage/shared": "file:../shared",
