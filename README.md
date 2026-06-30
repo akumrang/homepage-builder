@@ -95,11 +95,23 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 
 PowerShell에서 `npm`이 실행 정책에 막히는 경우가 있어 Windows PowerShell 기준 명령은 `npm.cmd`로 적었습니다.
 
+의존성 설치:
+
 ```powershell
 npm.cmd install
 ```
 
-backend 실행:
+로컬 시연 실행 순서:
+
+1. 포트 충돌을 먼저 확인합니다.
+
+```powershell
+npm.cmd run demo:ports
+```
+
+`demo:ports`가 `HOLD`를 출력하면 `5175` 또는 `4200`을 다른 workspace나 앱이 점유한 상태입니다. 이 경우 아래 확인 URL로 묵산 시각 판정을 진행하지 않습니다. 자세한 절차는 `docs/32_LOCAL_DEMO_PORT_PRECHECK_RUNBOOK.md`에 정리되어 있습니다.
+
+2. backend를 실행합니다.
 
 ```powershell
 npm.cmd run dev:backend
@@ -115,19 +127,13 @@ file:../data/homepage-dev.db
 
 backend 환경 변수 예시는 `backend/.env.example`에 있습니다.
 
-로컬 시연 전에 포트 충돌을 먼저 확인합니다.
-
-```powershell
-npm.cmd run demo:ports
-```
-
-`demo:ports`가 `HOLD`를 출력하면 `5175` 또는 `4200`을 다른 workspace나 앱이 점유한 상태입니다. 이 경우 아래 확인 URL로 묵산 시각 판정을 진행하지 않습니다. 자세한 절차는 `docs/32_LOCAL_DEMO_PORT_PRECHECK_RUNBOOK.md`에 정리되어 있습니다.
-
-frontend 실행:
+3. frontend를 실행합니다.
 
 ```powershell
 npm.cmd run dev:frontend
 ```
+
+Vite가 `Port 5175 is in use, trying another one...`을 출력하면 기본 확인 URL을 사용하지 않습니다. 실제로 할당된 frontend URL을 확인하고, backend `HOMEPAGE_CORS_ORIGINS`도 해당 포트에 맞춰 다시 실행한 뒤 시각 판정을 요청합니다.
 
 기본 포트:
 
@@ -142,6 +148,34 @@ npm.cmd run dev:frontend
 - 내부 제작 화면: http://127.0.0.1:5175/internal
 - backend health: http://localhost:4200/api/health
 - backend readiness: http://localhost:4200/api/ready
+
+묵산 시각 판정 전 이 대화창에서 반드시 확인할 내용:
+
+```text
+묵산 시각 판정 요청입니다.
+
+이번에 묵산이 볼 URL:
+<실제 frontend URL>/h/sample-korean-academy
+
+판정 대상:
+- 공개 샘플 홈페이지 첫인상
+- 모바일/데스크톱에서 깨지지 않는지
+- 상담 신청 버튼과 상담 폼 흐름이 자연스러운지
+- 과장 광고처럼 보이지 않는지
+
+판정하지 않을 것:
+- 실제 고객 발송 여부
+- 외부 공유 URL 또는 운영 배포 승인
+- 고객 자료 사용 승인
+- /internal 내부 제작 화면의 외부 공개
+
+현재 포트 상태:
+- demo:ports 결과: PASS 또는 HOLD
+- frontend 실제 URL: <URL>
+- backend health/readiness: PASS 또는 HOLD
+
+묵산은 이 대화창에 GO, HOLD, 또는 수정 요청 중 하나로 답하면 됩니다.
+```
 
 로컬 내부 제작 화면 접근 키:
 
