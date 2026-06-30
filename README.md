@@ -62,6 +62,7 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 로컬 시연 시각 판정 기록은 `docs/34_LOCAL_DEMO_VISUAL_APPROVAL_RECORD.md`에 정리되어 있습니다.
 시각 GO 이후 첫 파일럿 전환 체크리스트는 `docs/35_FIRST_PILOT_TRANSITION_CHECKLIST.md`에 정리되어 있습니다.
 첫 파일럿용 외부 공유 URL 방식 결정은 `docs/36_FIRST_PILOT_EXTERNAL_SHARE_URL_DECISION.md`에 정리되어 있습니다.
+staging URL 준비 체크리스트는 `docs/37_STAGING_URL_PREPARATION_CHECKLIST.md`에 정리되어 있습니다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
@@ -274,6 +275,7 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 로컬 시연 시각 판정 기록은 `docs/34_LOCAL_DEMO_VISUAL_APPROVAL_RECORD.md`에 정리되어 있습니다.
 시각 GO 이후 첫 파일럿 전환 체크리스트는 `docs/35_FIRST_PILOT_TRANSITION_CHECKLIST.md`에 정리되어 있습니다.
 첫 파일럿용 외부 공유 URL 방식 결정은 `docs/36_FIRST_PILOT_EXTERNAL_SHARE_URL_DECISION.md`에 정리되어 있습니다.
+staging URL 준비 체크리스트는 `docs/37_STAGING_URL_PREPARATION_CHECKLIST.md`에 정리되어 있습니다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
