@@ -56,6 +56,7 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 첫 파일럿 발송 문안 가상 리허설은 `docs/28_FIRST_PILOT_SEND_COPY_VIRTUAL_REHEARSAL.md`에 정리되어 있습니다.
 첫 파일럿 회신 접수 가상 리허설 재점검은 `docs/29_FIRST_PILOT_RECEIPT_REHEARSAL_RECHECK.md`에 정리되어 있습니다.
 파일럿 시연 URL 준비 상태 점검은 `docs/30_PILOT_DEMO_URL_READINESS_CHECK.md`에 정리되어 있습니다.
+로컬 시연 URL 브라우저 확인 결과는 `docs/31_LOCAL_DEMO_URL_BROWSER_CHECK.md`에 정리되어 있습니다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
@@ -220,6 +221,7 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 첫 파일럿 발송 문안 가상 리허설은 `docs/28_FIRST_PILOT_SEND_COPY_VIRTUAL_REHEARSAL.md`에 정리되어 있습니다.
 첫 파일럿 회신 접수 가상 리허설 재점검은 `docs/29_FIRST_PILOT_RECEIPT_REHEARSAL_RECHECK.md`에 정리되어 있습니다.
 파일럿 시연 URL 준비 상태 점검은 `docs/30_PILOT_DEMO_URL_READINESS_CHECK.md`에 정리되어 있습니다.
+로컬 시연 URL 브라우저 확인 결과는 `docs/31_LOCAL_DEMO_URL_BROWSER_CHECK.md`에 정리되어 있습니다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
