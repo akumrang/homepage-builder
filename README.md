@@ -57,6 +57,7 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 첫 파일럿 회신 접수 가상 리허설 재점검은 `docs/29_FIRST_PILOT_RECEIPT_REHEARSAL_RECHECK.md`에 정리되어 있습니다.
 파일럿 시연 URL 준비 상태 점검은 `docs/30_PILOT_DEMO_URL_READINESS_CHECK.md`에 정리되어 있습니다.
 로컬 시연 URL 브라우저 확인 결과는 `docs/31_LOCAL_DEMO_URL_BROWSER_CHECK.md`에 정리되어 있습니다.
+로컬 시연 포트 충돌 사전점검 절차는 `docs/32_LOCAL_DEMO_PORT_PRECHECK_RUNBOOK.md`에 정리되어 있습니다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
@@ -113,6 +114,14 @@ file:../data/homepage-dev.db
 ```
 
 backend 환경 변수 예시는 `backend/.env.example`에 있습니다.
+
+로컬 시연 전에 포트 충돌을 먼저 확인합니다.
+
+```powershell
+npm.cmd run demo:ports
+```
+
+`demo:ports`가 `HOLD`를 출력하면 `5175` 또는 `4200`을 다른 workspace나 앱이 점유한 상태입니다. 이 경우 아래 확인 URL로 묵산 시각 판정을 진행하지 않습니다. 자세한 절차는 `docs/32_LOCAL_DEMO_PORT_PRECHECK_RUNBOOK.md`에 정리되어 있습니다.
 
 frontend 실행:
 
@@ -222,6 +231,7 @@ Prisma migration과 배포 환경 정리 재점검 결과는 `docs/25_PRISMA_MIG
 첫 파일럿 회신 접수 가상 리허설 재점검은 `docs/29_FIRST_PILOT_RECEIPT_REHEARSAL_RECHECK.md`에 정리되어 있습니다.
 파일럿 시연 URL 준비 상태 점검은 `docs/30_PILOT_DEMO_URL_READINESS_CHECK.md`에 정리되어 있습니다.
 로컬 시연 URL 브라우저 확인 결과는 `docs/31_LOCAL_DEMO_URL_BROWSER_CHECK.md`에 정리되어 있습니다.
+로컬 시연 포트 충돌 사전점검 절차는 `docs/32_LOCAL_DEMO_PORT_PRECHECK_RUNBOOK.md`에 정리되어 있습니다.
 샘플 갤러리 기획 재검토는 `planning/14_SAMPLE_GALLERY_PLANNING_REVIEW.md`에 정리되어 있습니다.
 샘플 방향 3종 브리프는 `planning/15_SAMPLE_DIRECTION_BRIEFS.md`에 정리되어 있습니다.
 샘플 카드 문안과 고객 기대 관리 문구 초안은 `planning/16_SAMPLE_CARD_COPY_AND_EXPECTATION_GUIDE.md`에 정리되어 있습니다.
