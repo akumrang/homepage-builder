@@ -178,4 +178,4 @@ npm.cmd run visual:regression
 
 staging URL 준비 체크리스트를 작성했다. 실제 배포 실행 전에 도메인, HTTPS, reverse proxy, DB 경로, 내부 접근 토큰, 샘플 데이터, 고객 안내 문구를 확인하도록 분리했다.
 
-다음 1순위 추천 작업은 staging URL 준비 체크리스트 변경분 커밋/푸시다.
+도메인 후보는 별도 문서로 확대하지 않고 staging URL 준비 체크리스트 안의 짧은 메모로만 관리하기로 축소했다. 실제 도메인 구매나 가용성 조회는 아직 하지 않는다.
