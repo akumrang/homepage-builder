@@ -25,13 +25,13 @@ export function mapIntakeAssetsToPublicationAssets(assets: CustomerHomepageIntak
   return {
     logo: {
       assetId: logoAssetId,
-      source: logoAssetId ? assets.logoSource ?? "CUSTOMER_PROVIDED" : "MUKSAN_CREATED",
+      source: logoAssetId ? assets.logoSource ?? "CUSTOMER_PROVIDED" : "BETTLE_CREATED",
       approvedForPublish: logoAssetId ? assets.logoUsageConfirmed : false,
       textFallbackApproved: assets.logoTextFallbackApproved
     },
     hero: {
       assetId: heroAssetId,
-      source: heroAssetId ? assets.heroPhotoSource ?? "CUSTOMER_PROVIDED" : "MUKSAN_APPROVED_REPLACEMENT",
+      source: heroAssetId ? assets.heroPhotoSource ?? "CUSTOMER_PROVIDED" : "BETTLE_APPROVED_REPLACEMENT",
       approvedForPublish: heroAssetId ? assets.heroPhotoUsageConfirmed : false
     }
   };

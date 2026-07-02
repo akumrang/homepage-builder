@@ -15,8 +15,8 @@ export type PublicationMode = "SAMPLE" | "CUSTOMER_PREVIEW" | "CUSTOMER_PUBLISHE
 export type PublicationAssetSource =
   | "SAMPLE"
   | "CUSTOMER_PROVIDED"
-  | "MUKSAN_CREATED"
-  | "MUKSAN_APPROVED_REPLACEMENT";
+  | "BETTLE_CREATED"
+  | "BETTLE_APPROVED_REPLACEMENT";
 
 export interface PublicationLogoAssetPolicy {
   assetId?: string;

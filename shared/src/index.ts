@@ -32,7 +32,7 @@ export function validateInquiryFields(input: InquiryValidationInput): InquiryVal
   if (!input.phone?.trim()) {
     errors.phone = "연락처를 입력해 주세요.";
   } else if (!isValidMobilePhone(input.phone)) {
-    errors.phone = "휴대전화 번호를 010-0000-0000 형식으로 입력해 주세요.";
+    errors.phone = "휴대전화 번호를 010-0000-0000 형식 또는 숫자만 입력해 주세요.";
   }
 
   if (!input.studentGrade?.trim()) {

@@ -634,6 +634,11 @@ dd {
   color: #1d5b3d;
 }
 
+.form-message.info {
+  background: #e7f0f4;
+  color: #244f62;
+}
+
 .form-message.error {
   background: #f8e6e2;
   color: #8a2d1d;

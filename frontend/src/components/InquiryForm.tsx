@@ -13,12 +13,29 @@ const emptyForm: InquiryInput = {
   privacyAccepted: false
 };
 
+function createInquirySignature(input: InquiryInput): string {
+  return JSON.stringify({
+    academySlug: input.academySlug.trim(),
+    parentName: input.parentName.trim(),
+    phone: input.phone.replace(/[^\d]/g, ""),
+    studentGrade: input.studentGrade.trim(),
+    subject: input.subject.trim(),
+    message: input.message.trim(),
+    privacyAccepted: input.privacyAccepted
+  });
+}
+
 export default function InquiryForm({ academySlug }: { academySlug: string }) {
   const [form, setForm] = useState<InquiryInput>({ ...emptyForm, academySlug });
   const [errors, setErrors] = useState<InquiryValidationErrors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState<string | null>(null);
   const messageRef = useRef<HTMLParagraphElement>(null);
+  const isSubmitLockedRef = useRef(false);
+  const lastSubmittedSignatureRef = useRef<string | null>(null);
+  const isFormLocked = status === "submitting" || status === "success";
+  const messageClassName =
+    status === "success" ? "form-message success" : status === "submitting" ? "form-message info" : "form-message error";
 
   useEffect(() => {
     if ((status === "success" || status === "error") && message) {
@@ -37,28 +54,47 @@ export default function InquiryForm({ academySlug }: { academySlug: string }) {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+
+    if (isSubmitLockedRef.current || status === "success") {
+      return;
+    }
+
     setMessage(null);
 
-    const nextErrors = validateInquiryFields({ ...form, academySlug });
+    const payload = { ...form, academySlug };
+    const nextErrors = validateInquiryFields(payload);
     setErrors(nextErrors);
 
     if (Object.keys(nextErrors).length > 0) {
       setStatus("error");
-      setMessage("입력값을 확인해 주세요. 표시된 항목을 수정해 주세요.");
+      setMessage("필수 항목과 개인정보 동의 여부를 확인해 주세요.");
       return;
     }
 
+    const nextSignature = createInquirySignature(payload);
+
+    if (lastSubmittedSignatureRef.current === nextSignature) {
+      setStatus("success");
+      setMessage("상담 신청이 이미 접수되었습니다. 학원에서 확인 후 연락드리겠습니다.");
+      return;
+    }
+
+    isSubmitLockedRef.current = true;
     setStatus("submitting");
+    setMessage("접수 중...");
 
     try {
-      const result = await submitInquiry({ ...form, academySlug });
+      const result = await submitInquiry(payload);
+      lastSubmittedSignatureRef.current = nextSignature;
       setStatus("success");
-      setMessage(result.message);
+      setMessage(result.message || "상담 신청이 접수되었습니다. 학원에서 확인 후 연락드리겠습니다.");
       setErrors({});
-      setForm({ ...emptyForm, academySlug });
-    } catch (error) {
+    } catch {
       setStatus("error");
-      setMessage(error instanceof Error ? error.message : "상담 문의를 접수하지 못했습니다.");
+      setMessage("일시적인 오류로 접수되지 않았습니다. 잠시 후 다시 시도해 주세요.");
+      lastSubmittedSignatureRef.current = null;
+    } finally {
+      isSubmitLockedRef.current = false;
     }
   }
 
@@ -73,6 +109,7 @@ export default function InquiryForm({ academySlug }: { academySlug: string }) {
               setForm((current) => ({ ...current, parentName: event.target.value }));
               clearFieldError("parentName");
             }}
+            disabled={isFormLocked}
             required
             autoComplete="name"
             placeholder="예: 홍길동"
@@ -89,6 +126,7 @@ export default function InquiryForm({ academySlug }: { academySlug: string }) {
               setForm((current) => ({ ...current, phone: event.target.value }));
               clearFieldError("phone");
             }}
+            disabled={isFormLocked}
             required
             autoComplete="tel"
             placeholder="예: 010-0000-0000"
@@ -106,6 +144,7 @@ export default function InquiryForm({ academySlug }: { academySlug: string }) {
               setForm((current) => ({ ...current, studentGrade: event.target.value }));
               clearFieldError("studentGrade");
             }}
+            disabled={isFormLocked}
             required
             aria-invalid={Boolean(errors.studentGrade)}
             aria-describedby={errors.studentGrade ? "student-grade-error" : undefined}
@@ -129,6 +168,7 @@ export default function InquiryForm({ academySlug }: { academySlug: string }) {
               setForm((current) => ({ ...current, subject: event.target.value }));
               clearFieldError("subject");
             }}
+            disabled={isFormLocked}
             required
             aria-invalid={Boolean(errors.subject)}
             aria-describedby={errors.subject ? "subject-error" : undefined}
@@ -150,6 +190,7 @@ export default function InquiryForm({ academySlug }: { academySlug: string }) {
             setForm((current) => ({ ...current, message: event.target.value }));
             clearFieldError("message");
           }}
+          disabled={isFormLocked}
           required
           minLength={10}
           rows={5}
@@ -167,6 +208,7 @@ export default function InquiryForm({ academySlug }: { academySlug: string }) {
             setForm((current) => ({ ...current, privacyAccepted: event.target.checked }));
             clearFieldError("privacyAccepted");
           }}
+          disabled={isFormLocked}
           aria-invalid={Boolean(errors.privacyAccepted)}
           aria-describedby={errors.privacyAccepted ? "privacy-error" : undefined}
         />
@@ -175,16 +217,16 @@ export default function InquiryForm({ academySlug }: { academySlug: string }) {
       {errors.privacyAccepted ? <small className="field-error" id="privacy-error">{errors.privacyAccepted}</small> : null}
       {message ? (
         <p
-          className={status === "success" ? "form-message success" : "form-message error"}
+          className={messageClassName}
           ref={messageRef}
-          role={status === "success" ? "status" : "alert"}
+          role={status === "success" || status === "submitting" ? "status" : "alert"}
           tabIndex={-1}
         >
           {message}
         </p>
       ) : null}
-      <button className="button button-primary" type="submit" disabled={status === "submitting"}>
-        {status === "submitting" ? "접수 중" : "상담 문의 접수"}
+      <button className="button button-primary" type="submit" disabled={isFormLocked}>
+        {status === "submitting" ? "접수 중..." : status === "success" ? "접수 완료" : "상담 문의 접수"}
       </button>
     </form>
   );

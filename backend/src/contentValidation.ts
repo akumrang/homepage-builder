@@ -15,8 +15,8 @@ const allowedPublicationModes: PublicationMode[] = ["SAMPLE", "CUSTOMER_PREVIEW"
 const allowedPublicationAssetSources: PublicationAssetSource[] = [
   "SAMPLE",
   "CUSTOMER_PROVIDED",
-  "MUKSAN_CREATED",
-  "MUKSAN_APPROVED_REPLACEMENT"
+  "BETTLE_CREATED",
+  "BETTLE_APPROVED_REPLACEMENT"
 ];
 const customerPublishedForbiddenTexts = [
   "샘플",

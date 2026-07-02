@@ -165,20 +165,20 @@ function createCustomerPublishedFixture(source: AcademySite): AcademySite {
       customerApprovedForPublish: true,
       assets: mapIntakeAssetsToPublicationAssets({
         logoAssetId: "hanbit-text-logo",
-        logoSource: "MUKSAN_CREATED",
+        logoSource: "BETTLE_CREATED",
         logoUsageConfirmed: true,
         logoTextFallbackApproved: true,
         heroPhotoAssetId: "customer-approved-hero",
         heroPhotoSource: "CUSTOMER_PROVIDED",
         heroPhotoUsageConfirmed: true
       }),
-      footerNote: "서울시 묵산구 배움로 12, 3층"
+      footerNote: "서울시 배움구 배움로 12, 3층"
     },
     name: "한빛국어학원",
     heroImage: "/assets/customer-approved-hero.png",
     location: {
       ...fixture.location,
-      address: "서울시 묵산구 배움로 12, 3층",
+      address: "서울시 배움구 배움로 12, 3층",
       phone: "02-1234-5678"
     }
   };

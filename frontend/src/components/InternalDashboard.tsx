@@ -75,8 +75,8 @@ const publicationModeLabels = {
 const assetSourceLabels: Record<PublicationAssetSource, string> = {
   SAMPLE: "샘플",
   CUSTOMER_PROVIDED: "고객 제공",
-  MUKSAN_CREATED: "베틀 시스템 제작",
-  MUKSAN_APPROVED_REPLACEMENT: "베틀 시스템 승인 대체"
+  BETTLE_CREATED: "베틀 시스템 제작",
+  BETTLE_APPROVED_REPLACEMENT: "베틀 시스템 승인 대체"
 };
 
 function isNonSampleApprovedAsset(asset: {

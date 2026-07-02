@@ -2,6 +2,7 @@
 set -euo pipefail
 
 APP_ROOT="${APP_ROOT:-/opt/bettle-homepage/app}"
+BASE_ROOT="${BASE_ROOT:-$(dirname "$APP_ROOT")}"
 DATA_ROOT="${DATA_ROOT:-/opt/bettle-homepage/data}"
 BACKUP_ROOT="${BACKUP_ROOT:-/opt/bettle-homepage/backups}"
 LOG_ROOT="${LOG_ROOT:-/opt/bettle-homepage/logs}"
@@ -9,6 +10,8 @@ RUNTIME_ROOT="${RUNTIME_ROOT:-/opt/bettle-homepage/runtime}"
 SERVICE_USER="${SERVICE_USER:-bettle-homepage}"
 SERVICE_GROUP="${SERVICE_GROUP:-bettle-homepage}"
 SERVICE_NAME="${SERVICE_NAME:-bettle-homepage-backend}"
+CADDY_USER="${CADDY_USER:-caddy}"
+CADDY_GROUP="${CADDY_GROUP:-caddy}"
 STAGING_DOMAIN="${STAGING_DOMAIN:-staging.bettlesystem.com}"
 REPO_URL="${REPO_URL:-https://github.com/akumrang/homepage-builder.git}"
 BRANCH="${BRANCH:-master}"
@@ -16,6 +19,9 @@ CADDYFILE="${CADDYFILE:-/etc/caddy/Caddyfile}"
 
 ENV_FILE="${RUNTIME_ROOT}/backend.env"
 DB_FILE="${DATA_ROOT}/homepage-staging.db"
+CADDY_ACCESS_LOG="${LOG_ROOT}/caddy-access.log"
+BACKEND_LOG="${LOG_ROOT}/backend.log"
+BACKEND_ERROR_LOG="${LOG_ROOT}/backend-error.log"
 
 log() {
   printf '[staging-deploy] %s\n' "$*"
@@ -66,28 +72,92 @@ retry_curl() {
 }
 
 ensure_service_user() {
+  if ! getent group "$SERVICE_GROUP" >/dev/null 2>&1; then
+    groupadd --system "$SERVICE_GROUP"
+  fi
+
   if id "$SERVICE_USER" >/dev/null 2>&1; then
     return
   fi
 
   useradd --system \
-    --home-dir /opt/bettle-homepage \
+    --home-dir "$BASE_ROOT" \
     --shell /usr/sbin/nologin \
-    --user-group \
+    --gid "$SERVICE_GROUP" \
     "$SERVICE_USER"
 }
 
-ensure_directories() {
-  mkdir -p "$APP_ROOT" "$DATA_ROOT" "$BACKUP_ROOT" "$LOG_ROOT" "$RUNTIME_ROOT"
-  chown "$SERVICE_USER:$SERVICE_GROUP" "$DATA_ROOT" "$BACKUP_ROOT" "$RUNTIME_ROOT"
+ensure_file_owner_mode() {
+  local file_path="$1"
+  local owner="$2"
+  local group="$3"
+  local mode="$4"
 
-  if getent group caddy >/dev/null 2>&1; then
-    chown "$SERVICE_USER:caddy" "$LOG_ROOT"
+  if [ ! -e "$file_path" ]; then
+    install -o "$owner" -g "$group" -m "$mode" /dev/null "$file_path"
+    return
+  fi
+
+  chown "$owner:$group" "$file_path"
+  chmod "$mode" "$file_path"
+}
+
+ensure_runtime_permissions() {
+  mkdir -p "$RUNTIME_ROOT"
+  chown root:root "$RUNTIME_ROOT"
+  chmod 0700 "$RUNTIME_ROOT"
+
+  if [ -f "$ENV_FILE" ]; then
+    chown root:root "$ENV_FILE"
+    chmod 0600 "$ENV_FILE"
+  fi
+}
+
+ensure_data_permissions() {
+  mkdir -p "$DATA_ROOT" "$BACKUP_ROOT"
+  chown -R "$SERVICE_USER:$SERVICE_GROUP" "$DATA_ROOT" "$BACKUP_ROOT"
+  find "$DATA_ROOT" "$BACKUP_ROOT" -type d -exec chmod 0750 {} +
+  find "$DATA_ROOT" "$BACKUP_ROOT" -type f -exec chmod 0640 {} +
+}
+
+ensure_log_permissions() {
+  mkdir -p "$LOG_ROOT"
+
+  if id "$CADDY_USER" >/dev/null 2>&1 && getent group "$CADDY_GROUP" >/dev/null 2>&1; then
+    chown "$SERVICE_USER:$CADDY_GROUP" "$LOG_ROOT"
     chmod 0775 "$LOG_ROOT"
+    ensure_file_owner_mode "$CADDY_ACCESS_LOG" "$CADDY_USER" "$CADDY_GROUP" 0640
   else
     chown "$SERVICE_USER:$SERVICE_GROUP" "$LOG_ROOT"
     chmod 0750 "$LOG_ROOT"
+    ensure_file_owner_mode "$CADDY_ACCESS_LOG" "$SERVICE_USER" "$SERVICE_GROUP" 0640
   fi
+
+  ensure_file_owner_mode "$BACKEND_LOG" "$SERVICE_USER" "$SERVICE_GROUP" 0640
+  ensure_file_owner_mode "$BACKEND_ERROR_LOG" "$SERVICE_USER" "$SERVICE_GROUP" 0640
+}
+
+ensure_frontend_dist_permissions() {
+  if [ ! -d "${APP_ROOT}/frontend/dist" ]; then
+    printf 'Frontend dist directory does not exist: %s\n' "${APP_ROOT}/frontend/dist" >&2
+    exit 1
+  fi
+
+  chmod 0755 "$BASE_ROOT" "$APP_ROOT"
+  if [ -d "${APP_ROOT}/frontend" ]; then
+    chmod 0755 "${APP_ROOT}/frontend"
+  fi
+
+  find "${APP_ROOT}/frontend/dist" -type d -exec chmod 0755 {} +
+  find "${APP_ROOT}/frontend/dist" -type f -exec chmod 0644 {} +
+}
+
+ensure_directories() {
+  mkdir -p "$BASE_ROOT" "$APP_ROOT" "$DATA_ROOT" "$BACKUP_ROOT" "$LOG_ROOT" "$RUNTIME_ROOT"
+  chmod 0755 "$BASE_ROOT" "$APP_ROOT"
+  ensure_data_permissions
+  ensure_log_permissions
+  ensure_runtime_permissions
 }
 
 sync_repository() {
@@ -265,6 +335,9 @@ main() {
   ensure_directories
   sync_repository
   ensure_environment_file
+  ensure_runtime_permissions
+  ensure_data_permissions
+  ensure_log_permissions
 
   cd "$APP_ROOT"
 
@@ -288,16 +361,19 @@ main() {
     -u HOMEPAGE_INTERNAL_ACCESS_TOKEN \
     -u NODE_ENV \
     npm run build
+  ensure_frontend_dist_permissions
 
   stop_backend_if_running
   backup_existing_database
+  ensure_data_permissions
 
   log "Applying Prisma migrations to staging DB"
   load_runtime_env
   npm run db:deploy
 
-  chown -R "$SERVICE_USER:$SERVICE_GROUP" "$DATA_ROOT" "$BACKUP_ROOT"
-  chown "$SERVICE_USER:$SERVICE_GROUP" "$RUNTIME_ROOT"
+  ensure_data_permissions
+  ensure_runtime_permissions
+  ensure_log_permissions
 
   install_backend_service "$node_bin"
   log "Starting ${SERVICE_NAME}"

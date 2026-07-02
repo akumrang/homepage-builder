@@ -11,7 +11,7 @@ import type {
 } from "./types";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.DEV ? "http://localhost:4200" : "");
-const internalAccessTokenStorageKey = "muksan-homepage-internal-access-token";
+const internalAccessTokenStorageKey = "bettle-homepage-internal-access-token";
 
 export class ApiRequestError extends Error {
   constructor(message: string, readonly status: number) {

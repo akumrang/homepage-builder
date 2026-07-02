@@ -32,6 +32,7 @@ import { prisma } from "./prismaClient.js";
 import type { InquiryInput, InquiryStatusInput, NoticeInput, ProductionStatusInput } from "./types.js";
 
 export const app = express();
+const publicServiceName = "bettle-homepage-backend";
 const port = Number(process.env.PORT ?? 4200);
 const host = process.env.HOST?.trim() || "127.0.0.1";
 const defaultLocalCorsOrigins = ["http://localhost:5175", "http://127.0.0.1:5175"];
@@ -106,7 +107,7 @@ async function getReadinessReport() {
 
   return {
     ok,
-    service: "muksan-homepage-backend",
+    service: publicServiceName,
     checks
   };
 }
@@ -176,7 +177,7 @@ app.use(
 app.use(express.json({ limit: "64kb" }));
 
 app.get("/api/health", (_req, res) => {
-  res.json({ ok: true, service: "muksan-homepage-backend" });
+  res.json({ ok: true, service: publicServiceName });
 });
 
 app.get("/api/ready", async (_req, res) => {
