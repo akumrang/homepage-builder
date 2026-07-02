@@ -1,4 +1,4 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { validateInquiryFields, type InquiryValidationErrors } from "@muksan-homepage/shared";
 import { submitInquiry } from "../api";
 import type { InquiryInput } from "../types";
@@ -18,6 +18,13 @@ export default function InquiryForm({ academySlug }: { academySlug: string }) {
   const [errors, setErrors] = useState<InquiryValidationErrors>({});
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [message, setMessage] = useState<string | null>(null);
+  const messageRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    if ((status === "success" || status === "error") && message) {
+      messageRef.current?.focus();
+    }
+  }, [message, status]);
 
   function clearFieldError(field: keyof InquiryInput) {
     setErrors((current) => ({ ...current, [field]: undefined }));
@@ -37,7 +44,7 @@ export default function InquiryForm({ academySlug }: { academySlug: string }) {
 
     if (Object.keys(nextErrors).length > 0) {
       setStatus("error");
-      setMessage("입력값을 확인해 주세요.");
+      setMessage("입력값을 확인해 주세요. 표시된 항목을 수정해 주세요.");
       return;
     }
 
@@ -56,7 +63,7 @@ export default function InquiryForm({ academySlug }: { academySlug: string }) {
   }
 
   return (
-    <form className="inquiry-form" onSubmit={handleSubmit} noValidate>
+    <form className="inquiry-form" onSubmit={handleSubmit} noValidate aria-busy={status === "submitting"}>
       <div className="field-grid">
         <label>
           <span>보호자 이름</span>
@@ -163,11 +170,18 @@ export default function InquiryForm({ academySlug }: { academySlug: string }) {
           aria-invalid={Boolean(errors.privacyAccepted)}
           aria-describedby={errors.privacyAccepted ? "privacy-error" : undefined}
         />
-        <span>상담 접수를 위해 입력한 개인정보를 수집·이용하는 데 동의합니다.</span>
+        <span>상담 연락을 위해 입력한 개인정보를 수집·이용하는 데 동의합니다.</span>
       </label>
       {errors.privacyAccepted ? <small className="field-error" id="privacy-error">{errors.privacyAccepted}</small> : null}
       {message ? (
-        <p className={status === "success" ? "form-message success" : "form-message error"}>{message}</p>
+        <p
+          className={status === "success" ? "form-message success" : "form-message error"}
+          ref={messageRef}
+          role={status === "success" ? "status" : "alert"}
+          tabIndex={-1}
+        >
+          {message}
+        </p>
       ) : null}
       <button className="button button-primary" type="submit" disabled={status === "submitting"}>
         {status === "submitting" ? "접수 중" : "상담 문의 접수"}

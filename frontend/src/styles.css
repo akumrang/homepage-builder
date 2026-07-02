@@ -639,6 +639,11 @@ dd {
   color: #8a2d1d;
 }
 
+.form-message:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.86);
+  outline-offset: 3px;
+}
+
 .location-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
